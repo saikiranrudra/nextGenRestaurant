@@ -10,7 +10,7 @@ const useStyle = makeStyles({
     fontSize: ".9rem",
     outline: "none",
     border: "none",
-    backgroundColor: "#b3b3b3",
+    backgroundColor: "#f5f5f5",
     padding: ".5rem .8rem",
     borderRadius: "1rem",
     width: "13rem",

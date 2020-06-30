@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyle = makeStyles({
   btn: {
-    backgroundColor: "#b3b3b3",
+    backgroundColor: "#f5f5f5",
     padding: ".5rem .8rem",
     fontFamily: "Product-Sans",
     display: "inline-flex",

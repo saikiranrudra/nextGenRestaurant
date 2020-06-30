@@ -10,6 +10,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
 import LoginWithGoogle from "./../../components/customer/LoginWIthGoogle";
 import InputText from "./../../components/general/InputText";
+import SignUpForm from "./../../components/customer/SignUpForm";
+import NeedHelp from "./../../components/customer/NeedHelp";
+import Navigation from "./../../components/customer/Navigation";
 
 const useStyle = makeStyles({
   logo: {
@@ -44,6 +47,7 @@ const useStyle = makeStyles({
     textAlign: "center",
   },
   btn: {
+    fontFamily: "Product-Sans",
     borderRadius: "3rem",
     padding: ".3rem 2.4rem",
     fontSize: ".9rem",
@@ -53,6 +57,11 @@ const useStyle = makeStyles({
 const Auth = () => {
   const classes = useStyle();
   const [email, setEmail] = useState("");
+  const [formVisibility, setFormVisiblity] = useState(false);
+
+  const toggleVisiblity = () => {
+    formVisibility ? setFormVisiblity(false) : setFormVisiblity(true);
+  };
 
   return (
     <>
@@ -102,14 +111,25 @@ const Auth = () => {
 
       <div style={{ margin: "2rem 0 " }} className={classes.container}>
         <Typography variant="body2">New Here?</Typography>
-        <Button
-          size="large"
-          variant="contained"
-          color="primary"
-          className={classes.btn}
-        >
-          Sign Up
-        </Button>
+        {formVisibility ? (
+          <div style={{ marginBottom: "6rem" }}>
+            <SignUpForm visibility={formVisibility} />
+          </div>
+        ) : (
+          <Button
+            size="large"
+            variant="contained"
+            color="primary"
+            style={{ marginBottom: "3rem" }}
+            className={classes.btn}
+            onClick={toggleVisiblity}
+          >
+            Sign Up
+          </Button>
+        )}
+        <Navigation>
+          <NeedHelp />
+        </Navigation>
       </div>
     </>
   );
