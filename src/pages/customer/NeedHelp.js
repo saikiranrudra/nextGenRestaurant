@@ -3,7 +3,7 @@ import React from "react";
 // components
 import TopLogo from "./../../components/general/TopLogo";
 import Navigation from "./../../components/customer/Navigation";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, Grow } from "@material-ui/core";
 
 //media
 import care from "./../../assets/care.svg";
@@ -53,22 +53,31 @@ const NeedHelp = () => {
     <>
       <TopLogo />
       <div className={classes.container}>
-        <div className={classes.imgContainer}>
-          <img src={care} alt="care" className={classes.img} />
-        </div>
-        <div>
-          <Typography variant="h5" align="center" className={classes.textMain}>
-            Breath IN, Breath Out
-          </Typography>
-          <Typography
-            variant="body2"
-            align="center"
-            className={classes.textSub}
-          >
-            Our Customer Representative is Coming to rescue you
-          </Typography>
-        </div>
+        <Grow in={true}>
+          <div className={classes.imgContainer}>
+            <img src={care} alt="care" className={classes.img} />
+          </div>
+        </Grow>
+        <Grow in={true}>
+          <div>
+            <Typography
+              variant="h5"
+              align="center"
+              className={classes.textMain}
+            >
+              Breath IN, Breath Out
+            </Typography>
+            <Typography
+              variant="body2"
+              align="center"
+              className={classes.textSub}
+            >
+              Our Customer Representative is Coming to rescue you
+            </Typography>
+          </div>
+        </Grow>
       </div>
+
       <Navigation>
         <div style={{ textAlign: "center" }}>
           <Link
