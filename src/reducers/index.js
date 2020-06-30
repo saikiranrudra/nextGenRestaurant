@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 
 // reducers
-import customerReducer from "./customerReducer";
+import emailReducer from "./emailReducer";
 
 export default combineReducers({
-  customerReducer,
+  email: emailReducer,
 });

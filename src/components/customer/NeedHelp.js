@@ -60,7 +60,7 @@ const NeedHelp = () => {
           aria-describedby="alert-dialog-slide-description"
         >
           <DialogTitle id="alert-dialog-slide-title">
-            <span className={classes.txt}>Are you shure you want help?</span>
+            <span className={classes.txt}>Are you sure you want help?</span>
           </DialogTitle>
           <DialogActions>
             <Button onClick={handleClose} className={classes.btn}>

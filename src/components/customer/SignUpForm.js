@@ -33,7 +33,7 @@ const SignUpForm = (props) => {
   const classes = useStyle();
   const [data, setData] = useState({});
   return (
-    <Fade in={props.visibility}>
+    <Fade in={true}>
       <div className={classes.container}>
         <Typography variant="body1" align="center">
           Please fill your details
