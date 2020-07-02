@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -30,9 +30,6 @@ const useStyle = makeStyles({
 
 const EmailTextField = (props) => {
   const classes = useStyle();
-  useEffect(() => {
-    console.log("email: ", props.email);
-  }, [props.email]);
   return (
     <input
       type="email"

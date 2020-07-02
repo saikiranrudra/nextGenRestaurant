@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // images
 import logo from "./../../assets/logo.png";
@@ -13,8 +13,20 @@ import EmailTextField from "../../components/customer/EmailTextField";
 import NeedHelp from "./../../components/customer/NeedHelp";
 import Navigation from "./../../components/customer/Navigation";
 
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
 // Routing
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+
+//state management
+import { connect } from "react-redux";
+// actions
+import { customerAuthenticate } from "./../../actions/customer";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyle = makeStyles({
   logo: {
@@ -56,8 +68,44 @@ const useStyle = makeStyles({
   },
 });
 
-const Auth = () => {
+const Auth = (props) => {
   const classes = useStyle();
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
+
+  // popup notify
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  // handle authentication
+  const handleAuth = () => {
+    // handle authentication here
+    // if authenticated
+    if (props.email === "") {
+      handleClick(); //shows enter email error
+      return;
+    }
+
+    props.customerAuthenticate({ email: props.email });
+    history.push("/customer/home");
+  };
+
+  useEffect(() => {
+    if (props.user !== null) {
+      if (props.user.role === "customer") {
+        history.push("/customer/home");
+      }
+    }
+  });
+
   return (
     <>
       <div className={classes.logo}>
@@ -94,6 +142,7 @@ const Auth = () => {
           variant="contained"
           color="primary"
           className={classes.btn}
+          onClick={handleAuth}
         >
           Login
         </Button>
@@ -115,6 +164,11 @@ const Auth = () => {
             Sign Up
           </Button>
         </Link>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Please Enter Email
+          </Alert>
+        </Snackbar>
         <Navigation>
           <NeedHelp />
         </Navigation>
@@ -123,4 +177,7 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+const mapStateToProps = ({ user, email }) => ({ user, email });
+export default connect(mapStateToProps, {
+  customerAuthenticate,
+})(Auth);

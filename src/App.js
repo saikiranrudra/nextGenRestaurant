@@ -16,7 +16,7 @@ const App = () => {
       <>
         <CssBaseline />
         <Route path="/customer">
-          <Container maxWidth="sm">
+          <Container maxWidth="sm" style={{ padding: 0 }}>
             <Customer />
           </Container>
         </Route>
