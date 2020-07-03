@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // Components
-import { Paper, Grid, Typography, Box } from "@material-ui/core";
+import { Paper, Grid, Typography, Box, Drawer } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Counter from "./Counter";
 
@@ -54,12 +54,38 @@ const useStyle = makeStyles({
     flexDirection: "column",
     justifyContent: "right",
   },
+  moreImg: {
+    backgroundPosition: "center center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    display: "inline-block",
+    width: "8rem",
+    height: "8rem",
+  },
+  drawer: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    margin: "1rem",
+  },
+  drawerStyle: {
+    "& > .MuiDrawer-paper ": {
+      borderRadius: "1rem 1rem 0 0",
+    },
+  },
+  drawerText: {
+    gridColumn: "span 2",
+  },
+  drawerTitle: {
+    fontSize: "1.6rem",
+    fontWeight: "bold",
+  },
 });
 
 const ItemCard = (props) => {
   const classes = useStyle();
   const [normalCount, setNormalCount] = useState(0);
   const [jainCount, setJainCount] = useState(0);
+  const [more, setMore] = useState(false);
   const { updateMenu, updateCart, item } = props;
 
   useEffect(() => {
@@ -95,6 +121,7 @@ const ItemCard = (props) => {
           <Typography variant="h6" align="left" className={classes.title}>
             {props.item.name}
           </Typography>
+
           <Box
             component="fieldset"
             className={classes.rating}
@@ -114,7 +141,13 @@ const ItemCard = (props) => {
 
         <Grid item xs={6}>
           <div className={classes.container}>
-            <MoreVert style={{ marginLeft: "auto" }} />
+            <MoreVert
+              style={{ marginLeft: "auto" }}
+              onClick={() => {
+                setMore(true);
+              }}
+            />
+
             {item.jainCount !== undefined ? (
               <div>
                 <Typography variant="body2" align="right">
@@ -137,6 +170,94 @@ const ItemCard = (props) => {
           </div>
         </Grid>
       </Grid>
+
+      <Drawer
+        anchor="bottom"
+        open={more}
+        className={classes.drawerStyle}
+        onClose={() => {
+          setMore(false);
+        }}
+      >
+        <div className={classes.drawer}>
+          <Paper
+            className={classes.moreImg}
+            style={{ backgroundImage: `url("${props.item.img}")` }}
+          ></Paper>
+          <div style={{ marginTop: "1rem" }}>
+            <Box
+              component="fieldset"
+              className={classes.rating}
+              mb={3}
+              borderColor="transparent"
+            >
+              <Rating name="read-only" value={props.item.rating} readOnly />
+            </Box>
+
+            <div>
+              <Typography variant="body2" align="left" className={classes.meal}>
+                Meal for {props.item.mealFor}
+              </Typography>
+              <Typography
+                variant="body1"
+                align="left"
+                className={classes.price}
+              >
+                {props.item.price}
+                <span className={classes.rupee}>₹</span>
+              </Typography>
+
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {item.jainCount !== undefined ? (
+                  <div style={{ marginLeft: "auto" }}>
+                    <Typography variant="body2" align="right">
+                      Jain
+                    </Typography>
+                    <Counter count={jainCount} setCount={setJainCount} />
+                  </div>
+                ) : null}
+
+                {item.normalCount !== undefined ? (
+                  <div
+                    style={{
+                      marginTop: "1rem",
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <Counter count={normalCount} setCount={setNormalCount} />
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+
+          <div className={classes.drawerText}>
+            <div className={classes.drawerTitle}>
+              <Typography
+                style={{
+                  fontSize: "1.8rem",
+                  fontFamily: "Product-Sans",
+                  fontWeight: "bold",
+                }}
+                variant="h2"
+                align="left"
+              >
+                {props.item.name}
+              </Typography>
+            </div>
+
+            <Typography
+              style={{
+                fontFamily: "Product-Sans",
+              }}
+              variant="body2"
+              align="left"
+            >
+              {props.item.description}
+            </Typography>
+          </div>
+        </div>
+      </Drawer>
     </div>
   );
 };
