@@ -26,6 +26,13 @@ const useStyle = makeStyles({
       width: "15rem",
     },
   },
+  imageCover: {
+    position: "absolute",
+    backgroundColor: "rgba(0,0,0,.4)",
+    width: "100%",
+    height: "55%",
+    borderRadius: "0 0 1rem 1rem",
+  },
   featureItem: {
     padding: 0,
     backgroundImage: `url(${featureItem})`,
@@ -81,6 +88,13 @@ const useStyle = makeStyles({
   bottomPadding: {
     marginBottom: "6rem",
   },
+  stickyContainer: {
+    backgroundColor: "#fff",
+    position: "sticky",
+    top: "5rem",
+    paddingTop: "1rem",
+    zIndex: 1299,
+  },
 });
 
 const Home = () => {
@@ -90,29 +104,32 @@ const Home = () => {
       <TopLogo />
 
       <div className={classes.featureItem}>
-        <div className={classes.content}>
-          <Typography variant="h2" className={classes.textMain}>
-            Delicious
-          </Typography>
-          <Typography variant="h2" className={classes.textSub}>
-            Pan cakes
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ fontFamily: "Product-Sans" }}
-          >
-            Let's Eat
-          </Button>
+        <div className={classes.imageCover}>
+          <div className={classes.content}>
+            <Typography variant="h2" className={classes.textMain}>
+              Delicious
+            </Typography>
+            <Typography variant="h2" className={classes.textSub}>
+              Pan cakes
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ fontFamily: "Product-Sans" }}
+            >
+              Let's Eat
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className={classes.search}>
-        <SearchIcon />
-        <input type="text" placeholder="Search Food" />
+      <div className={classes.stickyContainer}>
+        <div className={classes.search}>
+          <SearchIcon />
+          <input type="text" placeholder="Search Food" />
+        </div>
+        <Categories />
       </div>
-
-      <Categories />
       <div className={classes.bottomPadding}>
         <MenuItems />
       </div>

@@ -68,6 +68,9 @@ const useStyle = makeStyles({
     margin: "1rem",
   },
   drawerStyle: {
+    "& > .makeStyles-drawerStyle-55": {
+      zIndex: "15000",
+    },
     "& > .MuiDrawer-paper ": {
       borderRadius: "1rem 1rem 0 0",
     },
