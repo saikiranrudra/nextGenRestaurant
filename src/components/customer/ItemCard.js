@@ -37,6 +37,9 @@ const useStyle = makeStyles({
   rating: {
     margin: 0,
     padding: 0,
+    "& > .MuiRating-readOnly": {
+      fontSize: "1.3rem",
+    },
   },
   meal: {
     fontFamily: "Product-Sans",
