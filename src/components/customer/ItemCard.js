@@ -10,8 +10,9 @@ import { MoreVert } from "@material-ui/icons";
 
 // state Mangement
 import { connect } from "react-redux";
+
 //actions
-import { updateMenu, updateCart } from "./../../actions/customer";
+import { updateMenu } from "./../../actions/customer";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -89,10 +90,16 @@ const useStyle = makeStyles({
 
 const ItemCard = (props) => {
   const classes = useStyle();
+  const { updateMenu, item } = props;
+
   const [normalCount, setNormalCount] = useState(0);
   const [jainCount, setJainCount] = useState(0);
   const [more, setMore] = useState(false);
-  const { updateMenu, updateCart, item } = props;
+
+  useEffect(() => {
+    setNormalCount(item.normalCount !== undefined ? item.normalCount : 0);
+    setJainCount(item.jainCount !== undefined ? item.jainCount : 0);
+  }, [item]);
 
   useEffect(() => {
     let t = item;
@@ -100,19 +107,16 @@ const ItemCard = (props) => {
       t.normalCount = normalCount;
       t.jainCount = jainCount;
       updateMenu(t);
-      updateCart(t);
     }
     if (item.normalCount !== undefined && item.jainCount === undefined) {
       t.normalCount = normalCount;
       updateMenu(t);
-      updateCart(t);
     }
     if (item.normalCount === undefined && item.jainCount !== undefined) {
       t.jainCount = jainCount;
       updateMenu(t);
-      updateCart(t);
     }
-  }, [normalCount, jainCount, updateMenu, updateCart, item]);
+  }, [jainCount, normalCount, item, updateMenu]);
 
   return (
     <div className={classes.card}>
@@ -269,4 +273,4 @@ const ItemCard = (props) => {
 };
 
 const mapStateToProps = ({ menu }) => ({ menu });
-export default connect(mapStateToProps, { updateMenu, updateCart })(ItemCard);
+export default connect(mapStateToProps, { updateMenu })(ItemCard);

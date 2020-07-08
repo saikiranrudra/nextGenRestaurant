@@ -7,9 +7,9 @@ const findAndUpdate = (old, newObj) => {
   });
   if (index !== -1) {
     old[index] = newObj;
-    return old;
+    return [...old];
   } else {
-    return old;
+    return [...old];
   }
 };
 export default (state = [], action) => {
@@ -17,12 +17,15 @@ export default (state = [], action) => {
     case "FETCH_MENU_ITEMS":
       return action.payload;
     case "UPDATE_MENU": {
-      if (state.length === 0) {
-        return state;
-      } else {
-        state = findAndUpdate(state, action.payload);
-        return [...state];
-      }
+      state = findAndUpdate(state, action.payload);
+      return [...state];
+    }
+    case "UPDATE_MENU_BULK": {
+      let items = action.payload;
+      items.forEach((item) => {
+        state = findAndUpdate(state, item);
+      });
+      return [...state];
     }
     default:
       return state;

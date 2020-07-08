@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // components
 import { Paper, Button } from "@material-ui/core";
@@ -6,9 +6,15 @@ import { Paper, Button } from "@material-ui/core";
 //state management
 import { connect } from "react-redux";
 
+//routing
+import { Link } from "react-router-dom";
+
+// icons
+import { Send as SendIcon } from "@material-ui/icons";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
-import { Send as SendIcon } from "@material-ui/icons";
+
 const useStyle = makeStyles((theme) => ({
   card: {
     position: "fixed",
@@ -30,25 +36,50 @@ const useStyle = makeStyles((theme) => ({
 
 const CutomerCartBar = (props) => {
   const classes = useStyle();
+  const [count, setCount] = useState(0);
+  const { menu } = props;
+
+  useEffect(() => {
+    let calCount = 0;
+    menu.forEach((item) => {
+      if (item.normalCount > 0 || item.jainCount > 0) {
+        calCount++;
+      }
+    });
+    setCount(calCount);
+  }, [menu]);
+
   return (
-    <Paper className={classes.card}>
-      {props.cart.length} Dish Selected{" "}
-      <Button
-        style={{
-          marginLeft: "1rem",
-          backgroundColor: "#fff",
-          fontFamily: "Product-Sans",
-        }}
-        variant="contained"
-        size="small"
-        endIcon={<SendIcon />}
-      >
-        View Orders
-      </Button>
-    </Paper>
+    <>
+      {count > 0 ? (
+        <Paper className={classes.card}>
+          {count} Dish Selected{" "}
+          <Link
+            to="/customer/orders"
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <Button
+              style={{
+                marginLeft: "1rem",
+                backgroundColor: "#fff",
+                fontFamily: "Product-Sans",
+              }}
+              variant="contained"
+              size="small"
+              endIcon={<SendIcon />}
+            >
+              View Orders
+            </Button>
+          </Link>
+        </Paper>
+      ) : null}
+    </>
   );
 };
 
-const mapStateToProps = ({ cart }) => ({ cart });
+const mapStateToProps = ({ menu }) => ({ menu });
 
 export default connect(mapStateToProps)(CutomerCartBar);

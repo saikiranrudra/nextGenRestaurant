@@ -11,10 +11,11 @@ const findAndUpdate = (old, newObj) => {
     if (newObj.jainCount !== undefined && newObj.normalCount !== undefined) {
       if (newObj.jainCount !== 0 || newObj.normalCount !== 0) {
         old.splice(index, 1);
-        return [...old, newObj];
+        old.push(newObj);
+        return [...old];
       } else {
         old.splice(index, 1);
-        return old;
+        return [...old];
       }
     } else if (
       newObj.jainCount === undefined &&
@@ -22,10 +23,11 @@ const findAndUpdate = (old, newObj) => {
     ) {
       if (newObj.normalCount === 0) {
         old.splice(index, 1);
-        return old;
+        return [...old];
       } else {
         old.splice(index, 1);
-        return [...old, newObj];
+        old.push(newObj);
+        return [...old];
       }
     } else if (
       newObj.jainCount !== undefined &&
@@ -33,19 +35,19 @@ const findAndUpdate = (old, newObj) => {
     ) {
       if (newObj.jainCount === 0) {
         old.splice(index, 1);
-        return old;
+        return [...old];
       } else {
         old.splice(index, 1);
-        return [old, newObj];
+        old.push(newObj);
+        return [...old];
       }
     }
-    old[index] = newObj;
-    return old;
   } else {
     if (newObj.normalCount > 0 || newObj.jainCount > 0) {
-      return [...old, newObj];
+      old.push(newObj);
+      return [...old];
     } else {
-      return old;
+      return [...old];
     }
   }
 };
@@ -53,8 +55,11 @@ const findAndUpdate = (old, newObj) => {
 export default (state = [], action) => {
   switch (action.type) {
     case "UPDATE_CART": {
-      state = findAndUpdate(state, action.payload);
-      return [...state];
+      let newState = findAndUpdate(state, action.payload);
+      return [...newState];
+    }
+    case "UPDATE_CART_BULK": {
+      return [...action.payload];
     }
     default:
       return state;

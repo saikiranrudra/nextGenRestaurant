@@ -24,15 +24,23 @@ const MenuItem = (props) => {
   return (
     <>
       <div className={classes.container}>
-        {props.menu.map((item, index) => (
-          <ItemCard key={index} item={item} />
-        ))}
+        {props.menu.map((item, index) => {
+          if (props.category === "") {
+            return <ItemCard key={index} item={item} />;
+          } else {
+            if (item.category === props.category) {
+              return <ItemCard key={index} item={item} />;
+            } else {
+              return null;
+            }
+          }
+        })}
       </div>
-      {props.cart.length > 0 ? <CustomerCartBar /> : null}
+      <CustomerCartBar />
     </>
   );
 };
 
-const mapStateToProps = ({ menu, cart }) => ({ menu, cart });
+const mapStateToProps = ({ menu, category }) => ({ menu, category });
 
 export default connect(mapStateToProps)(MenuItem);

@@ -8,6 +8,7 @@ import MenuItems from "./../../components/customer/MenuItems";
 import Navigation from "./../../components/customer/Navigation";
 import NeedHelp from "./../../components/customer/NeedHelp";
 import CustomerMenu from "./../../components/customer/CustomerMenu";
+import PreviousOrder from "./../../components/customer/PreviousOrder";
 
 //images
 import featureItem from "./../../assets/featureItem.jpg";
@@ -17,7 +18,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // icons
 import SearchIcon from "@material-ui/icons/Search";
-
 const useStyle = makeStyles({
   logo: {
     textAlign: "center",
@@ -27,10 +27,10 @@ const useStyle = makeStyles({
     },
   },
   imageCover: {
-    position: "absolute",
+    position: "relative",
     backgroundColor: "rgba(0,0,0,.4)",
     width: "100%",
-    height: "55%",
+    height: "100%",
     borderRadius: "0 0 1rem 1rem",
   },
   featureItem: {
@@ -129,6 +129,9 @@ const Home = () => {
           <input type="text" placeholder="Search Food" />
         </div>
         <Categories />
+      </div>
+      <div>
+        <PreviousOrder />
       </div>
       <div className={classes.bottomPadding}>
         <MenuItems />

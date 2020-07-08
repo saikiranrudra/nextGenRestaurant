@@ -3,6 +3,9 @@ import React, { useState } from "react";
 //components
 import { Drawer, IconButton, Typography } from "@material-ui/core";
 
+// Routing
+import { Link } from "react-router-dom";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -28,6 +31,10 @@ const useStyle = makeStyles((theme) => ({
       color: "#eee",
     },
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+  },
 }));
 
 const CustomerMenu = () => {
@@ -44,32 +51,27 @@ const CustomerMenu = () => {
       >
         <img src={logo} className={classes.logo} alt="logo" />
         <div className={classes.container}>
-          <Typography
-            className={classes.menuItem}
-            variant="h4"
-            align="right"
-            color="primary"
-          >
-            Menu
-          </Typography>
+          <Link to="/customer/home" className={classes.link}>
+            <Typography
+              className={classes.menuItem}
+              variant="h4"
+              align="right"
+              color="primary"
+            >
+              Menu
+            </Typography>
+          </Link>
 
-          <Typography
-            className={classes.menuItem}
-            variant="h4"
-            align="right"
-            color="primary"
-          >
-            View my orders
-          </Typography>
-
-          <Typography
-            className={classes.menuItem}
-            variant="h4"
-            align="right"
-            color="primary"
-          >
-            Cancel my order
-          </Typography>
+          <Link to="/customer/orders" className={classes.link}>
+            <Typography
+              className={classes.menuItem}
+              variant="h4"
+              align="right"
+              color="primary"
+            >
+              View my orders
+            </Typography>
+          </Link>
 
           <Typography
             className={classes.menuItem}

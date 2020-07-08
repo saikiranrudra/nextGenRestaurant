@@ -24,10 +24,7 @@ const useStyle = makeStyles({
     backgroundSize: "cover",
     backgroundPosition: "center center",
     backgroundRepeat: "no-repeat",
-    transition: "all .3s",
-    "&:active": {
-      transform: "scale(1.1)",
-    },
+    transition: "all .1s",
   },
   categorieContainer: {
     display: "flex",
@@ -50,7 +47,11 @@ const Categories = (props) => {
           <Grow key={index} in={true}>
             <div className={classes.categorieContainer}>
               <div
-                style={{ backgroundImage: `url("${categorie.img}")` }}
+                style={{
+                  backgroundImage: `url("${categorie.img}")`,
+                  border:
+                    categorie.name === props.category ? "2px solid red" : null,
+                }}
                 className={classes.categorieImg}
                 onClick={() => {
                   handleCategory(categorie.name);
@@ -67,6 +68,9 @@ const Categories = (props) => {
   }
 };
 
-const mapStateToProps = ({ categories }) => ({ categories });
+const mapStateToProps = ({ categories, category }) => ({
+  categories,
+  category,
+});
 
 export default connect(mapStateToProps, { setCategory })(Categories);
