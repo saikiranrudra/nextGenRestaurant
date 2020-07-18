@@ -4,11 +4,14 @@ import React from "react";
 import TopLogo from "./../../components/general/TopLogo";
 import {
   Typography,
-  List,
-  ListItem,
-  ListItemText,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableContainer,
   FormControlLabel,
   Checkbox,
+  TableCell,
 } from "@material-ui/core";
 import NeedHelp from "./../../components/customer/NeedHelp";
 import Navigation from "./../../components/customer/Navigation";
@@ -57,7 +60,17 @@ const individualPrice = (item) => {
     count += item.jainCount;
   }
 
-  return `${count} x ${item.price} = ${count * item.price}`;
+  return count * item.price;
+};
+
+const totalCount = (item) => {
+  let count = 0;
+  if (item.normalCount) {
+    count += item.normalCount;
+  } else if (item.jainCount) {
+    count += item.jainCount;
+  }
+  return count;
 };
 
 const totalPrice = (items) => {
@@ -105,20 +118,26 @@ const PayBill = (props) => {
         <Typography variant="body1" align="left" className={classes.subHeading}>
           Total Dishes {props.recivedOrders.length}
         </Typography>
-        <List>
-          {props.recivedOrders.map((item, index) => (
-            <ListItem key={index} button>
-              <ListItemText>
-                <span className={classes.itemText}>{item.name}</span>
-              </ListItemText>
-              <ListItemText style={{ textAlign: "end" }}>
-                <span className={classes.itemText}>
-                  {individualPrice(item)}
-                </span>
-              </ListItemText>
-            </ListItem>
-          ))}
-        </List>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Count</TableCell>
+                <TableCell>Total</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.recivedOrders.map((item) => (
+                <TableRow>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{totalCount(item)}</TableCell>
+                  <TableCell>{individualPrice(item)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         <Typography
           variant="body1"
@@ -200,7 +219,7 @@ const PayBill = (props) => {
             ? `${
                 totalPrice(props.recivedOrders) *
                 (discountCalc(props.user.points, props.pointValue) / 100)
-              }₹`
+              }`
             : `${totalPrice(props.recivedOrders)}`}
           <span style={{ fontSize: "1.8rem" }}>₹</span>
         </Typography>
