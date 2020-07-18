@@ -7,6 +7,9 @@ import SignUp from "./../pages/customer/SignUp";
 import Home from "./../pages/customer/Home";
 import OrderConfirm from "./../pages/customer/OrderConfirm";
 import Order from "./../pages/customer/Orders";
+import PayBill from "./../pages/customer/PayBill";
+import ThankYou from "./../pages/customer/ThankYou";
+import Points from "./../pages/customer/Points";
 
 //routing
 import { Route } from "react-router-dom";
@@ -19,18 +22,34 @@ import {
   fetchMenuItems,
   fetchCategories,
   previousOrder,
+  addConfirmedOrder,
+  fetchDiscount,
 } from "./../actions/customer";
 // component
 
 const Customer = (props) => {
-  const { fetchMenuItems, previousOrder, fetchCategories } = props;
+  const {
+    fetchMenuItems,
+    previousOrder,
+    fetchCategories,
+    addConfirmedOrder,
+    fetchDiscount,
+  } = props;
 
   // fetch menu
   useEffect(() => {
     fetchMenuItems();
     fetchCategories();
     previousOrder();
-  }, [fetchMenuItems, fetchCategories, previousOrder]);
+    addConfirmedOrder();
+    fetchDiscount();
+  }, [
+    fetchMenuItems,
+    fetchCategories,
+    previousOrder,
+    addConfirmedOrder,
+    fetchDiscount,
+  ]);
 
   return (
     <>
@@ -54,6 +73,15 @@ const Customer = (props) => {
       <Route path="/customer/orders" exact>
         <Order />
       </Route>
+      <Route path="/customer/paybill" exact>
+        <PayBill />
+      </Route>
+      <Route path="/customer/payment/successfull" exact>
+        <ThankYou />
+      </Route>
+      <Route path="/customer/points" exact>
+        <Points />
+      </Route>
     </>
   );
 };
@@ -63,4 +91,6 @@ export default connect(mapStateToProps, {
   fetchMenuItems,
   fetchCategories,
   previousOrder,
+  addConfirmedOrder,
+  fetchDiscount,
 })(Customer);

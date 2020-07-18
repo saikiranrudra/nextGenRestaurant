@@ -8,7 +8,9 @@ import menuReducers from "./menuReducers";
 // import cartReducer from "./cartReducer";
 import orders from "./orders";
 import previousOrderVisibility from "./previousOrderVIsibility";
-import confirmOrderReducers from "./confirmOrderReducers";
+import recivedOrdersReducers from "./recivedOrdersReducers";
+import searchReducer from "./searchReducer";
+import pointsReducer from "./pointsReducer";
 
 export default combineReducers({
   email: emailReducer,
@@ -19,5 +21,7 @@ export default combineReducers({
   // cart: cartReducer,
   previousOrders: orders,
   previousOrderVisibility: previousOrderVisibility,
-  confirmOrderReducers: confirmOrderReducers,
+  recivedOrders: recivedOrdersReducers,
+  search: searchReducer,
+  pointValue: pointsReducer,
 });

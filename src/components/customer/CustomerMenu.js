@@ -72,24 +72,27 @@ const CustomerMenu = () => {
               View my orders
             </Typography>
           </Link>
+          <Link to="/customer/points" className={classes.link}>
+            <Typography
+              className={classes.menuItem}
+              variant="h4"
+              align="right"
+              color="primary"
+            >
+              View my points
+            </Typography>
+          </Link>
 
-          <Typography
-            className={classes.menuItem}
-            variant="h4"
-            align="right"
-            color="primary"
-          >
-            View my points
-          </Typography>
-
-          <Typography
-            className={classes.menuItem}
-            variant="h4"
-            align="right"
-            color="primary"
-          >
-            Pay My Bill
-          </Typography>
+          <Link to="/customer/paybill" className={classes.link}>
+            <Typography
+              className={classes.menuItem}
+              variant="h4"
+              align="right"
+              color="primary"
+            >
+              Pay My Bill
+            </Typography>
+          </Link>
         </div>
       </Drawer>
       <IconButton onClick={() => setOpen(true)}>

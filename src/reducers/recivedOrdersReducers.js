@@ -8,6 +8,7 @@ const findIndex = (data, item) => {
 
   return index;
 };
+
 const updateConfirmOrder = (old, newData) => {
   let data = old;
   newData.forEach((item) => {
@@ -28,7 +29,7 @@ const updateConfirmOrder = (old, newData) => {
 };
 
 export default (state = [], action) => {
-  if (action.type === "ADD_CONFIRM_ORDER") {
+  if (action.type === "ADD_CONFIRM_ORDERS") {
     let newItems = updateConfirmOrder(state, action.payload);
     return [...newItems];
   } else {

@@ -7,6 +7,10 @@ import CrossSale from "./../../components/customer/CrossSale";
 import { Typography, TextField, Button } from "@material-ui/core";
 import Navigation from "./../../components/customer/Navigation";
 import NeedHelp from "./../../components/customer/NeedHelp";
+import RecivedOrdersList from "./../../components/customer/RecivedOrdersList";
+
+// components
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 //state management
 import { connect } from "react-redux";
@@ -17,9 +21,6 @@ import { Link } from "react-router-dom";
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
-// components
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-
 const useStyle = makeStyles({
   heading: {
     fontFamily: "Product-Sans",
@@ -29,14 +30,17 @@ const useStyle = makeStyles({
   },
   subTitle: {
     fontSize: "2rem",
+    fontFamily: "Product-Sans",
     fontWeight: "bold",
     marginRight: "1rem",
   },
   subsubTitle: {
+    fontFamily: "Product-Sans",
     fontSize: "1.3rem",
     marginLeft: ".8rem",
   },
   link: {
+    fontFamily: "Product-Sans",
     textDecoration: "none",
     color: "inherit",
   },
@@ -95,6 +99,14 @@ const Orders = (props) => {
           </Button>
         </Link>
       </div>
+
+      <div>
+        <Typography variant="h6" align="left" className={classes.subsubTitle}>
+          Your Orders
+        </Typography>
+        <RecivedOrdersList />
+      </div>
+
       <Typography variant="h6" align="left" className={classes.subsubTitle}>
         Take some side dishes
       </Typography>

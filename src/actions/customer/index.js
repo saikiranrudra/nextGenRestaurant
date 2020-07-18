@@ -3,11 +3,7 @@ import c2 from "./../../assets/catogery/c1 (2).png";
 import c3 from "./../../assets/catogery/c1 (3).png";
 import c4 from "./../../assets/catogery/c1 (4).png";
 
-export const setCategory = (categorie) => ({
-  type: "SET_CATEGORY",
-  payload: categorie,
-});
-
+/**** Authentication ****/
 export const customerAuthenticate = (user) => {
   //perfrom authentication later
 
@@ -18,6 +14,7 @@ export const customerAuthenticate = (user) => {
       email: user.email ? user.email : "saikiranrudra2@gmail.com",
       role: "customer",
       id: "abcd123456789",
+      points: 256,
     },
   };
   //If authentication failed
@@ -25,6 +22,60 @@ export const customerAuthenticate = (user) => {
   //     type: "AUTHENTICATION_AND_AUTHORIZATION",
   //     payload: null,
   //   };
+};
+
+/***** CATEGORY *******/
+export const setCategory = (categorie) => ({
+  type: "SET_CATEGORY",
+  payload: categorie,
+});
+
+//temp catefories
+let categories = [
+  {
+    name: "all",
+    img: c4,
+  },
+  {
+    name: "Punjabi",
+    img: c1,
+  },
+  {
+    name: "Punjabi Bread",
+    img: c2,
+  },
+  {
+    name: "Chines Food",
+    img: c3,
+  },
+  {
+    name: "Pizza",
+    img: c4,
+  },
+  {
+    name: "Gujarati",
+    img: c2,
+  },
+  {
+    name: "South Indian",
+    img: c4,
+  },
+  {
+    name: "Cross Sale",
+    img: c3,
+  },
+];
+
+export const fetchCategories = () => (dispatch) => {
+  //api call Menu categories
+
+  // imetating api call with setTimeOut
+  setTimeout(() => {
+    dispatch({
+      type: "FETCH_MENU_CATEGORIES",
+      payload: categories,
+    });
+  }, 4000);
 };
 
 let items = [
@@ -116,6 +167,7 @@ let items = [
   },
 ];
 
+/***** MENU *****/
 export const fetchMenuItems = () => (dispatch) => {
   //api call Menu Items
 
@@ -124,50 +176,6 @@ export const fetchMenuItems = () => (dispatch) => {
     dispatch({
       type: "FETCH_MENU_ITEMS",
       payload: items,
-    });
-  }, 4000);
-};
-
-//temp catefories
-let categories = [
-  {
-    name: "Punjabi",
-    img: c1,
-  },
-  {
-    name: "Punjabi Bread",
-    img: c2,
-  },
-  {
-    name: "Chines Food",
-    img: c3,
-  },
-  {
-    name: "Pizza",
-    img: c4,
-  },
-  {
-    name: "Gujarati",
-    img: c2,
-  },
-  {
-    name: "South Indian",
-    img: c4,
-  },
-  {
-    name: "Cross Sale",
-    img: c3,
-  },
-];
-
-export const fetchCategories = () => (dispatch) => {
-  //api call Menu categories
-
-  // imetating api call with setTimeOut
-  setTimeout(() => {
-    dispatch({
-      type: "FETCH_MENU_CATEGORIES",
-      payload: categories,
     });
   }, 4000);
 };
@@ -199,6 +207,8 @@ export const updateMenuBulk = (items) => {
 //     payload: items,
 //   };
 // };
+
+/**** Orders ****/
 
 let previousOrderData = [
   {
@@ -259,16 +269,37 @@ export const showPreviousOrder = (visibility) => {
   };
 };
 
-export const addPlaceOrder = (items) => {
+export const addConfirmedOrder = () => (dispatch) => {
+  // create an api request to db to recive confirm orders
+
+  //emitating api call
+  setTimeout(() => {
+    dispatch({
+      type: "ADD_CONFIRM_ORDERS",
+      payload: previousOrderData,
+    });
+  }, 4000);
+};
+
+/***** SEARCH *****/
+export const setSearch = (key) => {
   return {
-    type: "ADD_PLACED_ORDER",
-    payload: items,
+    type: "SET_SEARCH",
+    payload: key,
   };
 };
 
-export const addConfirmOrder = (items) => {
-  return {
-    type: "ADD_CONFIRM_ORDER",
-    payload: items,
-  };
+/***** Discount Value *****/
+export const fetchDiscount = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch({
+      type: "FETCH_POINT_VALUE",
+      payload: {
+        percent: 5,
+        points: 100,
+        perVisit: 10,
+        redeemLimit: 200,
+      },
+    });
+  }, 5000);
 };

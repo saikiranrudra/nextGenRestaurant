@@ -25,11 +25,23 @@ const MenuItem = (props) => {
     <>
       <div className={classes.container}>
         {props.menu.map((item, index) => {
-          if (props.category === "") {
-            return <ItemCard key={index} item={item} />;
-          } else {
-            if (item.category === props.category) {
+          if (props.category.toLowerCase() === "all") {
+            if (item.name.toLowerCase().includes(props.search.toLowerCase())) {
               return <ItemCard key={index} item={item} />;
+            } else {
+              return null;
+            }
+          } else {
+            if (item.category.toLowerCase() === props.category.toLowerCase()) {
+              if (
+                item.name
+                  .toLowerCase()
+                  .includes(props.search.toLocaleLowerCase())
+              ) {
+                return <ItemCard key={index} item={item} />;
+              } else {
+                return null;
+              }
             } else {
               return null;
             }
@@ -41,6 +53,10 @@ const MenuItem = (props) => {
   );
 };
 
-const mapStateToProps = ({ menu, category }) => ({ menu, category });
+const mapStateToProps = ({ menu, category, search }) => ({
+  menu,
+  category,
+  search,
+});
 
 export default connect(mapStateToProps)(MenuItem);

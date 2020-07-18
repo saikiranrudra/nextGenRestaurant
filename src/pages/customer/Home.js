@@ -10,14 +10,19 @@ import NeedHelp from "./../../components/customer/NeedHelp";
 import CustomerMenu from "./../../components/customer/CustomerMenu";
 import PreviousOrder from "./../../components/customer/PreviousOrder";
 
+// state management
+import { connect } from "react-redux";
+//action
+import { setSearch } from "./../../actions/customer";
+
 //images
 import featureItem from "./../../assets/featureItem.jpg";
+// icons
+import SearchIcon from "@material-ui/icons/Search";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
-// icons
-import SearchIcon from "@material-ui/icons/Search";
 const useStyle = makeStyles({
   logo: {
     textAlign: "center",
@@ -64,7 +69,7 @@ const useStyle = makeStyles({
     display: "flex",
     padding: ".3rem .6rem",
     borderRadius: "4px",
-    margin: "1rem 1.8rem",
+    margin: "0 .6rem",
     "& > svg": {
       color: "gray",
     },
@@ -97,7 +102,7 @@ const useStyle = makeStyles({
   },
 });
 
-const Home = () => {
+const Home = (props) => {
   const classes = useStyle();
   return (
     <div>
@@ -126,7 +131,11 @@ const Home = () => {
       <div className={classes.stickyContainer}>
         <div className={classes.search}>
           <SearchIcon />
-          <input type="text" placeholder="Search Food" />
+          <input
+            type="text"
+            placeholder="Search Food"
+            onChange={(e) => props.setSearch(e.target.value)}
+          />
         </div>
         <Categories />
       </div>
@@ -149,4 +158,5 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = () => ({});
+export default connect(mapStateToProps, { setSearch })(Home);

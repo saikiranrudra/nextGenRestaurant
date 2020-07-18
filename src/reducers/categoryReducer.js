@@ -1,4 +1,4 @@
-export const selectCategories = (state = "", action) => {
+export const selectCategories = (state = "all", action) => {
   switch (action.type) {
     case "SET_CATEGORY":
       return action.payload;
