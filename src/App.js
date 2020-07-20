@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 // apps
 import Customer from "./apps/Customer";
+import Admin from "./apps/Admin";
 
 //global css
 import "./global.css";
@@ -19,6 +20,9 @@ const App = () => {
           <Container maxWidth="sm" style={{ padding: 0 }}>
             <Customer />
           </Container>
+        </Route>
+        <Route path="/admin">
+          <Admin />
         </Route>
       </>
     </BrowserRouter>
