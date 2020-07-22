@@ -11,6 +11,8 @@ import previousOrderVisibility from "./previousOrderVIsibility";
 import recivedOrdersReducers from "./recivedOrdersReducers";
 import searchReducer from "./searchReducer";
 import pointsReducer from "./pointsReducer";
+import kitchenReducer from "./kitchenReducer";
+import { incrementOrderServed } from "./kitchenReducer";
 
 export default combineReducers({
   email: emailReducer,
@@ -24,4 +26,6 @@ export default combineReducers({
   recivedOrders: recivedOrdersReducers,
   search: searchReducer,
   pointValue: pointsReducer,
+  kitchenOrders: kitchenReducer,
+  orderServed: incrementOrderServed,
 });

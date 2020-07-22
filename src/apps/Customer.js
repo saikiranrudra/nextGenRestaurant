@@ -25,6 +25,7 @@ import {
   addConfirmedOrder,
   fetchDiscount,
 } from "./../actions/customer";
+
 // component
 
 const Customer = (props) => {

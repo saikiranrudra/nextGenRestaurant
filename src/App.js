@@ -6,6 +6,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 // apps
 import Customer from "./apps/Customer";
 import Admin from "./apps/Admin";
+import Kitchen from "./apps/Kitchen";
 
 //global css
 import "./global.css";
@@ -23,6 +24,9 @@ const App = () => {
         </Route>
         <Route path="/admin">
           <Admin />
+        </Route>
+        <Route path="/kitchen">
+          <Kitchen />
         </Route>
       </>
     </BrowserRouter>
