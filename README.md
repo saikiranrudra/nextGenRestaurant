@@ -27,5 +27,6 @@ To run application do following
 
 ## views
 
-1. http://localhost:3000/customer for customer view
-2. http://localhost:3000/admin/login from admin view
+1. http://localhost:3000/customer -- for customer view
+2. http://localhost:3000/admin/login -- for admin view
+3. http://localhost:3000/kitchen/dashboard -- for kitchen console
