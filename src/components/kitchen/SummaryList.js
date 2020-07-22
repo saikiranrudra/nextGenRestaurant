@@ -19,6 +19,7 @@ const useStyle = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-evenly",
+    marginBottom: "2rem",
   },
 }));
 

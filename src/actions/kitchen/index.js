@@ -201,6 +201,70 @@ const orders = [
     tableNo: 4,
     comment: "Not very spicy medium",
   },
+  {
+    items: [
+      {
+        id: "456def",
+        img: c2,
+        name: "PanCake",
+        category: "Punjabi Bread",
+        rating: 3,
+        mealFor: 2,
+        price: 25,
+        jainCount: 4,
+        isCooked: true,
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
+      },
+      {
+        id: "789ghi",
+        img: c3,
+        name: "Manchurian",
+        category: "Chines Food",
+        rating: 1,
+        mealFor: 1,
+        price: 100,
+        normalCount: 2,
+        isCooked: false,
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
+      },
+    ],
+    tableNo: 9,
+    comment: "make it sour",
+  },
+  {
+    items: [
+      {
+        id: "456def",
+        img: c2,
+        name: "PanCake",
+        category: "Punjabi Bread",
+        rating: 3,
+        mealFor: 2,
+        price: 25,
+        jainCount: 4,
+        isCooked: true,
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
+      },
+      {
+        id: "789ghi",
+        img: c3,
+        name: "Manchurian",
+        category: "Chines Food",
+        rating: 1,
+        mealFor: 1,
+        price: 100,
+        normalCount: 2,
+        isCooked: false,
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
+      },
+    ],
+    tableNo: 7,
+    comment: "make it sour",
+  },
 ];
 
 export const fetchKitchenOrders = () => (dispatch) => {
@@ -213,6 +277,15 @@ export const markKitchenOrderDone = (item) => {
   return {
     type: "MARK_KITCHEN_ORDER_DONE",
     payload: item,
+  };
+};
+
+export const deleteTableOrder = (tableNo) => {
+  // delete form database
+  // do done procedure
+  return {
+    type: "DELETE_TABLE_ALL_ORDERS",
+    payload: tableNo,
   };
 };
 

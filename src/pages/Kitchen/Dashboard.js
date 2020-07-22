@@ -49,6 +49,9 @@ const useStyle = makeStyles((theme) => ({
   },
   summary: {
     margin: "1rem",
+    alignSelf: "start",
+    position: "sticky",
+    top: "1rem",
   },
 }));
 
@@ -71,7 +74,7 @@ const Dashboard = (props) => {
         </div>
 
         <Paper className={classes.summary}>
-          <div>
+          <div style={{ position: "sticky", top: "1rem" }}>
             <Typography
               variant="h4"
               align="left"

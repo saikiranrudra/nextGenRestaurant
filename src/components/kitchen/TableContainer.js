@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import {
   markKitchenOrderDone,
   incrementOrderServed,
+  deleteTableOrder,
 } from "./../../actions/kitchen";
 
 //styling
@@ -44,6 +45,7 @@ const useStyle = makeStyles((theme) => ({
   },
   container: {
     padding: "1rem",
+    borderRadius: "2.5rem",
   },
 }));
 
@@ -71,11 +73,10 @@ const handleDone = (
   markKitchenOrderDone({ item, tableNo });
 };
 
-const handleDoneAll = (data, markKitchenOrderDone, incrementOrderServed) => {
-  let tableNo = data.tableNo;
+const handleDoneAll = (data, deleteTableOrder, incrementOrderServed) => {
   data.items.forEach((item) => {
     incrementOrderServed(calcCount(item));
-    markKitchenOrderDone({ item, tableNo });
+    deleteTableOrder(data.tableNo);
   });
 };
 
@@ -142,7 +143,7 @@ const TableContainer = (props) => {
           onClick={() => {
             handleDoneAll(
               data,
-              props.markKitchenOrderDone,
+              props.deleteTableOrder,
               props.incrementOrderServed
             );
           }}
@@ -159,4 +160,5 @@ const mapStateToProps = ({ kitchenOrders }) => ({ kitchenOrders });
 export default connect(mapStateToProps, {
   markKitchenOrderDone,
   incrementOrderServed,
+  deleteTableOrder,
 })(TableContainer);

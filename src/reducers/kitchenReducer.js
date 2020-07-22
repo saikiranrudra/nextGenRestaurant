@@ -17,12 +17,31 @@ const modifyOrder = (item, tableNo, state) => {
   return state;
 };
 
+const deleteByTableNo = (tableNo, state) => {
+  let index = -1;
+  state.forEach((table, i) => {
+    if (table.tableNo === tableNo) {
+      index = i;
+    }
+  });
+
+  if (index !== -1) {
+    state.splice(index, 1);
+  }
+
+  return state;
+};
+
 export default (state = [], action) => {
   if (action.type === "FETCH_KITCHEN_ORDERS") {
     return action.payload;
   } else if (action.type === "MARK_KITCHEN_ORDER_DONE") {
     const { tableNo, item } = action.payload;
     state = modifyOrder(item, tableNo, state);
+    return [...state];
+  }
+  if (action.type === "DELETE_TABLE_ALL_ORDERS") {
+    state = deleteByTableNo(action.payload, state);
     return [...state];
   } else {
     return state;
