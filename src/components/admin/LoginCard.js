@@ -3,6 +3,9 @@ import React from "react";
 // components
 import { Paper, Button, Typography } from "@material-ui/core";
 
+//Routing
+import { Link } from "react-router-dom";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -37,6 +40,10 @@ const useStyle = makeStyles({
     margin: "1rem",
     width: "7rem",
   },
+  link: {
+    color: "inherit",
+    textDecoration: "none",
+  },
 });
 
 const LoginCard = (props) => {
@@ -51,9 +58,11 @@ const LoginCard = (props) => {
         placeholder="Enter Password"
         className={classes.inputField}
       />
-      <Button variant="contained" color="primary" className={classes.btn}>
-        Login
-      </Button>
+      <Link to={props.linkTo} className={classes.link}>
+        <Button variant="contained" color="primary" className={classes.btn}>
+          Login
+        </Button>
+      </Link>
     </Paper>
   );
 };

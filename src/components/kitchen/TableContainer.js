@@ -45,7 +45,7 @@ const useStyle = makeStyles((theme) => ({
   },
   container: {
     padding: "1rem",
-    borderRadius: "2.5rem",
+    borderRadius: "1.4rem",
   },
 }));
 
@@ -90,7 +90,7 @@ const TableContainer = (props) => {
       </Typography>
       <div className={classes.comment}>
         <p>Comment</p>
-        <input type="text" defaultValue={data.comment} />
+        <input type="text" defaultValue={data.comment} readOnly />
       </div>
 
       <Table>

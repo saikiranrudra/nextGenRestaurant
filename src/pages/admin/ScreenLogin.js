@@ -43,10 +43,10 @@ const ScreenLogin = () => {
         </Typography>
       </div>
       <div className={classes.cardContainer}>
-        <LoginCard name="Kitchen" />
-        <LoginCard name="Admin" />
-        <LoginCard name="Reception" />
-        <LoginCard name="C.R." />
+        <LoginCard name="Kitchen" linkTo="/kitchen/dashboard" />
+        <LoginCard name="Admin" linkTo="#" />
+        <LoginCard name="Reception" linkTo="#" />
+        <LoginCard name="C.R." linkTo="#" />
       </div>
     </>
   );
