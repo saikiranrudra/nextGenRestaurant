@@ -48,7 +48,7 @@ const MenuItem = (props) => {
           }
         })}
       </div>
-      <CustomerCartBar />
+      {props.cr ? <CustomerCartBar cr={true} /> : <CustomerCartBar />}
     </>
   );
 };

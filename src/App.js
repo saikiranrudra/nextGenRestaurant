@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Customer from "./apps/Customer";
 import Admin from "./apps/Admin";
 import Kitchen from "./apps/Kitchen";
+import CustomerRepresentative from "./apps/CustomerRepresentative";
 
 //global css
 import "./global.css";
@@ -27,6 +28,17 @@ const App = () => {
         </Route>
         <Route path="/kitchen">
           <Kitchen />
+        </Route>
+        <Route path="/cr">
+          <Container maxWidth="sm" style={{ padding: 0 }}>
+            <CustomerRepresentative />
+          </Container>
+        </Route>
+
+        <Route path="/customerrepresentative">
+          <Container maxWidth="sm" style={{ padding: 0 }}>
+            <CustomerRepresentative />
+          </Container>
         </Route>
       </>
     </BrowserRouter>

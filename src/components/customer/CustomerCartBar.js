@@ -55,7 +55,7 @@ const CutomerCartBar = (props) => {
         <Paper className={classes.card}>
           {count} Dish Selected{" "}
           <Link
-            to="/customer/orders"
+            to={props.cr ? "/cr/orders" : "/customer/orders"}
             style={{
               textDecoration: "none",
               color: "inherit",

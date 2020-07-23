@@ -41,7 +41,7 @@ const PreviousOrder = (props) => {
   const history = useHistory();
   return (
     <>
-      {props.previousOrderVisibility === true ? (
+      {props.previousOrderVisibility ? (
         <div className={classes.container}>
           <Typography variant="h3" className={classes.heading}>
             Want to take your last visit's order?
@@ -58,7 +58,9 @@ const PreviousOrder = (props) => {
               onClick={() => {
                 props.updateMenuBulk(props.previousOrders);
                 props.showPreviousOrder(false);
-                history.push("/customer/orders");
+                history.push(
+                  props.ordersLink ? props.ordersLink : "/customer/orders"
+                );
               }}
             >
               Yes

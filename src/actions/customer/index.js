@@ -11,7 +11,7 @@ export const customerAuthenticate = (user) => {
   return {
     type: "AUTHENTICATION_AND_AUTHORIZATION",
     payload: {
-      email: user.email ? user.email : "saikiranrudra2@gmail.com",
+      email: user.email,
       role: "customer",
       id: "abcd123456789",
       points: 256,
