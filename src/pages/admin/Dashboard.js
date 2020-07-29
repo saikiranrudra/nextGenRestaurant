@@ -6,6 +6,7 @@ import Nav from "./../../components/admin/Nav";
 import LiveTables from "./../../components/admin/LiveTables";
 import BasicStats from "./../../components/admin/BasicStats";
 import Notifications from "./../../components/admin/Notifications";
+import TableOrders from "./../../components/admin/TableOrders";
 
 // images
 import logo from "./../../assets/logo.png";
@@ -16,7 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
-    gridTemplateColumns: "80px 300px .8fr 1fr 380px",
+    gridTemplateColumns: "80px 230px .8fr 1fr 380px",
     gridTemplateRows: "100px 1fr",
     gridGap: "3px",
     height: "100vh",
@@ -86,7 +87,9 @@ const Dashboard = () => {
 
         <LiveTables />
       </div>
-      <div></div>
+      <div>
+        <TableOrders />
+      </div>
       <div>
         <Typography variant="h6" align="left" style={{ fontWeight: "bold" }}>
           Notifications
