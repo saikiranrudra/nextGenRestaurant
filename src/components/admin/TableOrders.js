@@ -27,6 +27,11 @@ const useStyle = makeStyles((theme) => ({
   red: {
     color: theme.palette.primary.main,
   },
+  totalPrice: {
+    fontFamily: "Product-Sans",
+    fontWeight: "bold",
+    margin: "1rem",
+  },
 }));
 
 //temp data
@@ -221,6 +226,14 @@ const TableOrders = () => {
           })}
         </TableBody>
       </Table>
+      <Typography variant="h4" align="right" className={classes.totalPrice}>
+        768₹
+      </Typography>
+      <div style={{ textAlign: "end" }}>
+        <Button variant="contained" color="primary">
+          Recived
+        </Button>
+      </div>
     </>
   );
 };

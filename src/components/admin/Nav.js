@@ -1,7 +1,7 @@
 import React from "react";
 
 // Components
-import { Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 
 // svgs
 import home from "./../../assets/dashboardAssets/home.svg";
@@ -9,13 +9,14 @@ import orders from "./../../assets/dashboardAssets/orders.svg";
 import staff from "./../../assets/dashboardAssets/staff.svg";
 import inventory from "./../../assets/dashboardAssets/inventory.svg";
 import settings from "./../../assets/dashboardAssets/settings.svg";
+import hide from "./../../assets/dashboardAssets/hide.svg";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   nav: {
-    display: "flex",
-    flexDirection: "column",
+    display: "grid",
+    gridAutoRows: "85.6px",
     marginTop: "2rem",
   },
   navItem: {
@@ -83,6 +84,14 @@ const Nav = () => {
           </div>
         );
       })}
+      <div style={{ marginTop: "auto" }}>
+        <Button
+          startIcon={<img src={hide} alt="hide" style={{ width: "1rem" }} />}
+          size="small"
+        >
+          hide
+        </Button>
+      </div>
     </div>
   );
 };

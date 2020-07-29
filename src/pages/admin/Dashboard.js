@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
     display: "grid",
     gridTemplateColumns: "80px 230px .8fr 1fr 380px",
     gridTemplateRows: "100px 1fr",
-    gridGap: "3px",
+    gridGap: "1rem",
     height: "100vh",
   },
   menuContainer: {
@@ -43,6 +43,14 @@ const useStyle = makeStyles((theme) => ({
     fontSize: "2.5rem",
     fontWeight: "bold",
     color: "#989898",
+  },
+  title: {
+    fontFamily: "Product-Sans",
+    fontWeight: "bold",
+  },
+  red: {
+    color: theme.palette.primary.main,
+    fontFamily: "Product-Sans",
   },
 }));
 const Dashboard = () => {
@@ -77,11 +85,7 @@ const Dashboard = () => {
       <div style={{ paddingLeft: "1rem" }}>
         <span className={classes.activeTableCount}>6</span>
         <span className={classes.totalTableCount}>/20</span>
-        <Typography
-          variant="h6"
-          align="left"
-          style={{ fontFamily: "Product-Sans", fontWeight: "bold" }}
-        >
+        <Typography variant="h6" align="left" className={classes.title}>
           Active Tables
         </Typography>
 
@@ -91,9 +95,18 @@ const Dashboard = () => {
         <TableOrders />
       </div>
       <div>
-        <Typography variant="h6" align="left" style={{ fontWeight: "bold" }}>
-          Notifications
-        </Typography>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6" align="left" className={classes.title}>
+            Notifications
+          </Typography>
+          <Typography
+            variant="body2"
+            className={classes.red}
+            style={{ cursor: "pointer" }}
+          >
+            clear all
+          </Typography>
+        </div>
         <div style={{ backgroundColor: "#F5F5F5", borderRadius: "8px" }}></div>
         <Notifications />
       </div>
@@ -101,9 +114,6 @@ const Dashboard = () => {
       <div>
         <BasicStats />
       </div>
-
-      <div></div>
-      <div></div>
     </div>
   );
 };

@@ -17,6 +17,10 @@ const useStyle = makeStyles((theme) => ({
     fontFamily: "Product-Sans",
     color: theme.palette.primary.main,
   },
+  boldText: {
+    fontFamily: "Product-Sans",
+    fontWeight: "bold",
+  },
 }));
 const notificationsData = [
   {
@@ -82,27 +86,49 @@ const Notifications = () => {
       <TableBody>
         {notificationsData.map((notification, index) => {
           return (
-            <TableRow key={index}>
-              <TableCell>
+            <TableRow
+              key={index}
+              style={{
+                backgroundColor: notification.status ? "#FC6565" : null,
+              }}
+            >
+              <TableCell
+                className={classes.boldText}
+                style={{ color: notification.status ? "#fff" : null }}
+              >
                 Table{" "}
-                <span className={classes.red}>{notification.tableNo}</span>
+                <span
+                  className={classes.red}
+                  style={{ color: notification.status ? "#fff" : null }}
+                >
+                  {notification.tableNo}
+                </span>
               </TableCell>
 
-              <TableCell>
+              <TableCell
+                className={classes.boldText}
+                style={{ color: notification.status ? "#fff" : null }}
+              >
                 <span>{notification.message}</span>
               </TableCell>
 
-              <TableCell>
+              <TableCell className={classes.boldText}>
                 {notification.amount ? (
-                  <span className={classes.red}>{notification.amount}₹</span>
+                  <span
+                    style={{ color: notification.status ? "#fff" : null }}
+                    className={classes.red}
+                  >
+                    {notification.amount}₹
+                  </span>
                 ) : null}
               </TableCell>
 
-              <TableCell>
+              <TableCell
+                className={classes.boldText}
+                style={{ color: notification.status ? "#fff" : null }}
+              >
                 {notification.status ? (
-                  <Button variant="contained" color="primary">
-                    {notification.status}
-                  </Button>
+                  <Button variant="contained">{notification.status}</Button>
                 ) : null}
               </TableCell>
             </TableRow>
