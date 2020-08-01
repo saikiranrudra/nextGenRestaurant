@@ -7,6 +7,7 @@ import { Route } from "react-router-dom";
 import Login from "./../pages/admin/Login";
 import ScreenLogin from "./../pages/admin/ScreenLogin";
 import Dashboard from "./../pages/admin/Dashboard";
+import Orders from "./../pages/admin/Orders";
 
 const Admin = () => {
   return (
@@ -19,6 +20,9 @@ const Admin = () => {
       </Route>
       <Route path="/admin/dashboard" exact>
         <Dashboard />
+      </Route>
+      <Route path="/admin/dashboard/orders">
+        <Orders />
       </Route>
     </>
   );

@@ -1,22 +1,17 @@
 import React from "react";
 
-// Components
+//components
 import {
   Table,
   TableHead,
-  TableBody,
   TableRow,
   TableCell,
-  Button,
+  TableBody,
   Typography,
+  Button,
 } from "@material-ui/core";
 
-// icons
-import edit from "./../..//assets/dashboardAssets/edit.svg";
-
 // Tempimages
-import c1 from "./../../assets/catogery/c1 (1).png";
-import c2 from "./../../assets/catogery/c1 (2).png";
 import c3 from "./../../assets/catogery/c1 (3).png";
 import c4 from "./../../assets/catogery/c1 (4).png";
 
@@ -33,47 +28,6 @@ const useStyle = makeStyles((theme) => ({
     margin: "1rem",
   },
 }));
-
-//temp data
-let preparing = [
-  {
-    id: "123abc",
-    img: c1,
-    name: "Risotto",
-    category: "Punjabi",
-    rating: 4,
-    mealFor: 2,
-    price: 125,
-    jainCount: 7,
-    normalCount: 12,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "456def",
-    img: c2,
-    name: "PanCake",
-    category: "Punjabi Bread",
-    rating: 3,
-    mealFor: 2,
-    price: 25,
-    jainCount: 4,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "789ghi",
-    img: c3,
-    name: "Manchurian",
-    category: "Chines Food",
-    rating: 1,
-    mealFor: 1,
-    price: 100,
-    normalCount: 8,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-];
 
 let served = [
   {
@@ -138,7 +92,8 @@ let served = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
 ];
-const TableOrders = (props) => {
+
+const ShowAndPrintBill = () => {
   const classes = useStyle();
   return (
     <>
@@ -152,15 +107,6 @@ const TableOrders = (props) => {
         <Typography variant="h6" style={{ fontWeight: "bold" }}>
           Orders
         </Typography>
-        <Button
-          variant="contained"
-          endIcon={<img src={edit} alt="edit" style={{ width: "1rem" }} />}
-          onClick={() => {
-            props.setEditable(true);
-          }}
-        >
-          Edit
-        </Button>
       </div>
 
       <div
@@ -191,33 +137,6 @@ const TableOrders = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {preparing.map((item, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
-                <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <b>Served</b>
-            </TableCell>
-            <TableCell>
-              <b>Jain</b>
-            </TableCell>
-            <TableCell>
-              <b>Normal</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
           {served.map((item, index) => {
             return (
               <TableRow key={index}>
@@ -229,16 +148,13 @@ const TableOrders = (props) => {
           })}
         </TableBody>
       </Table>
-      <Typography variant="h4" align="right" className={classes.totalPrice}>
-        768₹
-      </Typography>
-      <div style={{ textAlign: "end" }}>
+      <div style={{ textAlign: "end", marginTop: "1rem" }}>
         <Button variant="contained" color="primary">
-          Recived
+          Print Bill
         </Button>
       </div>
     </>
   );
 };
 
-export default TableOrders;
+export default ShowAndPrintBill;

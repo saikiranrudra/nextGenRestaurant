@@ -3,6 +3,9 @@ import React from "react";
 // Components
 import { Typography, Button } from "@material-ui/core";
 
+//Routing
+import { Link } from "react-router-dom";
+
 // svgs
 import home from "./../../assets/dashboardAssets/home.svg";
 import orders from "./../../assets/dashboardAssets/orders.svg";
@@ -49,22 +52,27 @@ const Nav = () => {
     {
       logo: home,
       title: "Home",
+      link: "/admin/dashboard",
     },
     {
       logo: orders,
       title: "Orders",
+      link: "/admin/dashboard/orders",
     },
     {
       logo: staff,
       title: "Staff",
+      link: "/admin/dashboard/staff",
     },
     {
       logo: inventory,
       title: "Inventory",
+      link: "/admin/dashboard/inventory",
     },
     {
       logo: settings,
       title: "Settings",
+      link: "/admin/dashboard/setting",
     },
   ];
 
@@ -72,16 +80,28 @@ const Nav = () => {
     <div className={classes.nav}>
       {navItem.map((item, index) => {
         return (
-          <div className={classes.navItem} key={index}>
-            <img src={item.logo} alt="home" className={classes.navItemImg} />
-            <Typography
-              variant="body2"
-              align="center"
-              className={classes.navItemText}
+          <Link
+            to={item.link}
+            key={index}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div
+              className={classes.navItem}
+              style={{
+                backgroundColor:
+                  window.location.pathname === item.link ? "#FC6565" : null,
+              }}
             >
-              {item.title}
-            </Typography>
-          </div>
+              <img src={item.logo} alt="home" className={classes.navItemImg} />
+              <Typography
+                variant="body2"
+                align="center"
+                className={classes.navItemText}
+              >
+                {item.title}
+              </Typography>
+            </div>
+          </Link>
         );
       })}
       <div style={{ marginTop: "auto" }}>

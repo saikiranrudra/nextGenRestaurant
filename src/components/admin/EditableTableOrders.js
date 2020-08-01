@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
-// Components
+//components
 import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Button,
   Typography,
+  Table,
+  TableRow,
+  TableCell,
+  TableBody,
+  TableHead,
 } from "@material-ui/core";
-
-// icons
-import edit from "./../..//assets/dashboardAssets/edit.svg";
+import Counter from "./Counter";
 
 // Tempimages
 import c1 from "./../../assets/catogery/c1 (1).png";
@@ -34,8 +32,12 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-//temp data
-let preparing = [
+const handleSaveChange = (setEditable) => {
+  //save changes using api call
+  setEditable(false);
+};
+
+let preparingData = [
   {
     id: "123abc",
     img: c1,
@@ -75,7 +77,7 @@ let preparing = [
   },
 ];
 
-let served = [
+let servedData = [
   {
     id: "789ghi",
     img: c3,
@@ -138,8 +140,12 @@ let served = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
 ];
-const TableOrders = (props) => {
+
+const EditableTableOrders = (props) => {
   const classes = useStyle();
+
+  const [preparing, setPreparing] = useState(preparingData);
+  const [served, setServed] = useState(servedData);
   return (
     <>
       <div
@@ -154,12 +160,17 @@ const TableOrders = (props) => {
         </Typography>
         <Button
           variant="contained"
-          endIcon={<img src={edit} alt="edit" style={{ width: "1rem" }} />}
+          style={{
+            backgroundColor: "#4caf50",
+            color: "#fff",
+            fontWeight: "bold",
+            fontFamily: "Product-Sans",
+          }}
           onClick={() => {
-            props.setEditable(true);
+            handleSaveChange(props.setEditable);
           }}
         >
-          Edit
+          Save Changes
         </Button>
       </div>
 
@@ -195,8 +206,30 @@ const TableOrders = (props) => {
             return (
               <TableRow key={index}>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
-                <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
+                <TableCell>
+                  {item.jainCount ? (
+                    <Counter
+                      jainCount={item.jainCount}
+                      itemId={item.id}
+                      data={preparing}
+                      setData={setPreparing}
+                    />
+                  ) : (
+                    "NA"
+                  )}
+                </TableCell>
+                <TableCell>
+                  {item.normalCount ? (
+                    <Counter
+                      normalCount={item.normalCount}
+                      itemId={item.id}
+                      data={preparing}
+                      setData={setPreparing}
+                    />
+                  ) : (
+                    "NA"
+                  )}
+                </TableCell>
               </TableRow>
             );
           })}
@@ -222,23 +255,37 @@ const TableOrders = (props) => {
             return (
               <TableRow key={index}>
                 <TableCell>{item.name}</TableCell>
-                <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
-                <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
+                <TableCell>
+                  {item.jainCount ? (
+                    <Counter
+                      jainCount={item.jainCount}
+                      itemId={item.id}
+                      data={served}
+                      setData={setServed}
+                    />
+                  ) : (
+                    "NA"
+                  )}
+                </TableCell>
+                <TableCell>
+                  {item.normalCount ? (
+                    <Counter
+                      normalCount={item.normalCount}
+                      itemId={item.id}
+                      data={served}
+                      setData={setServed}
+                    />
+                  ) : (
+                    "NA"
+                  )}
+                </TableCell>
               </TableRow>
             );
           })}
         </TableBody>
       </Table>
-      <Typography variant="h4" align="right" className={classes.totalPrice}>
-        768₹
-      </Typography>
-      <div style={{ textAlign: "end" }}>
-        <Button variant="contained" color="primary">
-          Recived
-        </Button>
-      </div>
     </>
   );
 };
 
-export default TableOrders;
+export default EditableTableOrders;

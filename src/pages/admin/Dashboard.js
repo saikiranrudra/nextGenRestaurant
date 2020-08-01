@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Components
 import { Paper, Button, Typography } from "@material-ui/core";
@@ -7,6 +7,7 @@ import LiveTables from "./../../components/admin/LiveTables";
 import BasicStats from "./../../components/admin/BasicStats";
 import Notifications from "./../../components/admin/Notifications";
 import TableOrders from "./../../components/admin/TableOrders";
+import EditableTableOrders from "./../../components/admin/EditableTableOrders";
 
 // images
 import logo from "./../../assets/logo.png";
@@ -55,6 +56,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 const Dashboard = () => {
   const classes = useStyle();
+  const [editable, setEditable] = useState(false);
   return (
     <div className={classes.container}>
       <Paper className={classes.menuContainer}>
@@ -92,7 +94,11 @@ const Dashboard = () => {
         <LiveTables />
       </div>
       <div>
-        <TableOrders />
+        {editable ? (
+          <EditableTableOrders setEditable={setEditable} />
+        ) : (
+          <TableOrders setEditable={setEditable} />
+        )}
       </div>
       <div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
