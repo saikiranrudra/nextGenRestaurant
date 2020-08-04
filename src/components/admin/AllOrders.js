@@ -27,6 +27,10 @@ const useStyle = makeStyles((theme) => ({
   heading: {
     fontFamily: "Product-Sans",
     fontWeight: "bold",
+    fontStyle: "normal",
+    lineHeight: 0,
+    marginBottom: "1.2rem",
+    paddingTop: "0.5rem",
   },
   container: {
     backgroundColor: "#F5F5F5",
@@ -38,6 +42,7 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: "4px",
     padding: "0 1rem",
     gridGap: ".3rem",
+    paddingTop: "1.8rem",
   },
   searchInput: {
     outline: "none",
@@ -59,12 +64,7 @@ const useStyle = makeStyles((theme) => ({
   table: {
     overflowX: "hidden",
     overflowY: "auto",
-    height: "70vh",
-  },
-  tableRow: {
-    fontFamily: "Product-Sans",
-    fontWeight: "bold",
-    cursor: "pointer",
+    height: "67vh",
   },
   label: {
     margin: "1rem 0 .2rem 1.5rem",
@@ -80,6 +80,20 @@ const useStyle = makeStyles((theme) => ({
   dialog: {
     "& > .MuiDialog-paperWidthSm": {
       padding: "1rem",
+    },
+  },
+  head: {
+    "& > th": {
+      fontFamily: "Product-Sans",
+      color: "#989898",
+      fontSize: ".8rem",
+    },
+  },
+  tableBody: {
+    "& > td": {
+      fontFamily: "Product-Sans",
+      fontWeight: "bold",
+      cursor: "pointer",
     },
   },
 }));
@@ -296,155 +310,155 @@ const AllOrders = () => {
       <Typography variant="h6" align="left" className={classes.heading}>
         Orders
       </Typography>
+      <div style={{ backgroundColor: "#F5F5F5", borderRadius: "8px" }}>
+        <div className={classes.searchContainer}>
+          <div className={classes.search}>
+            <SearchIcon style={{ color: "#D9D9D9" }} />
+            <input
+              type="text"
+              placeholder="Search"
+              className={classes.searchInput}
+            />
+          </div>
 
-      <div className={classes.searchContainer}>
-        <div className={classes.search}>
-          <SearchIcon style={{ color: "#D9D9D9" }} />
-          <input
-            type="text"
-            placeholder="Search"
-            className={classes.searchInput}
-          />
+          <div style={{ backgroundColor: "#fff", borderRadius: "4px" }}>
+            <IconButton onClick={() => setDialogVisibility(true)}>
+              <FilterListIcon />
+            </IconButton>
+          </div>
         </div>
 
-        <div style={{ backgroundColor: "#fff", borderRadius: "4px" }}>
-          <IconButton onClick={() => setDialogVisibility(true)}>
-            <FilterListIcon />
-          </IconButton>
-        </div>
-      </div>
-
-      <div className={classes.table}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <b>OrderNumber</b>
-              </TableCell>
-              <TableCell>
-                <b>Date</b>
-              </TableCell>
-              <TableCell>
-                <b>Time In</b>
-              </TableCell>
-              <TableCell>
-                <b>Time Out</b>
-              </TableCell>
-              <TableCell>
-                <b>Table Number</b>
-              </TableCell>
-              <TableCell>
-                <b>Name</b>
-              </TableCell>
-              <TableCell>
-                <b>Payment Method</b>
-              </TableCell>
-              <TableCell>
-                <b>Total Bill</b>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {dummyOrders.map((order, index) => (
-              <TableRow
-                key={index}
-                className={classes.tableRow}
-                onClick={() => setSelectedOrder(order)}
-                style={{
-                  backgroundColor:
-                    selectedOrder.orderNumber === order.orderNumber
-                      ? "#FC6565"
-                      : null,
-                }}
-                hover
-              >
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.orderNumber}
+        <div className={classes.table}>
+          <Table style={{ backgroundColor: "#F5F5F5" }}>
+            <TableHead>
+              <TableRow className={classes.head}>
+                <TableCell>
+                  <b>OrderNumber</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.date}
+                <TableCell>
+                  <b>Date</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.timeIn}
+                <TableCell>
+                  <b>Time In</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.timeOut}
+                <TableCell>
+                  <b>Time Out</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.tableNo}
+                <TableCell>
+                  <b>Table Number</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.name}
+                <TableCell>
+                  <b>Name</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.paymentMethod}
+                <TableCell>
+                  <b>Payment Method</b>
                 </TableCell>
-                <TableCell
-                  style={{
-                    color:
-                      selectedOrder.orderNumber === order.orderNumber
-                        ? "#fff"
-                        : null,
-                  }}
-                >
-                  {order.totalBill} {" ₹"}
+                <TableCell>
+                  <b>Total Bill</b>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+            </TableHead>
 
+            <TableBody>
+              {dummyOrders.map((order, index) => (
+                <TableRow
+                  key={index}
+                  onClick={() => setSelectedOrder(order)}
+                  className={classes.tableBody}
+                  style={{
+                    backgroundColor:
+                      selectedOrder.orderNumber === order.orderNumber
+                        ? "#FC6565"
+                        : null,
+                  }}
+                  hover
+                >
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.orderNumber}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.date}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.timeIn}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.timeOut}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.tableNo}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.name}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.paymentMethod}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      color:
+                        selectedOrder.orderNumber === order.orderNumber
+                          ? "#fff"
+                          : null,
+                    }}
+                  >
+                    {order.totalBill} {" ₹"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
       <Dialog
         onClose={handleClose}
         open={dialogVisibility}
@@ -465,15 +479,14 @@ const AllOrders = () => {
         <label htmlFor="paymentMethod" className={classes.label}>
           Payment Method
         </label>
-        <input
-          list="paymentMethods"
+        <select
+          name="paymentMethods"
           id="paymentMethod"
           className={classes.input}
-        />
-        <datalist id="paymentMethods">
-          <option value="offline" />
-          <option value="online" />
-        </datalist>
+        >
+          <option value="offline">Offline</option>
+          <option value="online">Online</option>
+        </select>
 
         <label htmlFor="dish" className={classes.label}>
           Dish

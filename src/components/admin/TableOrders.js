@@ -32,6 +32,20 @@ const useStyle = makeStyles((theme) => ({
     fontWeight: "bold",
     margin: "1rem",
   },
+  head: {
+    "& > th": {
+      fontFamily: "Product-Sans",
+      color: "#989898",
+      fontSize: ".8rem",
+    },
+  },
+  tableBody: {
+    "& > td": {
+      fontFamily: "Product-Sans",
+      fontWeight: "bold",
+      backgroundColor: "#fff",
+    },
+  },
 }));
 
 //temp data
@@ -178,7 +192,7 @@ const TableOrders = (props) => {
 
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.head}>
             <TableCell>
               <b>Preparing</b>
             </TableCell>
@@ -193,7 +207,7 @@ const TableOrders = (props) => {
         <TableBody>
           {preparing.map((item, index) => {
             return (
-              <TableRow key={index}>
+              <TableRow key={index} className={classes.tableBody}>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
                 <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
@@ -205,7 +219,7 @@ const TableOrders = (props) => {
 
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.head}>
             <TableCell>
               <b>Served</b>
             </TableCell>
@@ -220,7 +234,7 @@ const TableOrders = (props) => {
         <TableBody>
           {served.map((item, index) => {
             return (
-              <TableRow key={index}>
+              <TableRow key={index} className={classes.tableBody}>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
                 <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>

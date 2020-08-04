@@ -15,10 +15,11 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
-    gridTemplateColumns: "80px 350px 1fr 150px",
+    gridTemplateColumns: "80px 277px 1fr 193px",
     gridTemplateRows: "100px 1fr",
     gridGap: "1rem",
     height: "100vh",
+    backgroundColor: "#fff",
   },
   menuContainer: {
     display: "flex",
@@ -33,6 +34,10 @@ const useStyle = makeStyles((theme) => ({
   heading: {
     fontFamily: "Product-Sans",
     fontWeight: "bold",
+    fontStyle: "normal",
+    lineHeight: 0,
+    marginBottom: "1.2rem",
+    paddingTop: "0.5rem",
   },
   statBox: {
     margin: "1.2rem 0",
@@ -48,6 +53,7 @@ const useStyle = makeStyles((theme) => ({
     fontSize: "4rem",
     fontWeight: "bold",
     color: theme.palette.primary.main,
+    lineHeight: 1,
   },
 }));
 const Orders = () => {

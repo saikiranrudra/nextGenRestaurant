@@ -18,10 +18,11 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
-    gridTemplateColumns: "80px 230px .8fr 1fr 380px",
+    gridTemplateColumns: "80px 230px 280px 1fr 410px",
     gridTemplateRows: "100px 1fr",
     gridGap: "1rem",
     height: "100vh",
+    backgroundColor: "#fff",
   },
   menuContainer: {
     display: "flex",
@@ -117,7 +118,7 @@ const Dashboard = () => {
         <Notifications />
       </div>
 
-      <div>
+      <div style={{ paddingRight: "2rem" }}>
         <BasicStats />
       </div>
     </div>

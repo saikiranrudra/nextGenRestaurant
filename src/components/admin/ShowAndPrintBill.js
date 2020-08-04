@@ -27,6 +27,20 @@ const useStyle = makeStyles((theme) => ({
     fontWeight: "bold",
     margin: "1rem",
   },
+  head: {
+    "& > th": {
+      fontFamily: "Product-Sans",
+      color: "#989898",
+      fontSize: ".8rem",
+    },
+  },
+  tableBody: {
+    "& > td": {
+      fontFamily: "Product-Sans",
+      fontWeight: "bold",
+      backgroundColor: "#fff",
+    },
+  },
 }));
 
 let served = [
@@ -104,54 +118,80 @@ const ShowAndPrintBill = () => {
           marginBottom: "1rem",
         }}
       >
-        <Typography variant="h6" style={{ fontWeight: "bold" }}>
+        <Typography
+          variant="h6"
+          style={{
+            fontWeight: "bold",
+            fontStyle: "normal",
+            lineHeight: "0.6",
+          }}
+        >
           Orders
         </Typography>
       </div>
 
       <div
         style={{
-          backgroundColor: "#D9D9D9",
-          padding: ".3rem .4rem",
-          borderRadius: "4px",
+          backgroundColor: "#F5F5F5",
+          paddingBottom: "1rem",
+          borderRadius: "5px",
         }}
       >
-        <span style={{ fontWeight: "bold" }}>Table</span>{" "}
-        <span className={classes.red} style={{ fontWeight: "bold" }}>
-          1
-        </span>
-      </div>
+        <div
+          style={{
+            backgroundColor: "#D9D9D9",
+            padding: ".3rem .4rem",
+            borderRadius: "4px",
+          }}
+        >
+          <span style={{ fontWeight: "bold" }}>Table</span>{" "}
+          <span className={classes.red} style={{ fontWeight: "bold" }}>
+            1
+          </span>
+        </div>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <b>Preparing</b>
-            </TableCell>
-            <TableCell>
-              <b>Jain</b>
-            </TableCell>
-            <TableCell>
-              <b>Normal</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {served.map((item, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
-                <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <div style={{ textAlign: "end", marginTop: "1rem" }}>
-        <Button variant="contained" color="primary">
-          Print Bill
-        </Button>
+        <Table style={{ margin: "0 1rem 1rem 1rem", width: "auto" }}>
+          <TableHead>
+            <TableRow className={classes.head}>
+              <TableCell>
+                <b>Preparing</b>
+              </TableCell>
+              <TableCell>
+                <b>Jain</b>
+              </TableCell>
+              <TableCell>
+                <b>Normal</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {served.map((item, index) => {
+              return (
+                <TableRow key={index} className={classes.tableBody}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
+                  <TableCell>
+                    {item.normalCount ? item.normalCount : 0}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+
+        <div style={{ textAlign: "end", margin: "1rem" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{
+              fontFamily: "Product-Sans",
+              fontWeight: "bold",
+              fontSize: ".8rem",
+            }}
+          >
+            Print Bill
+          </Button>
+        </div>
       </div>
     </>
   );
