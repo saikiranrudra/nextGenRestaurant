@@ -18,7 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
-    gridTemplateColumns: "80px 230px 280px 1fr 410px",
+    gridTemplateColumns: "80px 209px 345px 1fr 395px",
     gridTemplateRows: "100px 1fr",
     gridGap: "1rem",
     height: "100vh",

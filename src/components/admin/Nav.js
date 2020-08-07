@@ -7,12 +7,12 @@ import { Typography, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 // svgs
-import home from "./../../assets/dashboardAssets/home.svg";
-import orders from "./../../assets/dashboardAssets/orders.svg";
-import staff from "./../../assets/dashboardAssets/staff.svg";
-import inventory from "./../../assets/dashboardAssets/inventory.svg";
-import settings from "./../../assets/dashboardAssets/settings.svg";
-import hide from "./../../assets/dashboardAssets/hide.svg";
+import { ReactComponent as Home } from "./../../assets/dashboardAssets/home.svg";
+import { ReactComponent as Orders } from "./../../assets/dashboardAssets/orders.svg";
+import { ReactComponent as Staff } from "./../../assets/dashboardAssets/staff.svg";
+import { ReactComponent as Inventory } from "./../../assets/dashboardAssets/inventory.svg";
+import { ReactComponent as Settings } from "./../../assets/dashboardAssets/settings.svg";
+import Hide from "./../../assets/dashboardAssets/hide.svg";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -33,6 +33,11 @@ const useStyle = makeStyles((theme) => ({
     margin: ".2rem 0",
     "&:hover": {
       backgroundColor: theme.palette.primary.main,
+      color: "#fff",
+    },
+
+    "&:hover > div > svg": {
+      fill: "#fff",
     },
   },
   navItemText: {
@@ -42,6 +47,7 @@ const useStyle = makeStyles((theme) => ({
   },
   navItemImg: {
     width: "2.8rem",
+    height: "2.8rem",
   },
 }));
 
@@ -50,27 +56,27 @@ const Nav = () => {
 
   const navItem = [
     {
-      logo: home,
+      logo: Home,
       title: "Home",
       link: "/admin/dashboard",
     },
     {
-      logo: orders,
+      logo: Orders,
       title: "Orders",
       link: "/admin/dashboard/orders",
     },
     {
-      logo: staff,
+      logo: Staff,
       title: "Staff",
       link: "/admin/dashboard/staff",
     },
     {
-      logo: inventory,
+      logo: Inventory,
       title: "Inventory",
       link: "/admin/dashboard/inventory",
     },
     {
-      logo: settings,
+      logo: Settings,
       title: "Settings",
       link: "/admin/dashboard/setting",
     },
@@ -79,6 +85,7 @@ const Nav = () => {
   return (
     <div className={classes.nav}>
       {navItem.map((item, index) => {
+        let Logo = item.logo;
         return (
           <Link
             to={item.link}
@@ -89,14 +96,32 @@ const Nav = () => {
               className={classes.navItem}
               style={{
                 backgroundColor:
-                  window.location.pathname === item.link ? "#FC6565" : null,
+                  window.location.pathname === item.link
+                    ? "rgb(252, 101, 101)"
+                    : null,
               }}
             >
-              <img src={item.logo} alt="home" className={classes.navItemImg} />
+              <div>
+                <Logo
+                  className={classes.navItemImg}
+                  style={{
+                    fill:
+                      window.location.pathname === item.link ? "#fff" : null,
+                  }}
+                />
+              </div>
+              {/* <img
+                src={item.logo}
+                alt="home"
+                className={classes.navItemImg}
+              /> */}
               <Typography
                 variant="body2"
                 align="center"
                 className={classes.navItemText}
+                style={{
+                  color: window.location.pathname === item.link ? "#fff" : null,
+                }}
               >
                 {item.title}
               </Typography>
@@ -106,7 +131,7 @@ const Nav = () => {
       })}
       <div style={{ marginTop: "auto" }}>
         <Button
-          startIcon={<img src={hide} alt="hide" style={{ width: "1rem" }} />}
+          startIcon={<img src={Hide} alt="hide" style={{ width: "1rem" }} />}
           size="small"
         >
           hide
