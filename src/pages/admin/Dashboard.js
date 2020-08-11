@@ -11,7 +11,7 @@ import EditableTableOrders from "./../../components/admin/EditableTableOrders";
 
 // images
 import logo from "./../../assets/logo.png";
-import logout from "./../../assets/dashboardAssets/logout.svg";
+import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -78,7 +78,7 @@ const Dashboard = () => {
         <Button
           variant="contained"
           color="primary"
-          endIcon={<img src={logout} alt="logout" style={{ width: "1rem" }} />}
+          endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
           style={{ margin: "1rem" }}
         >
           Logout
