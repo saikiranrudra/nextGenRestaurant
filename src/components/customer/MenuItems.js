@@ -32,7 +32,7 @@ const MenuItem = (props) => {
               return null;
             }
           } else {
-            if (item.category.toLowerCase() === props.category.toLowerCase()) {
+            if (item.category.contains(props.category)) {
               if (
                 item.name
                   .toLowerCase()

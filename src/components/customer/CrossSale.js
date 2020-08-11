@@ -11,7 +11,7 @@ const CrossSale = (props) => {
   return (
     <>
       {menu.map((item, index) => {
-        if (item.category === "Cross Sale") {
+        if (item.category.includes("Cross Sale")) {
           return <CrossSaleItem key={index} item={item} />;
         } else {
           return null;
