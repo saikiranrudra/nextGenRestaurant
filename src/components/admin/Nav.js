@@ -12,6 +12,7 @@ import { ReactComponent as Orders } from "./../../assets/dashboardAssets/orders.
 import { ReactComponent as Staff } from "./../../assets/dashboardAssets/staff.svg";
 import { ReactComponent as Inventory } from "./../../assets/dashboardAssets/inventory.svg";
 import { ReactComponent as Settings } from "./../../assets/dashboardAssets/settings.svg";
+import { ReactComponent as MenuIcon } from "./../../assets/dashboardAssets/menu.svg";
 import Hide from "./../../assets/dashboardAssets/hide.svg";
 
 //styling
@@ -64,6 +65,11 @@ const Nav = () => {
       logo: Orders,
       title: "Orders",
       link: "/admin/dashboard/orders",
+    },
+    {
+      logo: MenuIcon,
+      title: "Menu",
+      link: "/admin/dashboard/menu",
     },
     {
       logo: Staff,

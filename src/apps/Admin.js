@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Routing
 import { Route } from "react-router-dom";
+
+// state management
+import { connect } from "react-redux";
+// action
+import { fetchMenuItems } from "./../actions/customer";
 
 // pages
 import Login from "./../pages/admin/Login";
 import ScreenLogin from "./../pages/admin/ScreenLogin";
 import Dashboard from "./../pages/admin/Dashboard";
 import Orders from "./../pages/admin/Orders";
+import Menu from "./../pages/admin/Menu";
 
-const Admin = () => {
+const Admin = (props) => {
+  const { fetchMenuItems } = props;
+  useEffect(() => {
+    fetchMenuItems();
+  }, [fetchMenuItems]);
+
   return (
     <>
       <Route path="/admin/login" exact>
@@ -24,8 +35,13 @@ const Admin = () => {
       <Route path="/admin/dashboard/orders">
         <Orders />
       </Route>
+      <Route path="/admin/dashboard/menu">
+        <Menu />
+      </Route>
     </>
   );
 };
 
-export default Admin;
+const mapStateToProps = () => ({});
+
+export default connect(mapStateToProps, { fetchMenuItems })(Admin);
