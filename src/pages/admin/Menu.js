@@ -4,7 +4,7 @@ import React from "react";
 import Nav from "./../../components/admin/Nav";
 import { Paper, Button, Typography } from "@material-ui/core";
 import MenuItem from "./../../components/admin/MenuItem";
-
+import EditDish from "../../components/admin/EditDish";
 //state management
 import { connect } from "react-redux";
 
@@ -17,11 +17,13 @@ import SearchIcon from "@material-ui/icons/Search";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
+
 const useStyle = makeStyles({
   container: {
     display: "grid",
     gridTemplateColumns: "80px 1fr 1fr 1fr",
     gridTemplateRows: "100px 1fr",
+    backgroundColor: "#fff",
   },
   logo: {
     width: "4rem",
@@ -127,7 +129,7 @@ const Menu = (props) => {
                 </div>
               </div>
 
-              <div style={{ gridColumn: "span 3" }}>
+              <div>
                 <div
                   style={{
                     margin: ".9rem 1rem",
@@ -142,6 +144,17 @@ const Menu = (props) => {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div>
+            <Typography
+              variant="h5"
+              align="left"
+              style={{ fontWeight: "bold", fontFamily: "Product-Sans" }}
+            >
+              Edit Dish
+            </Typography>
+            <EditDish />
           </div>
         </div>
       </div>

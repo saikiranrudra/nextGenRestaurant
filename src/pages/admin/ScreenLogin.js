@@ -44,9 +44,9 @@ const ScreenLogin = () => {
       </div>
       <div className={classes.cardContainer}>
         <LoginCard name="Kitchen" linkTo="/kitchen/dashboard" />
-        <LoginCard name="Admin" linkTo="#" />
+        <LoginCard name="Admin" linkTo="/admin/dashboard" />
         <LoginCard name="Reception" linkTo="#" />
-        <LoginCard name="C.R." linkTo="#" />
+        <LoginCard name="C.R." linkTo="/cr/select/table" />
       </div>
     </>
   );

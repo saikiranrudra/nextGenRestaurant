@@ -22,6 +22,8 @@ const useStyle = makeStyles((theme) => ({
     margin: ".5rem 0",
     backgroundColor: "#fff",
     borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
   },
   cardImg: {
     backgroundPosition: "center center",
@@ -34,6 +36,7 @@ const useStyle = makeStyles((theme) => ({
   cardContent: {
     display: "grid",
     gridTemplateColumns: "1fr 80px",
+    alignItems: "center",
   },
   editBtn: {
     padding: ".3rem .8rem",
@@ -77,6 +80,11 @@ const useStyle = makeStyles((theme) => ({
     alignItems: "center",
     cursor: "pointer",
   },
+  price: {
+    fontFamily: "Product-Sans",
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+  },
 }));
 
 const MenuItem = (props) => {
@@ -101,7 +109,7 @@ const MenuItem = (props) => {
       <div className={classes.cardContent}>
         <div className={classes.cardContentText}>
           <Typography variant="body1" align="left" className={classes.id}>
-            {props.item._id}
+            {props.item.id}
           </Typography>
 
           <Typography variant="body1" align="left" className={classes.name}>
@@ -141,7 +149,25 @@ const MenuItem = (props) => {
             <StarIcon
               style={{ fill: props.item.featured ? "#FC6565" : "#989898" }}
             />
-            <Typography variant="body2">{featured}</Typography>
+            <Typography
+              variant="body2"
+              style={{ fontSize: "0.7rem", fontFamily: "Product-Sans" }}
+            >
+              {featured}
+            </Typography>
+
+            {props.item.jainCount !== undefined ? (
+              <Typography
+                variant="body2"
+                style={{ fontSize: "0.8rem", fontFamily: "Product-Sans" }}
+              >
+                Jain Available
+              </Typography>
+            ) : null}
+
+            <Typography variant="body2" className={classes.price}>
+              {props.item.price}₹
+            </Typography>
           </div>
         </div>
       </div>
