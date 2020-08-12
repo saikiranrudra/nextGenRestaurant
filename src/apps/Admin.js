@@ -6,7 +6,7 @@ import { Route } from "react-router-dom";
 // state management
 import { connect } from "react-redux";
 // action
-import { fetchMenuItems } from "./../actions/customer";
+import { fetchMenuItems, fetchCategories } from "./../actions/customer";
 
 // pages
 import Login from "./../pages/admin/Login";
@@ -16,10 +16,11 @@ import Orders from "./../pages/admin/Orders";
 import Menu from "./../pages/admin/Menu";
 
 const Admin = (props) => {
-  const { fetchMenuItems } = props;
+  const { fetchMenuItems, fetchCategories } = props;
   useEffect(() => {
     fetchMenuItems();
-  }, [fetchMenuItems]);
+    fetchCategories();
+  }, [fetchMenuItems, fetchCategories]);
 
   return (
     <>
@@ -44,4 +45,6 @@ const Admin = (props) => {
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, { fetchMenuItems })(Admin);
+export default connect(mapStateToProps, { fetchMenuItems, fetchCategories })(
+  Admin
+);

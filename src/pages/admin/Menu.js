@@ -5,6 +5,8 @@ import Nav from "./../../components/admin/Nav";
 import { Paper, Button, Typography } from "@material-ui/core";
 import MenuItem from "./../../components/admin/MenuItem";
 import EditDish from "../../components/admin/EditDish";
+import ManageCategory from "../../components/admin/ManageCategory";
+
 //state management
 import { connect } from "react-redux";
 
@@ -70,7 +72,7 @@ const Menu = (props) => {
             width: "100%",
             textAlign: "center",
             gridRow: "1/-1",
-            height: "100vh",
+            height: "100%",
           }}
         >
           <img src={logo} alt="logo " className={classes.logo} />
@@ -107,6 +109,8 @@ const Menu = (props) => {
             gridColumn: "span 3",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, 440px)",
+            placeContent: "center",
+            gridGap: "3rem",
           }}
         >
           <div style={{ margin: ".6rem" }}>
@@ -135,7 +139,7 @@ const Menu = (props) => {
                     margin: ".9rem 1rem",
                     overflowX: "hidden",
                     overflowY: "scroll",
-                    height: "65vh",
+                    height: "66vh",
                   }}
                 >
                   {props.menu.map((item, index) => (
@@ -147,14 +151,48 @@ const Menu = (props) => {
           </div>
 
           <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h5"
+                align="left"
+                style={{
+                  fontWeight: "bold",
+                  fontFamily: "Product-Sans",
+                  marginTop: "0.8rem",
+                }}
+              >
+                Edit Dish
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ padding: ".3rem .5rem" }}
+              >
+                Add New
+              </Button>
+            </div>
+            <EditDish />
+          </div>
+
+          <div style={{ padding: "0 .5rem  .5rem .5rem" }}>
             <Typography
               variant="h5"
               align="left"
-              style={{ fontWeight: "bold", fontFamily: "Product-Sans" }}
+              style={{
+                fontWeight: "bold",
+                fontFamily: "Product-Sans",
+                marginTop: "0.8rem",
+              }}
             >
-              Edit Dish
+              Category
             </Typography>
-            <EditDish />
+            <ManageCategory />
           </div>
         </div>
       </div>
