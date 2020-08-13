@@ -99,7 +99,10 @@ const MenuItem = (props) => {
   };
 
   return (
-    <div className={classes.cardContainer}>
+    <div
+      className={classes.cardContainer}
+      style={{ backgroundColor: !props.item.visible ? "#D9D9D9" : null }}
+    >
       <div
         className={classes.cardImg}
         style={{ backgroundImage: `url("${props.item.img}")` }}
