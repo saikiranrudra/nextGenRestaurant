@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 //components
 import Nav from "./../../components/admin/Nav";
@@ -64,6 +64,18 @@ const useStyle = makeStyles({
 
 const Menu = (props) => {
   const classes = useStyle();
+  const { menu } = props;
+  const [selectedForEdit, setSelectedForEdit] = useState({});
+
+  const handleAddNewItem = () => {
+    setSelectedForEdit({ category: ["all"] });
+  };
+
+  useEffect(() => {
+    const item = menu.length > 0 ? menu[0] : {};
+    setSelectedForEdit(item);
+  }, [menu, setSelectedForEdit]);
+
   return (
     <>
       <div className={classes.container}>
@@ -143,7 +155,11 @@ const Menu = (props) => {
                   }}
                 >
                   {props.menu.map((item, index) => (
-                    <MenuItem item={item} key={index} />
+                    <MenuItem
+                      item={item}
+                      key={index}
+                      setSelectedForEdit={setSelectedForEdit}
+                    />
                   ))}
                 </div>
               </div>
@@ -173,11 +189,12 @@ const Menu = (props) => {
                 variant="contained"
                 color="primary"
                 style={{ padding: ".3rem .5rem" }}
+                onClick={handleAddNewItem}
               >
                 Add New
               </Button>
             </div>
-            <EditDish />
+            <EditDish selectedForEdit={selectedForEdit} />
           </div>
 
           <div style={{ padding: "0 .5rem  .5rem .5rem" }}>

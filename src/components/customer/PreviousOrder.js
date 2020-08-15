@@ -15,6 +15,9 @@ import { useHistory } from "react-router-dom";
 import { Typography, Button } from "@material-ui/core";
 import PreviousItem from "./PreviousItem";
 
+//utils
+import _ from "lodash";
+
 const useStyle = makeStyles({
   container: {
     backgroundColor: "#f5f5f5",
@@ -46,9 +49,13 @@ const PreviousOrder = (props) => {
           <Typography variant="h3" className={classes.heading}>
             Want to take your last visit's order?
           </Typography>
-          {props.previousOrders.map((order, index) => (
-            <PreviousItem key={index} order={order} />
-          ))}
+          {props.previousOrders.map((order, index) => {
+            if (order.visible === true) {
+              return <PreviousItem key={index} order={order} />;
+            } else {
+              return null;
+            }
+          })}
           <div className={classes.btnContainer}>
             <Button
               variant="contained"
@@ -56,7 +63,9 @@ const PreviousOrder = (props) => {
               size="small"
               className={classes.btn}
               onClick={() => {
-                props.updateMenuBulk(props.previousOrders);
+                let previousItems = _.clone(props.previousOrders);
+                _.remove(previousItems, (item) => item.visible === false);
+                props.updateMenuBulk(previousItems);
                 props.showPreviousOrder(false);
                 history.push(
                   props.ordersLink ? props.ordersLink : "/customer/orders"
@@ -71,7 +80,9 @@ const PreviousOrder = (props) => {
               size="small"
               className={classes.btn}
               onClick={() => {
-                props.updateMenuBulk(props.previousOrders);
+                let previousItems = _.clone(props.previousOrders);
+                _.remove(previousItems, (item) => item.visible === false);
+                props.updateMenuBulk(previousItems);
                 props.showPreviousOrder(false);
               }}
             >

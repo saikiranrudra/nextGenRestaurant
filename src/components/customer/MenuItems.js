@@ -26,17 +26,21 @@ const MenuItem = (props) => {
       <div className={classes.container}>
         {props.menu.map((item, index) => {
           if (props.category.toLowerCase() === "all") {
-            if (item.name.toLowerCase().includes(props.search.toLowerCase())) {
+            if (
+              item.name.toLowerCase().includes(props.search.toLowerCase()) &&
+              item.visible === true
+            ) {
               return <ItemCard key={index} item={item} />;
             } else {
               return null;
             }
           } else {
-            if (item.category.contains(props.category)) {
+            if (item.category.includes(props.category)) {
               if (
                 item.name
                   .toLowerCase()
-                  .includes(props.search.toLocaleLowerCase())
+                  .includes(props.search.toLocaleLowerCase()) &&
+                item.visible === true
               ) {
                 return <ItemCard key={index} item={item} />;
               } else {

@@ -1,15 +1,31 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 // components
-import { Button, RadioGroup, Radio, FormControlLabel } from "@material-ui/core";
+import {
+  Button,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  Switch,
+} from "@material-ui/core";
 import { Typography } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 //icons
 import AddIcon from "@material-ui/icons/Add";
 
 //state management
 import { connect } from "react-redux";
+//actions
+import {
+  updateMenu,
+  addItemToMenu,
+  removeItemFromMenu,
+} from "./../../actions/customer/index";
+
+import _ from "lodash";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -48,18 +64,175 @@ const useStyle = makeStyles({
   },
 });
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const handleSaveChange = (
+  file,
+  dishInfo,
+  updateMenu,
+  addItemToMenu,
+  setSaveChanges
+) => {
+  let newItem = {};
+  // 1. if img is a file take img file of item upload to server get url
+  if (typeof file === "object") {
+    //upload to database and get url
+    newItem.img = URL.createObjectURL(file);
+  } else {
+    newItem.img = file;
+  }
+  // 2. check if id is null or not
+  // 3. if id not null update database
+  // 4. if id null create new Item
+  if (dishInfo.id !== null) {
+    newItem.id = dishInfo.id;
+  }
+
+  newItem.name = dishInfo.dishName;
+  newItem.category = dishInfo.category;
+  newItem.mealFor = dishInfo.mealFor;
+  newItem.price = dishInfo.price;
+  if (dishInfo.jainAvailable === true) {
+    newItem.jainCount = 0;
+  }
+  newItem.normalCount = 0;
+  newItem.featured = false;
+  newItem.visible = dishInfo.visible;
+  newItem.deleted = false;
+  newItem.description = dishInfo.dishDescription;
+
+  // 5. if id is not null updateMenu
+  if (dishInfo.id !== null) {
+    // update menu in database
+    setSaveChanges("please wait...");
+    setTimeout(() => {
+      updateMenu(newItem);
+      setSaveChanges("Save Changes");
+    }, 4000);
+  }
+  // 6. if id is null addItemToMenu
+  if (dishInfo.id === null) {
+    // add item in database
+    setSaveChanges("please wait...");
+    setTimeout(() => {
+      addItemToMenu(newItem);
+      setSaveChanges("Save Changes");
+    }, 4000);
+  }
+};
+
+const handleDelete = (dishInfo, removeItemFromMenu, setDeleteItem) => {
+  // remove item from database
+  setDeleteItem("please wait...");
+  setTimeout(() => {
+    removeItemFromMenu(dishInfo);
+    setDeleteItem("Delete Dish");
+  }, 4000);
+};
+const handleDone = (setSnackbar, setHideItem, removeDishOption) => {
+  setHideItem("please wait...");
+  setTimeout(() => {
+    setSnackbar({
+      open: true,
+      type: "success",
+      text: `Dish is hidden successfully for ${removeDishOption}`,
+    });
+    setHideItem("Done");
+  }, 4000);
+};
+
 function EditDish(props) {
   const classes = useStyle();
-  const [file, setFile] = useState(null);
+  const [saveChanges, setSaveChanges] = useState("Save Changes");
+  const [deleteItem, setDeleteItem] = useState("Delete Dish");
+  const [hideItem, setHideItem] = useState("Done");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: "success",
+    text: "Item hidden successfully",
+  });
+
+  const handleAlertClose = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState(
+    props.categories.length > 0 ? props.categories[0] : "all"
+  );
+  const [file, setFile] = useState(
+    props.selectedForEdit.img !== undefined ? props.selectedForEdit.img : null
+  );
   const [removeDishOption, setRemoveDishOption] = useState("untill i add");
   const [dishInfo, setDishInfo] = useState({
-    dishName: "",
-    jainAvailable: false,
-    dishDescription: "",
-    mealFor: 0,
-    price: 0,
-    category: props.categories.length > 0 ? props.categories[0] : {},
+    id:
+      props.selectedForEdit.id !== undefined ? props.selectedForEdit.id : null,
+    dishName:
+      props.selectedForEdit.name !== undefined
+        ? props.selectedForEdit.name
+        : "",
+    jainAvailable: props.selectedForEdit.jainCount !== undefined ? true : false,
+    dishDescription:
+      props.selectedForEdit.description !== undefined
+        ? props.selectedForEdit.description
+        : "",
+    mealFor:
+      props.selectedForEdit.mealFor !== undefined
+        ? props.selectedForEdit.mealFor
+        : 0,
+    price:
+      props.selectedForEdit.price !== undefined
+        ? props.selectedForEdit.price
+        : 0,
+    category:
+      props.selectedForEdit.category !== undefined
+        ? props.selectedForEdit.category
+        : [],
+    visible:
+      props.selectedForEdit.visible !== undefined
+        ? props.selectedForEdit.visible
+        : true,
   });
+
+  useEffect(() => {
+    setDishInfo({
+      id:
+        props.selectedForEdit.id !== undefined
+          ? props.selectedForEdit.id
+          : null,
+      dishName:
+        props.selectedForEdit.name !== undefined
+          ? props.selectedForEdit.name
+          : "",
+      jainAvailable:
+        props.selectedForEdit.jainCount !== undefined ? true : false,
+      dishDescription:
+        props.selectedForEdit.description !== undefined
+          ? props.selectedForEdit.description
+          : "",
+      mealFor:
+        props.selectedForEdit.mealFor !== undefined
+          ? props.selectedForEdit.mealFor
+          : 0,
+      price:
+        props.selectedForEdit.price !== undefined
+          ? props.selectedForEdit.price
+          : 0,
+      category:
+        props.selectedForEdit.category !== undefined
+          ? props.selectedForEdit.category
+          : [],
+      visible:
+        props.selectedForEdit.visible !== undefined
+          ? props.selectedForEdit.visible
+          : true,
+    });
+
+    setFile(
+      props.selectedForEdit.img !== undefined ? props.selectedForEdit.img : null
+    );
+  }, [props.selectedForEdit]);
 
   const handleRemoveDishOption = (event) => {
     setRemoveDishOption(event.target.value);
@@ -113,7 +286,9 @@ function EditDish(props) {
             <p>Drag 'n' drop some files here, or click to select files</p>
           )} */}
               <img
-                src={URL.createObjectURL(file)}
+                src={
+                  typeof file === "object" ? URL.createObjectURL(file) : file
+                }
                 alt="item"
                 style={{ height: "15rem", width: "15rem", borderRadius: "4px" }}
               />
@@ -205,8 +380,12 @@ function EditDish(props) {
                 fontWeight: "bold",
                 padding: ".5rem",
               }}
+              onClick={() => {
+                handleDelete(dishInfo, props.removeItemFromMenu, setDeleteItem);
+              }}
+              disabled={deleteItem === "please wait..." ? true : false}
             >
-              Delete Dish
+              {deleteItem}
             </Button>
             <Button
               variant="contained"
@@ -216,8 +395,12 @@ function EditDish(props) {
                 fontWeight: "bold",
                 padding: ".5rem",
               }}
+              disabled={hideItem === "please wait..." ? true : false}
+              onClick={() => {
+                handleDone(setSnackbar, setHideItem, removeDishOption);
+              }}
             >
-              Done
+              {hideItem}
             </Button>
           </div>
         </div>
@@ -310,6 +493,22 @@ function EditDish(props) {
           onChange={(e) => setDishInfo({ ...dishInfo, price: e.target.value })}
         />
 
+        <FormControlLabel
+          className={classes.label}
+          control={
+            <Switch
+              checked={dishInfo.visible}
+              onChange={(e) => {
+                setDishInfo({ ...dishInfo, visible: e.target.checked });
+                console.log(e.target.checked);
+              }}
+              name="visible"
+              color="primary"
+            />
+          }
+          label="Visible in Menu"
+        />
+
         <label htmlFor="category" className={classes.label}>
           Add Category
         </label>
@@ -323,11 +522,10 @@ function EditDish(props) {
           <select
             id="category"
             name="category"
-            value={dishInfo.category}
+            value={selectedCategory}
             className={classes.input}
             onChange={(e) => {
-              setDishInfo({ ...dishInfo, category: e.target.value });
-              console.log(e.target.value);
+              setSelectedCategory(e.target.value);
             }}
           >
             {props.categories.map((category, index) => (
@@ -354,16 +552,61 @@ function EditDish(props) {
               placeContent: "center",
               cursor: "pointer",
             }}
+            onClick={() => {
+              let newCategories = _.clone(dishInfo.category);
+              newCategories.push(selectedCategory);
+              setDishInfo({
+                ...dishInfo,
+                category: newCategories,
+              });
+            }}
           >
             <AddIcon />
           </div>
 
-          <input type="text" className={classes.input} />
+          <input
+            type="text"
+            className={classes.input}
+            readOnly
+            value={dishInfo.category.toString()}
+          />
+        </div>
+        <div style={{ margin: "1rem 0", textAlign: "end" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              handleSaveChange(
+                file,
+                dishInfo,
+                props.updateMenu,
+                props.addItemToMenu,
+                setSaveChanges
+              )
+            }
+            disabled={saveChanges === "please wait..." ? true : false}
+          >
+            {saveChanges}
+          </Button>
         </div>
       </div>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+      >
+        <Alert onClose={handleAlertClose} severity={snackbar.type}>
+          {snackbar.text}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
 
 const mapStateToProps = ({ categories }) => ({ categories });
-export default connect(mapStateToProps)(EditDish);
+export default connect(mapStateToProps, {
+  addItemToMenu,
+  updateMenu,
+  removeItemFromMenu,
+})(EditDish);

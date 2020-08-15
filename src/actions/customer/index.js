@@ -25,6 +25,8 @@ export const customerAuthenticate = (user) => {
 };
 
 /***** CATEGORY *******/
+
+//use in search based on cateogry
 export const setCategory = (categorie) => ({
   type: "SET_CATEGORY",
   payload: categorie,
@@ -33,34 +35,42 @@ export const setCategory = (categorie) => ({
 //temp catefories
 let categories = [
   {
+    id: "12abc",
     name: "all",
     img: c4,
   },
   {
+    id: "13abc",
     name: "Punjabi",
     img: c1,
   },
   {
+    id: "14abc",
     name: "Punjabi Bread",
     img: c2,
   },
   {
+    id: "15abc",
     name: "Chines Food",
     img: c3,
   },
   {
+    id: "126abc",
     name: "Pizza",
     img: c4,
   },
   {
+    id: "127abc",
     name: "Gujarati",
     img: c2,
   },
   {
+    id: "128abc",
     name: "South Indian",
     img: c4,
   },
   {
+    id: "129abc",
     name: "Cross Sale",
     img: c3,
   },
@@ -78,6 +88,20 @@ export const fetchCategories = () => (dispatch) => {
   }, 4000);
 };
 
+export const addCategory = (category) => {
+  return {
+    type: "ADD_CATEGORY",
+    payload: category,
+  };
+};
+
+export const removeCategory = (category) => {
+  return {
+    type: "REMOVE_CATEGORY",
+    payload: category,
+  };
+};
+
 let items = [
   {
     id: "123abc",
@@ -91,6 +115,7 @@ let items = [
     normalCount: 0,
     featured: false,
     visible: true,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -105,6 +130,7 @@ let items = [
     jainCount: 0,
     featured: false,
     visible: true,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -119,6 +145,7 @@ let items = [
     normalCount: 0,
     featured: true,
     visible: true,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -134,6 +161,7 @@ let items = [
     normalCount: 0,
     featured: false,
     visible: false,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -146,6 +174,9 @@ let items = [
     mealFor: 3,
     price: 120,
     normalCount: 0,
+    featured: false,
+    visible: false,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -160,6 +191,7 @@ let items = [
     normalCount: 0,
     featured: false,
     visible: true,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -174,6 +206,7 @@ let items = [
     normalCount: 0,
     featured: false,
     visible: true,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },
@@ -182,6 +215,7 @@ let items = [
 /***** MENU *****/
 export const fetchMenuItems = () => (dispatch) => {
   //api call Menu Items
+  // DONT FETCH ITEM whose deleted property is true
 
   // imetating api call with setTimeOut
   setTimeout(() => {
@@ -194,7 +228,7 @@ export const fetchMenuItems = () => (dispatch) => {
 
 export const updateMenu = (data) => {
   return {
-    type: "UPDATE_MENU",
+    type: "UPDATE_MENU_ITEM",
     payload: data,
   };
 };
@@ -203,6 +237,20 @@ export const updateMenuBulk = (items) => {
   return {
     type: "UPDATE_MENU_BULK",
     payload: items,
+  };
+};
+
+export const addItemToMenu = (item) => {
+  return {
+    type: "ADD_ITEM_TO_MENU",
+    payload: item,
+  };
+};
+
+export const removeItemFromMenu = (item) => {
+  return {
+    type: "REMOVER_ITEM_FROM_MENU",
+    payload: item,
   };
 };
 
@@ -224,39 +272,48 @@ export const updateMenuBulk = (items) => {
 
 let previousOrderData = [
   {
-    id: "123abc",
-    img: c1,
-    name: "Risotto",
-    category: "Punjabi",
-    rating: 4,
-    mealFor: 2,
-    price: 125,
-    jainCount: 7,
-    normalCount: 12,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "456def",
-    img: c2,
-    name: "PanCake",
-    category: "Punjabi Bread",
-    rating: 3,
-    mealFor: 2,
-    price: 25,
-    jainCount: 4,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
     id: "789ghi",
     img: c3,
     name: "Manchurian",
-    category: "Chines Food",
+    category: ["Chines Food", "all"],
     rating: 1,
     mealFor: 1,
     price: 100,
-    normalCount: 8,
+    normalCount: 5,
+    featured: true,
+    visible: true,
+    deleted: false,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
+  },
+  {
+    id: "101112jkl",
+    img: c4,
+    name: "Rice",
+    category: ["South Indian", "all"],
+    rating: 4,
+    mealFor: 3,
+    price: 120,
+    jainCount: 3,
+    normalCount: 4,
+    featured: false,
+    visible: false,
+    deleted: false,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
+  },
+  {
+    id: "101112cross1",
+    img: c4,
+    name: "Coke",
+    category: ["Cross Sale", "all"],
+    rating: 4,
+    mealFor: 3,
+    price: 120,
+    normalCount: 2,
+    featured: false,
+    visible: false,
+    deleted: false,
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
   },

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 //components
@@ -6,10 +6,12 @@ import { Button, Typography } from "@material-ui/core";
 
 //State Management
 import { connect } from "react-redux";
+//actions
+import { addCategory, removeCategory } from "./../../actions/customer";
 
 // icons
 // icons
-import edit from "./../../assets/dashboardAssets/edit.svg";
+// import edit from "./../../assets/dashboardAssets/edit.svg";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -46,6 +48,7 @@ const useStyle = makeStyles({
 
   category: {
     backgroundColor: "#fff",
+    cursor: "pointer",
     "& > div > h6, & > div > button": {
       fontFamily: "Product-Sans",
       fontSize: "1rem",
@@ -62,6 +65,13 @@ const useStyle = makeStyles({
 function ManageCategory(props) {
   const classes = useStyle();
   const [file, setFile] = useState(null);
+  const [category, setCategory] = useState(
+    props.categories.length > 0 ? props.categories[0] : ""
+  );
+
+  useEffect(() => {
+    setCategory(props.categories.length > 0 ? props.categories[0] : "");
+  }, [props.categories]);
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -76,7 +86,6 @@ function ManageCategory(props) {
         padding: ".5rem",
         borderRadius: "5px",
         display: "inline-block",
-
         overflowX: "hidden",
         overflowY: "scroll",
         height: "76.5vh",
@@ -129,7 +138,13 @@ function ManageCategory(props) {
       <label htmlFor="categoryName" className={classes.label}>
         Category
       </label>
-      <input type="text" id="categoryName" className={classes.input} />
+      <input
+        type="text"
+        id="categoryName"
+        className={classes.input}
+        value={category.name !== undefined ? category.name : ""}
+        readOnly
+      />
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Button
@@ -159,19 +174,23 @@ function ManageCategory(props) {
       </div>
       <div>
         {props.categories.map((category, index) => (
-          <div key={index} className={classes.category}>
+          <div
+            key={index}
+            className={classes.category}
+            onClick={() => setCategory(category)}
+          >
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography variant="h6" align="left">
                 {category.name}
               </Typography>
-              <Button
+              {/* <Button
                 variant="contained"
                 endIcon={
                   <img src={edit} alt="edit" style={{ width: "1rem" }} />
                 }
               >
                 Edit
-              </Button>
+              </Button> */}
             </div>
           </div>
         ))}

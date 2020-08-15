@@ -4,13 +4,16 @@ import React, { useState } from "react";
 import { Button, Typography } from "@material-ui/core";
 
 //State Management
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 //Action
-// import { updateMenuItemFeatured } from "./../../actions/admin/index";
+import { updateMenuItemFeatured } from "./../../actions/admin/index";
 
 //icon
 import edit from "./../..//assets/dashboardAssets/edit.svg";
 import StarIcon from "@material-ui/icons/Star";
+
+//utils
+import _ from "lodash";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -92,10 +95,16 @@ const MenuItem = (props) => {
   const [featured, setFeatured] = useState("Featured");
 
   const handleFeatured = (item, updateMenuItemFeatured) => {
-    // item.featured = item.featured ? false : true;
+    let newItem = _.clone(item);
+    newItem.featured = newItem.featured ? false : true;
     setFeatured("please wait...");
-    // updateMenuItemFeatured(item);
-    setFeatured("Featured");
+
+    // make api call update in database
+    setTimeout(() => {
+      // update in state
+      updateMenuItemFeatured(newItem);
+      setFeatured("Featured");
+    }, 4000);
   };
 
   return (
@@ -106,9 +115,7 @@ const MenuItem = (props) => {
       <div
         className={classes.cardImg}
         style={{ backgroundImage: `url("${props.item.img}")` }}
-      >
-        {/* <img src={props.item.img} alt="item" style={{ width: "100%" }} /> */}
-      </div>
+      ></div>
       <div className={classes.cardContent}>
         <div className={classes.cardContentText}>
           <Typography variant="body1" align="left" className={classes.id}>
@@ -140,6 +147,9 @@ const MenuItem = (props) => {
             variant="contained"
             endIcon={<img src={edit} alt="edit" style={{ width: "1rem" }} />}
             className={classes.editBtn}
+            onClick={() => {
+              props.setSelectedForEdit(props.item);
+            }}
           >
             Edit
           </Button>
@@ -178,6 +188,6 @@ const MenuItem = (props) => {
   );
 };
 
-export default MenuItem;
-// const mapStateToProps = () => ({});
-// export default connect(mapStateToProps, { updateMenuItemFeatured })(MenuItem);
+// export default MenuItem;
+const mapStateToProps = ({ menu }) => ({ menu });
+export default connect(mapStateToProps, { updateMenuItemFeatured })(MenuItem);
