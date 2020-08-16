@@ -7,6 +7,9 @@ import MenuItem from "./../../components/admin/MenuItem";
 import EditDish from "../../components/admin/EditDish";
 import ManageCategory from "../../components/admin/ManageCategory";
 
+// utils
+import _ from "lodash";
+
 //state management
 import { connect } from "react-redux";
 
@@ -68,7 +71,9 @@ const Menu = (props) => {
   const [selectedForEdit, setSelectedForEdit] = useState({});
 
   const handleAddNewItem = () => {
-    setSelectedForEdit({ category: ["all"] });
+    setSelectedForEdit({
+      category: [_.find(props.categories, { name: "all" })],
+    });
   };
 
   useEffect(() => {
@@ -217,6 +222,6 @@ const Menu = (props) => {
   );
 };
 
-const mapStateToProps = ({ menu }) => ({ menu });
+const mapStateToProps = ({ menu, categories }) => ({ menu, categories });
 
 export default connect(mapStateToProps)(Menu);

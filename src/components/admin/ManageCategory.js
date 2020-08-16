@@ -4,6 +4,9 @@ import { useDropzone } from "react-dropzone";
 //components
 import { Button, Typography } from "@material-ui/core";
 
+// utils
+import _ from "lodash";
+
 //State Management
 import { connect } from "react-redux";
 //actions
@@ -86,15 +89,60 @@ function ManageCategory(props) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleSaveChanges = () => {
+    if (category.id === undefined) {
+      return;
+    }
     //update in database
+
+    //then update state
     setBtnText({ ...btnText, saveChanges: "please wait..." });
     setTimeout(() => {
+      category.img = file;
       props.modifyCategory(category);
       setBtnText({ ...btnText, saveChanges: "Save Changes" });
     }, 4000);
   };
-  const handleAddCategory = () => {};
-  const handleDeleteCategory = () => {};
+
+  const handleAddCategory = () => {
+    //add in database
+
+    //then update State
+    if (file === null) {
+      alert("image is required to create catergory");
+      return;
+    }
+    if (category.name.length === 0) {
+      alert("name is required for category");
+      return;
+    }
+    setBtnText({ ...btnText, addCategory: "please wait..." });
+    setTimeout(() => {
+      delete category.id;
+      category.id = _.uniqueId("gen");
+      category.img = file;
+      props.addCategory(category);
+      setBtnText({ ...btnText, addCategory: "Add Category" });
+    }, 4000);
+  };
+
+  const handleDeleteCategory = () => {
+    if (category.id === undefined) {
+      alert("Select a category to delete");
+      return;
+    }
+    // delete from database then update state;
+    setBtnText({ ...btnText, deleteCategory: "please wait..." });
+    setTimeout(() => {
+      props.removeCategory(category);
+      setCategory({
+        name: "",
+        id: undefined,
+        img: undefined,
+      });
+      setFile(null);
+      setBtnText({ ...btnText, deleteCategory: "Delete Category" });
+    }, 4000);
+  };
 
   return (
     <div

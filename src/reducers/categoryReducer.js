@@ -17,9 +17,10 @@ export const categories = (state = [], action) => {
       state.push(action.payload);
       return [...state];
     }
-    case "REMOVE_CATEGOR": {
-      _.remove(state, (item) => item.id === action.payload.id);
-      return [...state];
+    case "REMOVE_CATEGORY": {
+      let newState = state;
+      _.remove(newState, (item) => item.id === action.payload.id);
+      return [...newState];
     }
     case "MODIFY_CATEGORY": {
       const index = _.findIndex(state, (item) => item.id === action.payload.id);

@@ -159,7 +159,7 @@ function EditDish(props) {
   };
 
   const [selectedCategory, setSelectedCategory] = useState(
-    props.categories.length > 0 ? props.categories[0] : "all"
+    props.categories.length > 0 ? props.categories[0].id : "no data"
   );
   const [file, setFile] = useState(
     props.selectedForEdit.img !== undefined ? props.selectedForEdit.img : null
@@ -233,6 +233,12 @@ function EditDish(props) {
       props.selectedForEdit.img !== undefined ? props.selectedForEdit.img : null
     );
   }, [props.selectedForEdit]);
+
+  useEffect(() => {
+    if (props.categories.length > 0) {
+      setSelectedCategory(props.categories[0].id);
+    }
+  }, [props.categories]);
 
   const handleRemoveDishOption = (event) => {
     setRemoveDishOption(event.target.value);
@@ -522,7 +528,7 @@ function EditDish(props) {
           <select
             id="category"
             name="category"
-            value={selectedCategory}
+            value={selectedCategory.id}
             className={classes.input}
             onChange={(e) => {
               setSelectedCategory(e.target.value);
@@ -531,7 +537,7 @@ function EditDish(props) {
             {props.categories.map((category, index) => (
               <option
                 key={index}
-                value={category.name}
+                value={category.id}
                 style={{ fontFamily: "Product-Sans" }}
               >
                 {category.name}
@@ -554,11 +560,25 @@ function EditDish(props) {
             }}
             onClick={() => {
               let newCategories = _.clone(dishInfo.category);
-              newCategories.push(selectedCategory);
-              setDishInfo({
-                ...dishInfo,
-                category: newCategories,
-              });
+              let contains = _.find(
+                dishInfo.category,
+                (cat) => cat.id === selectedCategory
+              );
+
+              if (contains === undefined) {
+                let selectedCategoryIndex = _.findIndex(
+                  props.categories,
+                  (category) => category.id === selectedCategory
+                );
+
+                if (selectedCategoryIndex !== -1) {
+                  newCategories.push(props.categories[selectedCategoryIndex]);
+                  setDishInfo({
+                    ...dishInfo,
+                    category: newCategories,
+                  });
+                }
+              }
             }}
           >
             <AddIcon />
@@ -568,7 +588,13 @@ function EditDish(props) {
             type="text"
             className={classes.input}
             readOnly
-            value={dishInfo.category.toString()}
+            value={dishInfo.category.map((cat, index) => {
+              if (index === 0) {
+                return `${cat.name}`;
+              } else {
+                return ` ${cat.name}`;
+              }
+            })}
           />
         </div>
         <div style={{ margin: "1rem 0", textAlign: "end" }}>
