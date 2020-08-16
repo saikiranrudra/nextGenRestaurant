@@ -7,6 +7,9 @@ import CustomerCartBar from "./CustomerCartBar";
 // state management
 import { connect } from "react-redux";
 
+// utils
+import _ from "lodash";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -25,7 +28,7 @@ const MenuItem = (props) => {
     <>
       <div className={classes.container}>
         {props.menu.map((item, index) => {
-          if (props.category.toLowerCase() === "all") {
+          if (props.category.name === "all") {
             if (
               item.name.toLowerCase().includes(props.search.toLowerCase()) &&
               item.visible === true
@@ -35,7 +38,7 @@ const MenuItem = (props) => {
               return null;
             }
           } else {
-            if (item.category.includes(props.category)) {
+            if (_.some(item.category, props.category)) {
               if (
                 item.name
                   .toLowerCase()

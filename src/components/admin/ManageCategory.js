@@ -7,11 +7,10 @@ import { Button, Typography } from "@material-ui/core";
 //State Management
 import { connect } from "react-redux";
 //actions
-import { addCategory, removeCategory } from "./../../actions/customer";
+// import { addCategory, removeCategory } from "./../../actions/customer";
 
 // icons
-// icons
-// import edit from "./../../assets/dashboardAssets/edit.svg";
+import edit from "./../../assets/dashboardAssets/edit.svg";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -183,14 +182,14 @@ function ManageCategory(props) {
               <Typography variant="h6" align="left">
                 {category.name}
               </Typography>
-              {/* <Button
+              <Button
                 variant="contained"
                 endIcon={
                   <img src={edit} alt="edit" style={{ width: "1rem" }} />
                 }
               >
                 Edit
-              </Button> */}
+              </Button>
             </div>
           </div>
         ))}

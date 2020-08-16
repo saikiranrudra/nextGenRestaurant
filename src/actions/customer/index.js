@@ -107,7 +107,18 @@ let items = [
     id: "123abc",
     img: c1,
     name: "Risotto",
-    category: ["Punjabi", "all"],
+    category: [
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+      {
+        id: "13abc",
+        name: "Punjabi",
+        img: c1,
+      },
+    ],
     rating: 4,
     mealFor: 2,
     price: 125,
@@ -123,7 +134,23 @@ let items = [
     id: "456def",
     img: c2,
     name: "PanCake",
-    category: ["Punjabi Bread", "Punjabi", "all"],
+    category: [
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+      {
+        id: "13abc",
+        name: "Punjabi",
+        img: c1,
+      },
+      {
+        id: "14abc",
+        name: "Punjabi Bread",
+        img: c2,
+      },
+    ],
     rating: 3,
     mealFor: 2,
     price: 25,
@@ -138,7 +165,18 @@ let items = [
     id: "789ghi",
     img: c3,
     name: "Manchurian",
-    category: ["Chines Food", "all"],
+    category: [
+      {
+        id: "15abc",
+        name: "Chines Food",
+        img: c3,
+      },
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+    ],
     rating: 1,
     mealFor: 1,
     price: 100,
@@ -153,7 +191,18 @@ let items = [
     id: "101112jkl",
     img: c4,
     name: "Rice",
-    category: ["South Indian", "all"],
+    category: [
+      {
+        id: "128abc",
+        name: "South Indian",
+        img: c4,
+      },
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+    ],
     rating: 4,
     mealFor: 3,
     price: 120,
@@ -169,7 +218,18 @@ let items = [
     id: "101112cross1",
     img: c4,
     name: "Coke",
-    category: ["Cross Sale", "all"],
+    category: [
+      {
+        id: "129abc",
+        name: "Cross Sale",
+        img: c3,
+      },
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+    ],
     rating: 4,
     mealFor: 3,
     price: 120,
@@ -184,7 +244,23 @@ let items = [
     id: "101112cross2",
     img: c4,
     name: "Butter Milk",
-    category: ["Cross Sale", "all", "Punjabi"],
+    category: [
+      {
+        id: "129abc",
+        name: "Cross Sale",
+        img: c3,
+      },
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+      {
+        id: "13abc",
+        name: "Punjabi",
+        img: c1,
+      },
+    ],
     rating: 4,
     mealFor: 3,
     price: 120,
@@ -199,7 +275,18 @@ let items = [
     id: "101112cross3",
     img: c4,
     name: "papaad",
-    category: ["Cross Sale", "all"],
+    category: [
+      {
+        id: "129abc",
+        name: "Cross Sale",
+        img: c3,
+      },
+      {
+        id: "12abc",
+        name: "all",
+        img: c4,
+      },
+    ],
     rating: 4,
     mealFor: 3,
     price: 120,

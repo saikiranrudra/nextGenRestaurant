@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // components
 import TopLogo from "./../../components/general/TopLogo";
@@ -10,10 +10,13 @@ import NeedHelp from "./../../components/customer/NeedHelp";
 import CustomerMenu from "./../../components/customer/CustomerMenu";
 import PreviousOrder from "./../../components/customer/PreviousOrder";
 
+//utils
+import _ from "lodash";
+
 // state management
 import { connect } from "react-redux";
 //action
-import { setSearch } from "./../../actions/customer";
+import { setSearch, setCategory } from "./../../actions/customer";
 
 //images
 import featureItem from "./../../assets/featureItem.jpg";
@@ -104,6 +107,16 @@ const useStyle = makeStyles({
 
 const Home = (props) => {
   const classes = useStyle();
+  const { categories, setCategory } = props;
+  useEffect(() => {
+    if (categories.length > 0) {
+      let allObj = _.find(categories, { name: "all" });
+      if (allObj !== undefined) {
+        setCategory(allObj);
+      }
+    }
+  }, [categories, setCategory]);
+
   return (
     <div>
       <TopLogo />
@@ -158,5 +171,5 @@ const Home = (props) => {
   );
 };
 
-const mapStateToProps = () => ({});
-export default connect(mapStateToProps, { setSearch })(Home);
+const mapStateToProps = ({ categories }) => ({ categories });
+export default connect(mapStateToProps, { setSearch, setCategory })(Home);

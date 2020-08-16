@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-export const selectCategories = (state = "all", action) => {
+export const selectCategories = (state = {}, action) => {
   switch (action.type) {
     case "SET_CATEGORY":
       return action.payload;

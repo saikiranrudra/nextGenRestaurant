@@ -50,11 +50,11 @@ const Categories = (props) => {
                 style={{
                   backgroundImage: `url("${categorie.img}")`,
                   border:
-                    categorie.name === props.category ? "2px solid red" : null,
+                    categorie.id === props.category.id ? "2px solid red" : null,
                 }}
                 className={classes.categorieImg}
                 onClick={() => {
-                  handleCategory(categorie.name);
+                  handleCategory(categorie);
                 }}
               ></div>
               <div style={{ textAlign: "center" }}>{categorie.name}</div>

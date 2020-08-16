@@ -3,6 +3,9 @@ import React from "react";
 // components
 import CrossSaleItem from "./CrossSaleItem";
 
+// utils
+import _ from "lodash";
+
 //state management
 import { connect } from "react-redux";
 
@@ -11,7 +14,10 @@ const CrossSale = (props) => {
   return (
     <>
       {menu.map((item, index) => {
-        if (item.category.includes("Cross Sale") && item.visible === true) {
+        if (
+          _.some(item.category, { name: "Cross Sale" }) &&
+          item.visible === true
+        ) {
           return <CrossSaleItem key={index} item={item} />;
         } else {
           return null;
