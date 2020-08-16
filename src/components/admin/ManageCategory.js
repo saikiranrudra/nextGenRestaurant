@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
 //components
@@ -7,7 +7,11 @@ import { Button, Typography } from "@material-ui/core";
 //State Management
 import { connect } from "react-redux";
 //actions
-// import { addCategory, removeCategory } from "./../../actions/customer";
+import {
+  addCategory,
+  removeCategory,
+  modifyCategory,
+} from "./../../actions/customer";
 
 // icons
 import edit from "./../../assets/dashboardAssets/edit.svg";
@@ -47,7 +51,6 @@ const useStyle = makeStyles({
 
   category: {
     backgroundColor: "#fff",
-    cursor: "pointer",
     "& > div > h6, & > div > button": {
       fontFamily: "Product-Sans",
       fontSize: "1rem",
@@ -64,19 +67,34 @@ const useStyle = makeStyles({
 function ManageCategory(props) {
   const classes = useStyle();
   const [file, setFile] = useState(null);
-  const [category, setCategory] = useState(
-    props.categories.length > 0 ? props.categories[0] : ""
-  );
+  const [category, setCategory] = useState({
+    name: "",
+    id: undefined,
+    img: undefined,
+  });
 
-  useEffect(() => {
-    setCategory(props.categories.length > 0 ? props.categories[0] : "");
-  }, [props.categories]);
+  const [btnText, setBtnText] = useState({
+    saveChanges: "Save Changes",
+    addCategory: "Add Category",
+    deleteCategory: "Delete Category",
+  });
 
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     setFile(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const handleSaveChanges = () => {
+    //update in database
+    setBtnText({ ...btnText, saveChanges: "please wait..." });
+    setTimeout(() => {
+      props.modifyCategory(category);
+      setBtnText({ ...btnText, saveChanges: "Save Changes" });
+    }, 4000);
+  };
+  const handleAddCategory = () => {};
+  const handleDeleteCategory = () => {};
 
   return (
     <div
@@ -113,7 +131,7 @@ function ManageCategory(props) {
             <p>Drag 'n' drop some files here, or click to select files</p>
           )} */}
             <img
-              src={URL.createObjectURL(file)}
+              src={typeof file === "object" ? URL.createObjectURL(file) : file}
               alt="item"
               style={{ height: "15rem", width: "15rem", borderRadius: "4px" }}
             />
@@ -141,8 +159,8 @@ function ManageCategory(props) {
         type="text"
         id="categoryName"
         className={classes.input}
-        value={category.name !== undefined ? category.name : ""}
-        readOnly
+        value={category.name}
+        onChange={(e) => setCategory({ ...category, name: e.target.value })}
       />
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -155,8 +173,10 @@ function ManageCategory(props) {
             padding: ".3rem .8rem",
             margin: "1rem .3rem",
           }}
+          onClick={handleAddCategory}
+          disabled={btnText.addCategory === "please wait..." ? true : false}
         >
-          Add Category
+          {btnText.addCategory}
         </Button>
         <Button
           variant="contained"
@@ -167,29 +187,48 @@ function ManageCategory(props) {
             padding: ".3rem .8rem",
             margin: "1rem .3rem",
           }}
+          onClick={handleDeleteCategory}
+          disabled={btnText.deleteCategory === "please wait..." ? true : false}
         >
-          Delete Category
+          {btnText.deleteCategory}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{
+            fontSize: "0.7rem",
+            fontWeight: "bold",
+            padding: ".3rem .8rem",
+            margin: "1rem .3rem",
+          }}
+          onClick={handleSaveChanges}
+          disabled={btnText.saveChanges === "please wait..." ? true : false}
+        >
+          {btnText.saveChanges}
         </Button>
       </div>
       <div>
         {props.categories.map((category, index) => (
-          <div
-            key={index}
-            className={classes.category}
-            onClick={() => setCategory(category)}
-          >
+          <div key={index} className={classes.category}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography variant="h6" align="left">
                 {category.name}
               </Typography>
-              <Button
-                variant="contained"
-                endIcon={
-                  <img src={edit} alt="edit" style={{ width: "1rem" }} />
-                }
-              >
-                Edit
-              </Button>
+
+              {category.name !== "all" ? (
+                <Button
+                  variant="contained"
+                  endIcon={
+                    <img src={edit} alt="edit" style={{ width: "1rem" }} />
+                  }
+                  onClick={() => {
+                    setCategory(category);
+                    setFile(category.img);
+                  }}
+                >
+                  Edit
+                </Button>
+              ) : null}
             </div>
           </div>
         ))}
@@ -199,4 +238,8 @@ function ManageCategory(props) {
 }
 
 const mapStateToProps = ({ categories }) => ({ categories });
-export default connect(mapStateToProps)(ManageCategory);
+export default connect(mapStateToProps, {
+  addCategory,
+  removeCategory,
+  modifyCategory,
+})(ManageCategory);

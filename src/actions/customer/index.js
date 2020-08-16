@@ -102,6 +102,13 @@ export const removeCategory = (category) => {
   };
 };
 
+export const modifyCategory = (newCategory) => {
+  return {
+    type: "MODIFY_CATEGORY",
+    payload: newCategory,
+  };
+};
+
 let items = [
   {
     id: "123abc",

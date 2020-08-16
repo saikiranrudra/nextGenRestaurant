@@ -127,7 +127,13 @@ const MenuItem = (props) => {
           </Typography>
 
           <Typography variant="body1" align="left" className={classes.category}>
-            {props.item.category.toString()}
+            {props.item.category.map((cat, index) => {
+              if (index === 0) {
+                return `${cat.name}`;
+              } else {
+                return `, ${cat.name}`;
+              }
+            })}
           </Typography>
 
           <Typography variant="body1" align="left" className={classes.mealFor}>
