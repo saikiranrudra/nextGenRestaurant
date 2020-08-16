@@ -69,6 +69,7 @@ const Menu = (props) => {
   const classes = useStyle();
   const { menu } = props;
   const [selectedForEdit, setSelectedForEdit] = useState({});
+  const [search, setSearch] = useState("");
 
   const handleAddNewItem = () => {
     setSelectedForEdit({
@@ -146,6 +147,8 @@ const Menu = (props) => {
                     type="text"
                     placeholder="Search"
                     className={classes.searchInput}
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               </div>
@@ -159,13 +162,21 @@ const Menu = (props) => {
                     height: "66vh",
                   }}
                 >
-                  {props.menu.map((item, index) => (
-                    <MenuItem
-                      item={item}
-                      key={index}
-                      setSelectedForEdit={setSelectedForEdit}
-                    />
-                  ))}
+                  {props.menu.map((item, index) => {
+                    if (
+                      item.name.toLowerCase().includes(search.toLowerCase())
+                    ) {
+                      return (
+                        <MenuItem
+                          item={item}
+                          key={index}
+                          setSelectedForEdit={setSelectedForEdit}
+                        />
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
                 </div>
               </div>
             </div>
