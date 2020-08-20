@@ -64,7 +64,7 @@ const useStyle = makeStyles((theme) => ({
   table: {
     overflowX: "hidden",
     overflowY: "auto",
-    height: "67vh",
+    height: "74vh",
   },
   label: {
     margin: "1rem 0 .2rem 1.5rem",

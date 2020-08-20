@@ -27,7 +27,7 @@ const useStyle = makeStyles({
   container: {
     display: "grid",
     gridTemplateColumns: "90px 1fr 1fr 1fr",
-    gridTemplateRows: "100px 1fr",
+    gridTemplateRows: "58px 1fr",
     backgroundColor: "#fff",
   },
   logo: {
@@ -132,7 +132,7 @@ const Menu = (props) => {
             gridGap: "3rem",
           }}
         >
-          <div style={{ margin: ".6rem" }}>
+          <div style={{ margin: ".6rem .6rem 0 .6rem" }}>
             <Typography
               variant="h5"
               align="left"
@@ -157,10 +157,10 @@ const Menu = (props) => {
               <div>
                 <div
                   style={{
-                    margin: ".9rem 1rem",
+                    margin: "0.9rem 1rem 0 1rem",
                     overflowX: "hidden",
                     overflowY: "scroll",
-                    height: "66vh",
+                    height: "74vh",
                   }}
                 >
                   {props.menu.map((item, index) => {

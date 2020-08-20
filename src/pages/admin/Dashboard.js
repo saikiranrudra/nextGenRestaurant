@@ -18,10 +18,10 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
-    gridTemplateColumns: "90px 209px 345px 1fr 395px",
-    gridTemplateRows: "100px 1fr",
-    gridGap: "1rem",
+    gridTemplateColumns: "90px 209px 345px 1fr 390px",
     height: "100vh",
+    gridTemplateRows: "58px 1fr",
+    gridGap: "1rem",
     backgroundColor: "#fff",
   },
   menuContainer: {
@@ -53,6 +53,7 @@ const useStyle = makeStyles((theme) => ({
   red: {
     color: theme.palette.primary.main,
     fontFamily: "Product-Sans",
+    fontWeight: "bold",
   },
 }));
 const Dashboard = () => {
@@ -107,13 +108,9 @@ const Dashboard = () => {
           <Typography variant="h6" align="left" className={classes.title}>
             Notifications
           </Typography>
-          <Typography
-            variant="body2"
-            className={classes.red}
-            style={{ cursor: "pointer" }}
-          >
+          <Button variant="text" className={classes.red}>
             clear all
-          </Typography>
+          </Button>
         </div>
         <div style={{ backgroundColor: "#F5F5F5", borderRadius: "8px" }}></div>
         <Notifications />

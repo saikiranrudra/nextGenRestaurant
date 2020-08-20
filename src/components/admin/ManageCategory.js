@@ -153,7 +153,7 @@ function ManageCategory(props) {
         display: "inline-block",
         overflowX: "hidden",
         overflowY: "scroll",
-        height: "76.5vh",
+        height: "83.9vh",
       }}
     >
       {file === null ? (

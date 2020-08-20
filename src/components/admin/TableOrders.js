@@ -37,9 +37,13 @@ const useStyle = makeStyles((theme) => ({
       fontFamily: "Product-Sans",
       color: "#989898",
       fontSize: ".8rem",
+      backgroundColor: "#F5F5F5",
+      paddingBottom: "0",
     },
   },
   tableBody: {
+    border: "8px solid #f5f5f5",
+    // borderBottom: "5px solid #f5f5f5",
     "& > td": {
       fontFamily: "Product-Sans",
       fontWeight: "bold",
@@ -169,6 +173,7 @@ const TableOrders = (props) => {
         <Button
           variant="contained"
           endIcon={<img src={edit} alt="edit" style={{ width: "1rem" }} />}
+          style={{ backgroundColor: "#fff" }}
           onClick={() => {
             props.setEditable(true);
           }}
@@ -190,66 +195,84 @@ const TableOrders = (props) => {
         </span>
       </div>
 
-      <Table>
-        <TableHead>
-          <TableRow className={classes.head}>
-            <TableCell>
-              <b>Preparing</b>
-            </TableCell>
-            <TableCell>
-              <b>Jain</b>
-            </TableCell>
-            <TableCell>
-              <b>Normal</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {preparing.map((item, index) => {
-            return (
-              <TableRow key={index} className={classes.tableBody}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
-                <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <div
+        style={{
+          padding: "1.1rem .3rem",
+          backgroundColor: "#f5f5f5",
+          overflowX: "hidden",
+          overflowY: "scroll",
+          height: "35rem",
+        }}
+      >
+        <Table style={{ backgroundColor: "#F5F5F5" }}>
+          <TableHead>
+            <TableRow className={classes.head}>
+              <TableCell>
+                <b>Preparing</b>
+              </TableCell>
+              <TableCell>
+                <b>Jain</b>
+              </TableCell>
+              <TableCell>
+                <b>Normal</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {preparing.map((item, index) => {
+              return (
+                <TableRow key={index} className={classes.tableBody}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
+                  <TableCell>
+                    {item.normalCount ? item.normalCount : 0}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
 
-      <Table>
-        <TableHead>
-          <TableRow className={classes.head}>
-            <TableCell>
-              <b>Served</b>
-            </TableCell>
-            <TableCell>
-              <b>Jain</b>
-            </TableCell>
-            <TableCell>
-              <b>Normal</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {served.map((item, index) => {
-            return (
-              <TableRow key={index} className={classes.tableBody}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
-                <TableCell>{item.normalCount ? item.normalCount : 0}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <Typography variant="h4" align="right" className={classes.totalPrice}>
-        768₹
-      </Typography>
-      <div style={{ textAlign: "end" }}>
-        <Button variant="contained" color="primary">
-          Recived
-        </Button>
+        <Table>
+          <TableHead>
+            <TableRow className={classes.head}>
+              <TableCell>
+                <b>Served</b>
+              </TableCell>
+              <TableCell>
+                <b>Jain</b>
+              </TableCell>
+              <TableCell>
+                <b>Normal</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {served.map((item, index) => {
+              return (
+                <TableRow key={index} className={classes.tableBody}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.jainCount ? item.jainCount : 0}</TableCell>
+                  <TableCell>
+                    {item.normalCount ? item.normalCount : 0}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <Typography variant="h4" align="right" className={classes.totalPrice}>
+          768₹
+        </Typography>
+        <div style={{ textAlign: "end", marginBottom: "1rem" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ fontFamily: "Product-Sans", fontWeight: "bold" }}
+          >
+            Recived
+          </Button>
+        </div>
       </div>
     </>
   );

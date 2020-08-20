@@ -16,7 +16,7 @@ const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
     gridTemplateColumns: "90px 277px 1fr 193px",
-    gridTemplateRows: "100px 1fr",
+    gridTemplateRows: "58px 1fr",
     gridGap: "1rem",
     height: "100vh",
     backgroundColor: "#fff",

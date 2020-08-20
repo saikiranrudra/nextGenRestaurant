@@ -30,6 +30,25 @@ const useStyle = makeStyles((theme) => ({
     fontWeight: "bold",
     margin: "1rem",
   },
+  head: {
+    "& > th": {
+      fontFamily: "Product-Sans",
+      color: "#989898",
+      fontSize: ".8rem",
+      backgroundColor: "#F5F5F5",
+      paddingBottom: "0",
+    },
+  },
+  tableBody: {
+    border: "8px solid #f5f5f5",
+    // borderBottom: "5px solid #f5f5f5",
+    "& > td": {
+      fontFamily: "Product-Sans",
+      fontWeight: "bold",
+      backgroundColor: "#fff",
+      padding: ".7rem",
+    },
+  },
 }));
 
 const handleSaveChange = (setEditable) => {
@@ -187,103 +206,113 @@ const EditableTableOrders = (props) => {
         </span>
       </div>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <b>Preparing</b>
-            </TableCell>
-            <TableCell>
-              <b>Jain</b>
-            </TableCell>
-            <TableCell>
-              <b>Normal</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {preparing.map((item, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>
-                  {item.jainCount ? (
-                    <Counter
-                      jainCount={item.jainCount}
-                      itemId={item.id}
-                      data={preparing}
-                      setData={setPreparing}
-                    />
-                  ) : (
-                    "NA"
-                  )}
-                </TableCell>
-                <TableCell>
-                  {item.normalCount ? (
-                    <Counter
-                      normalCount={item.normalCount}
-                      itemId={item.id}
-                      data={preparing}
-                      setData={setPreparing}
-                    />
-                  ) : (
-                    "NA"
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <div
+        style={{
+          padding: "1.1rem .3rem",
+          backgroundColor: "#f5f5f5",
+          overflowX: "hidden",
+          overflowY: "scroll",
+          height: "35rem",
+        }}
+      >
+        <Table style={{ backgroundColor: "#F5F5F5" }}>
+          <TableHead>
+            <TableRow className={classes.head}>
+              <TableCell>
+                <b>Preparing</b>
+              </TableCell>
+              <TableCell>
+                <b>Jain</b>
+              </TableCell>
+              <TableCell>
+                <b>Normal</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {preparing.map((item, index) => {
+              return (
+                <TableRow key={index} className={classes.tableBody}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>
+                    {item.jainCount ? (
+                      <Counter
+                        jainCount={item.jainCount}
+                        itemId={item.id}
+                        data={preparing}
+                        setData={setPreparing}
+                      />
+                    ) : (
+                      "NA"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {item.normalCount ? (
+                      <Counter
+                        normalCount={item.normalCount}
+                        itemId={item.id}
+                        data={preparing}
+                        setData={setPreparing}
+                      />
+                    ) : (
+                      "NA"
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <b>Served</b>
-            </TableCell>
-            <TableCell>
-              <b>Jain</b>
-            </TableCell>
-            <TableCell>
-              <b>Normal</b>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {served.map((item, index) => {
-            return (
-              <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>
-                  {item.jainCount ? (
-                    <Counter
-                      jainCount={item.jainCount}
-                      itemId={item.id}
-                      data={served}
-                      setData={setServed}
-                    />
-                  ) : (
-                    "NA"
-                  )}
-                </TableCell>
-                <TableCell>
-                  {item.normalCount ? (
-                    <Counter
-                      normalCount={item.normalCount}
-                      itemId={item.id}
-                      data={served}
-                      setData={setServed}
-                    />
-                  ) : (
-                    "NA"
-                  )}
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+        <Table style={{ backgroundColor: "#F5F5F5" }}>
+          <TableHead>
+            <TableRow className={classes.head}>
+              <TableCell>
+                <b>Served</b>
+              </TableCell>
+              <TableCell>
+                <b>Jain</b>
+              </TableCell>
+              <TableCell>
+                <b>Normal</b>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {served.map((item, index) => {
+              return (
+                <TableRow key={index} className={classes.tableBody}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>
+                    {item.jainCount ? (
+                      <Counter
+                        jainCount={item.jainCount}
+                        itemId={item.id}
+                        data={served}
+                        setData={setServed}
+                      />
+                    ) : (
+                      "NA"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {item.normalCount ? (
+                      <Counter
+                        normalCount={item.normalCount}
+                        itemId={item.id}
+                        data={served}
+                        setData={setServed}
+                      />
+                    ) : (
+                      "NA"
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 };

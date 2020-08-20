@@ -259,7 +259,7 @@ function EditDish(props) {
 
         overflowX: "hidden",
         overflowY: "scroll",
-        height: "76.5vh",
+        height: "84.5vh",
       }}
     >
       <div

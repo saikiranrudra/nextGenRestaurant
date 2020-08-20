@@ -1,13 +1,7 @@
 import React from "react";
 
 // components
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Button,
-} from "@material-ui/core";
+import { List, ListItem, ListItemText, Button } from "@material-ui/core";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,6 +14,20 @@ const useStyle = makeStyles((theme) => ({
   boldText: {
     fontFamily: "Product-Sans",
     fontWeight: "bold",
+  },
+  btn: {
+    backgroundColor: theme.palette.primary.main,
+    color: "#fff",
+    fontFamily: "Product-Sans",
+    fontWeight: "bold",
+  },
+  notificationContainer: {
+    overflowX: "hidden",
+    overflowY: "scroll",
+    height: "81.5vh",
+    backgroundColor: "#F5F5F5",
+    borderRadius: "5px",
+    marginTop: "1.2rem",
   },
 }));
 const notificationsData = [
@@ -82,60 +90,48 @@ const notificationsData = [
 const Notifications = () => {
   const classes = useStyle();
   return (
-    <Table style={{ backgroundColor: "#F5F5F5" }}>
-      <TableBody>
+    <div className={classes.notificationContainer}>
+      <List>
         {notificationsData.map((notification, index) => {
           return (
-            <TableRow
+            <ListItem
               key={index}
               style={{
-                backgroundColor: notification.status ? "#FC6565" : null,
+                margin: ".6rem .5rem",
+                width: "auto",
+                backgroundColor: "#fff",
               }}
             >
-              <TableCell
-                className={classes.boldText}
-                style={{ color: notification.status ? "#fff" : null }}
-              >
+              <ListItemText className={classes.boldText}>
                 Table{" "}
-                <span
-                  className={classes.red}
-                  style={{ color: notification.status ? "#fff" : null }}
-                >
-                  {notification.tableNo}
-                </span>
-              </TableCell>
+                <span className={classes.red}>{notification.tableNo}</span>
+              </ListItemText>
 
-              <TableCell
-                className={classes.boldText}
-                style={{ color: notification.status ? "#fff" : null }}
-              >
+              <ListItemText className={classes.boldText}>
                 <span>{notification.message}</span>
-              </TableCell>
+              </ListItemText>
 
-              <TableCell className={classes.boldText}>
+              <ListItemText className={classes.boldText}>
                 {notification.amount ? (
-                  <span
-                    style={{ color: notification.status ? "#fff" : null }}
-                    className={classes.red}
-                  >
-                    {notification.amount}₹
-                  </span>
+                  <span className={classes.red}>{notification.amount}₹</span>
                 ) : null}
-              </TableCell>
+              </ListItemText>
 
-              <TableCell
+              <ListItemText
                 className={classes.boldText}
                 style={{ color: notification.status ? "#fff" : null }}
               >
                 {notification.status ? (
-                  <Button variant="contained">{notification.status}</Button>
+                  <Button variant="contained" className={classes.btn}>
+                    {notification.status}
+                  </Button>
                 ) : null}
-              </TableCell>
-            </TableRow>
+              </ListItemText>
+            </ListItem>
           );
         })}
-      </TableBody>
-    </Table>
+      </List>
+    </div>
   );
 };
 
