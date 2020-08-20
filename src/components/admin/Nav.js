@@ -20,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   nav: {
     display: "grid",
-    gridAutoRows: "85.6px",
+    gridAutoRows: "auto",
     marginTop: "2rem",
   },
   navItem: {

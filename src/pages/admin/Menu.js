@@ -26,7 +26,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles({
   container: {
     display: "grid",
-    gridTemplateColumns: "80px 1fr 1fr 1fr",
+    gridTemplateColumns: "90px 1fr 1fr 1fr",
     gridTemplateRows: "100px 1fr",
     backgroundColor: "#fff",
   },
@@ -104,11 +104,12 @@ const Menu = (props) => {
             alignItems: "center",
           }}
         >
-          <img
+          <span style={{ width: "8rem", margin: "0 auto" }}></span>
+          {/* <img
             src={logo}
             alt="logo"
             style={{ width: "8rem", margin: "0 auto" }}
-          />
+          /> */}
           <Button
             variant="contained"
             color="primary"

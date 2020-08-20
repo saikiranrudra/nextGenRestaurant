@@ -18,7 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
-    gridTemplateColumns: "80px 209px 345px 1fr 395px",
+    gridTemplateColumns: "90px 209px 345px 1fr 395px",
     gridTemplateRows: "100px 1fr",
     gridGap: "1rem",
     height: "100vh",
@@ -70,11 +70,12 @@ const Dashboard = () => {
       <div
         style={{ gridColumn: "2 / -1", display: "flex", alignItems: "center" }}
       >
-        <img
+        <span style={{ width: "8rem", margin: "0 auto" }}></span>
+        {/* <img
           src={logo}
           alt="logo"
           style={{ width: "8rem", margin: "0 auto" }}
-        />
+        /> */}
         <Button
           variant="contained"
           color="primary"
