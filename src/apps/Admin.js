@@ -14,6 +14,7 @@ import ScreenLogin from "./../pages/admin/ScreenLogin";
 import Dashboard from "./../pages/admin/Dashboard";
 import Orders from "./../pages/admin/Orders";
 import Menu from "./../pages/admin/Menu";
+import Staff from "./../pages/admin/Staff";
 
 const Admin = (props) => {
   const { fetchMenuItems, fetchCategories } = props;
@@ -38,6 +39,9 @@ const Admin = (props) => {
       </Route>
       <Route path="/admin/dashboard/menu">
         <Menu />
+      </Route>
+      <Route path="/admin/dashboard/staff">
+        <Staff />
       </Route>
     </>
   );
