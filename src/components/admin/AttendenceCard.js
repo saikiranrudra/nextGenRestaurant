@@ -83,7 +83,7 @@ const Attendencecard = (props) => {
                 <div className={classes.avator}></div>
                 <div className={classes.content}>
                     <div className={classes.name} align="left">
-                        {props.staff.name}
+                        {props.staff.employeeName}
                     </div>
                     <div className={classes.designation} align="left">
                         {props.staff.designation}

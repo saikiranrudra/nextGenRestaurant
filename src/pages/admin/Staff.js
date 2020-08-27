@@ -27,9 +27,9 @@ const useStyles = makeStyles({
     },
     subContainer: {
         display: "grid",
-        gridTemplateColumns: "350px 350px 350px 350px",
+        gridTemplateColumns: "330px 330px 330px 330px",
         placeContent: "center",
-        gridGap: ".5rem",
+        gridGap: "1rem",
     },
     menuContainer: {
         display: "flex",
