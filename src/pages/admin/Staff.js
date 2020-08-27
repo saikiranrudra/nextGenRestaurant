@@ -19,11 +19,17 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles({
     container: {
         display: "grid",
-        gridTemplateColumns: "90px 350px 350px 350px 350px",
+        gridTemplateColumns: "90px 1fr",
         gridTemplateRows: "58px 1fr",
         gridGap: ".5rem",
         height: "100vh",
         backgroundColor: "#fff",
+    },
+    subContainer: {
+        display: "grid",
+        gridTemplateColumns: "350px 350px 350px 350px",
+        placeContent: "center",
+        gridGap: ".5rem",
     },
     menuContainer: {
         display: "flex",
@@ -73,23 +79,25 @@ const Staff = () => {
                 </Button>
             </div>
 
-            <StaffCalender
-                selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
-            />
-            {takeAttendence ? (
-                <TakeStaffAttendence
+            <div className={classes.subContainer}>
+                <StaffCalender
                     selectedDate={selectedDate}
-                    setTakeAttendence={setTakeAttendence}
+                    setSelectedDate={setSelectedDate}
                 />
-            ) : (
-                <StaffDisplay
-                    setTakeAttendence={setTakeAttendence}
-                    selectedDate={selectedDate}
-                />
-            )}
-            <StaffSpecificAttendence />
-            <EditStaff />
+                {takeAttendence ? (
+                    <TakeStaffAttendence
+                        selectedDate={selectedDate}
+                        setTakeAttendence={setTakeAttendence}
+                    />
+                ) : (
+                    <StaffDisplay
+                        setTakeAttendence={setTakeAttendence}
+                        selectedDate={selectedDate}
+                    />
+                )}
+                <StaffSpecificAttendence />
+                <EditStaff />
+            </div>
         </div>
     );
 };
