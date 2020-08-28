@@ -15,40 +15,44 @@ import Dashboard from "./../pages/admin/Dashboard";
 import Orders from "./../pages/admin/Orders";
 import Menu from "./../pages/admin/Menu";
 import Staff from "./../pages/admin/Staff";
+import Inventory from "./../pages/admin/Inventory";
 
 const Admin = (props) => {
-  const { fetchMenuItems, fetchCategories } = props;
-  useEffect(() => {
-    fetchMenuItems();
-    fetchCategories();
-  }, [fetchMenuItems, fetchCategories]);
+    const { fetchMenuItems, fetchCategories } = props;
+    useEffect(() => {
+        fetchMenuItems();
+        fetchCategories();
+    }, [fetchMenuItems, fetchCategories]);
 
-  return (
-    <>
-      <Route path="/admin/login" exact>
-        <Login />
-      </Route>
-      <Route path="/admin/screenlogin" exact>
-        <ScreenLogin />
-      </Route>
-      <Route path="/admin/dashboard" exact>
-        <Dashboard />
-      </Route>
-      <Route path="/admin/dashboard/orders">
-        <Orders />
-      </Route>
-      <Route path="/admin/dashboard/menu">
-        <Menu />
-      </Route>
-      <Route path="/admin/dashboard/staff">
-        <Staff />
-      </Route>
-    </>
-  );
+    return (
+        <>
+            <Route path="/admin/login" exact>
+                <Login />
+            </Route>
+            <Route path="/admin/screenlogin" exact>
+                <ScreenLogin />
+            </Route>
+            <Route path="/admin/dashboard" exact>
+                <Dashboard />
+            </Route>
+            <Route path="/admin/dashboard/orders">
+                <Orders />
+            </Route>
+            <Route path="/admin/dashboard/menu">
+                <Menu />
+            </Route>
+            <Route path="/admin/dashboard/staff">
+                <Staff />
+            </Route>
+            <Route path="/admin/dashboard/inventory">
+                <Inventory />
+            </Route>
+        </>
+    );
 };
 
 const mapStateToProps = () => ({});
 
 export default connect(mapStateToProps, { fetchMenuItems, fetchCategories })(
-  Admin
+    Admin
 );
