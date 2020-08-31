@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 //Components
 import { Paper, Button } from "@material-ui/core";
 import Nav from "./../../components/admin/Nav";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
 import IngredientMenu from "./../../components/admin/IngredientMenu";
+import DishIngredient from "./../../components/admin/DishIngredient";
+import IngredientManager from "./../../components/admin/IngredientManager";
+
+//State Management
+import { connect } from "react-redux";
+//actions
+import { fetchIngredients } from "./../../actions/customer";
 
 import logo from "./../../assets/logo.png";
 
@@ -15,7 +22,6 @@ const useStyle = makeStyles({
         display: "grid",
         gridTemplateColumns: "90px 1fr",
         gridTemplateRows: "58px 1fr",
-        height: "100vh",
     },
     contentContainer: {
         backgroundColor: "#f5f5f5",
@@ -39,8 +45,22 @@ const useStyle = makeStyles({
     },
 });
 
-const Inventory = () => {
+const Inventory = (props) => {
     const classes = useStyle();
+    const [selectedItem, setSelectedItem] = useState({});
+
+    const { fetchIngredients, menu } = props;
+
+    useEffect(() => {
+        fetchIngredients();
+    }, [fetchIngredients]);
+
+    useEffect(() => {
+        if (menu.length > 0) {
+            setSelectedItem(menu[0]);
+        }
+    }, [menu]);
+
     return (
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
@@ -74,12 +94,14 @@ const Inventory = () => {
             </div>
 
             <div className={classes.subContainer}>
-                <IngredientMenu />
-                <div className={classes.contentContainer}></div>
-                <div className={classes.contentContainer}></div>
+                <IngredientMenu setSelectedItem={setSelectedItem} />
+                <DishIngredient item={selectedItem} />
+                <IngredientManager />
             </div>
         </div>
     );
 };
 
-export default Inventory;
+const mapStateToProps = ({ menu }) => ({ menu });
+
+export default connect(mapStateToProps, { fetchIngredients })(Inventory);

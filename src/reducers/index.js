@@ -13,19 +13,21 @@ import searchReducer from "./searchReducer";
 import pointsReducer from "./pointsReducer";
 import kitchenReducer from "./kitchenReducer";
 import { incrementOrderServed } from "./kitchenReducer";
+import ingredientReducer from "./ingredientReducer";
 
 export default combineReducers({
-  email: emailReducer,
-  category: selectCategories,
-  categories: categories,
-  user: authReducer,
-  menu: menuReducers,
-  // cart: cartReducer,
-  previousOrders: orders,
-  previousOrderVisibility: previousOrderVisibility,
-  recivedOrders: recivedOrdersReducers,
-  search: searchReducer,
-  pointValue: pointsReducer,
-  kitchenOrders: kitchenReducer,
-  orderServed: incrementOrderServed,
+    email: emailReducer,
+    category: selectCategories,
+    categories: categories,
+    user: authReducer,
+    menu: menuReducers,
+    // cart: cartReducer,
+    previousOrders: orders,
+    previousOrderVisibility: previousOrderVisibility,
+    recivedOrders: recivedOrdersReducers,
+    search: searchReducer,
+    pointValue: pointsReducer,
+    kitchenOrders: kitchenReducer,
+    orderServed: incrementOrderServed,
+    ingredients: ingredientReducer,
 });

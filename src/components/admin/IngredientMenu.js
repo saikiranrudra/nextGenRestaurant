@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 //Components
 import { Typography, Button } from "@material-ui/core";
@@ -18,6 +18,9 @@ const useStyle = makeStyles({
         backgroundColor: "#f5f5f5",
         borderRadius: "10px",
         padding: "1.2rem",
+        overflowX: "hidden",
+        overflowY: "scroll",
+        height: "92vh",
     },
     searchContainer: {
         display: "flex",
@@ -74,69 +77,90 @@ const useStyle = makeStyles({
 });
 
 const IngredientMenu = (props) => {
+    const [search, setSearch] = useState("");
     const classes = useStyle();
     return (
         <div className={classes.contentContainer}>
             <div className={classes.searchContainer}>
                 <SearchIcon />
-                <input type="text" placeholder="Search" />
+                <input
+                    type="text"
+                    placeholder="Search"
+                    value={search}
+                    onChange={(e) => {
+                        setSearch(e.target.value);
+                    }}
+                />
             </div>
             <div>
-                {props.menu.map((item, index) => (
-                    <div key={index} className={classes.cardContainer}>
-                        <div
-                            className={classes.cardImg}
-                            style={{ backgroundImage: `url("${item.img}")` }}
-                        ></div>
-                        <div>
-                            <Typography
-                                variant="body1"
-                                align="left"
-                                className={classes.id}
-                            >
-                                {item.id}
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                align="left"
-                                className={classes.name}
-                            >
-                                {item.name}
-                            </Typography>
-                            <Typography
-                                variant="subtitle2"
-                                align="left"
-                                className={classes.ingredient}
-                            >
-                                {item.ingredients.length} Ingredients
-                            </Typography>
-                        </div>
-                        <div
-                            style={{
-                                justifySelf: "center",
-                                alignSelf: "center",
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                startIcon={
-                                    <img
-                                        src={edit}
-                                        alt="edit"
-                                        style={{ width: "1rem" }}
-                                    />
-                                }
-                                style={{
-                                    backgroundColor: "#fff",
-                                    fontSize: ".7rem",
-                                    padding: ".3rem",
-                                }}
-                            >
-                                Edit
-                            </Button>
-                        </div>
-                    </div>
-                ))}
+                {props.menu.map((item, index) => {
+                    if (
+                        item.name.toLowerCase().includes(search.toLowerCase())
+                    ) {
+                        return (
+                            <div key={index} className={classes.cardContainer}>
+                                <div
+                                    className={classes.cardImg}
+                                    style={{
+                                        backgroundImage: `url("${item.img}")`,
+                                    }}
+                                ></div>
+                                <div>
+                                    <Typography
+                                        variant="body1"
+                                        align="left"
+                                        className={classes.id}
+                                    >
+                                        {item.id}
+                                    </Typography>
+                                    <Typography
+                                        variant="h6"
+                                        align="left"
+                                        className={classes.name}
+                                    >
+                                        {item.name}
+                                    </Typography>
+                                    <Typography
+                                        variant="subtitle2"
+                                        align="left"
+                                        className={classes.ingredient}
+                                    >
+                                        {item.ingredients.length} Ingredients
+                                    </Typography>
+                                </div>
+                                <div
+                                    style={{
+                                        justifySelf: "center",
+                                        alignSelf: "center",
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        startIcon={
+                                            <img
+                                                src={edit}
+                                                alt="edit"
+                                                style={{ width: "1rem" }}
+                                            />
+                                        }
+                                        style={{
+                                            backgroundColor: "#fff",
+                                            fontSize: ".7rem",
+                                            padding: ".3rem",
+                                        }}
+                                        onClick={() => {
+                                            props.setSelectedItem(item);
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                </div>
+                            </div>
+                        );
+                    } else {
+                        return null;
+                    }
+                })}
             </div>
         </div>
     );

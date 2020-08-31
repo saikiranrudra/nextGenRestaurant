@@ -487,6 +487,38 @@ export const removeItemFromMenu = (item) => {
     };
 };
 
+export const addIngredient = (item, ingredient) => {
+    return {
+        type: "ADD_INGREDIENT_TO_ITEM",
+        payload: {
+            item,
+            ingredient,
+        },
+    };
+};
+
+export const removeIngredient = (item, ingredient) => {
+    return {
+        type: "REMOVE_INGREDIENT_FROM_ITEM",
+        payload: {
+            item,
+            ingredient,
+        },
+    };
+};
+
+// Not Implemented yet
+export const editIngridentInMenu = (item, ingredientId, newIngredient) => {
+    return {
+        type: "EDIT_INGREDIENT_IN_ITEM",
+        payload: {
+            item,
+            ingredientId,
+            newIngredient,
+        },
+    };
+};
+
 // export const updateCart = (item) => {
 //   return {
 //     type: "UPDATE_CART",
@@ -638,3 +670,33 @@ const ingredients = [
         unit: "kg",
     },
 ];
+
+export const fetchIngredients = () => (dispatch) => {
+    setTimeout(() => {
+        dispatch({
+            type: "FETCH_INGREDIENTS",
+            payload: ingredients,
+        });
+    }, 5000);
+};
+
+export const deleteIngredients = (ingredient) => {
+    return {
+        type: "DELETE_INGREDIENT",
+        payload: ingredient,
+    };
+};
+
+export const addNewIngredient = (ingredient) => {
+    return {
+        type: "ADD_INGREDIENT",
+        payload: ingredient,
+    };
+};
+
+export const editIngredient = (ingredient) => {
+    return {
+        type: "EDIT_INGREDIENT",
+        payload: ingredient,
+    };
+};
