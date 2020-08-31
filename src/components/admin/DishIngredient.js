@@ -78,7 +78,7 @@ const DishIngredient = (props) => {
     const classes = useStyle();
     const [btnText, setBtnText] = useState("Add +");
     const { ingredients } = props;
-    const [ing, setIng] = useState({});
+    const [ing, setIng] = useState(null);
 
     useEffect(() => {
         setIng(

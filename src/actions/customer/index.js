@@ -519,6 +519,13 @@ export const editIngridentInMenu = (item, ingredientId, newIngredient) => {
     };
 };
 
+export const deleteIngredientFromAllItems = (ingredient) => {
+    return {
+        type: "DELETE_INGREDIENT_FROM_ALL_ITEMS",
+        payload: ingredient,
+    };
+};
+
 // export const updateCart = (item) => {
 //   return {
 //     type: "UPDATE_CART",

@@ -89,6 +89,17 @@ export default (state = [], action) => {
             return [...state];
         }
 
+        case "DELETE_INGREDIENT_FROM_ALL_ITEMS": {
+            _.forEach(state, (item) => {
+                _.remove(
+                    item.ingredients,
+                    (ing) => ing.id === action.payload.id
+                );
+            });
+
+            return [...state];
+        }
+
         default:
             return state;
     }
