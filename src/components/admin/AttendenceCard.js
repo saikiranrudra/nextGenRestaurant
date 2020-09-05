@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 //components
 
+//State Management
+import { connect } from "react-redux";
+
 //assets
 import staffAvator from "./../../assets/staffAvator.png";
 
@@ -103,7 +106,7 @@ const Attendencecard = (props) => {
                             style={{
                                 backgroundColor:
                                     absent === false
-                                        ? "#FC6565"
+                                        ? props.theme.primary
                                         : "transparent",
                             }}
                         ></div>
@@ -121,4 +124,5 @@ const Attendencecard = (props) => {
     );
 };
 
-export default Attendencecard;
+const mapStateToProps = ({ theme }) => ({ theme });
+export default connect(mapStateToProps)(Attendencecard);

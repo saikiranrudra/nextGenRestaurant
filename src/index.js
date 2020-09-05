@@ -13,32 +13,14 @@ import reducers from "./reducers";
 // Components
 import App from "./App";
 
-// theming
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#e65050",
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: "#11cb5f",
-    },
-  },
-});
-
 const store = createStore(
-  reducers,
-  composeWithDevTools(applyMiddleware(thunk))
+    reducers,
+    composeWithDevTools(applyMiddleware(thunk))
 );
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  </Provider>,
-  document.getElementById("root")
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById("root")
 );

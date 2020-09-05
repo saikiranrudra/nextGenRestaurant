@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // react router dom
 import { BrowserRouter, Route } from "react-router-dom";
@@ -9,39 +9,69 @@ import Admin from "./apps/Admin";
 import Kitchen from "./apps/Kitchen";
 import CustomerRepresentative from "./apps/CustomerRepresentative";
 
+//State Management
+import { connect } from "react-redux";
+import { fetchTheme } from "./actions/general/theme";
+
 //global css
 import "./global.css";
 import { CssBaseline, Container } from "@material-ui/core";
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      <>
-        <CssBaseline />
-        <Route path="/customer">
-          <Container maxWidth="sm" style={{ padding: 0 }}>
-            <Customer />
-          </Container>
-        </Route>
-        <Route path="/admin">
-          <Admin />
-        </Route>
-        <Route path="/kitchen">
-          <Kitchen />
-        </Route>
-        <Route path="/cr">
-          <Container maxWidth="sm" style={{ padding: 0 }}>
-            <CustomerRepresentative />
-          </Container>
-        </Route>
+// theming
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 
-        <Route path="/customerrepresentative">
-          <Container maxWidth="sm" style={{ padding: 0 }}>
-            <CustomerRepresentative />
-          </Container>
-        </Route>
-      </>
-    </BrowserRouter>
-  );
+const App = (props) => {
+    const { fetchTheme } = props;
+
+    useEffect(() => {
+        fetchTheme();
+    }, [fetchTheme]);
+
+    const theme = createMuiTheme({
+        palette: {
+            primary: {
+                main: props.theme.primary,
+            },
+            secondary: {
+                // This is green.A700 as hex.
+                main: "#11cb5f",
+            },
+        },
+    });
+
+    return (
+        <BrowserRouter>
+            <>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <Route path="/customer">
+                        <Container maxWidth="sm" style={{ padding: 0 }}>
+                            <Customer />
+                        </Container>
+                    </Route>
+                    <Route path="/admin">
+                        <Admin />
+                    </Route>
+                    <Route path="/kitchen">
+                        <Kitchen />
+                    </Route>
+                    <Route path="/cr">
+                        <Container maxWidth="sm" style={{ padding: 0 }}>
+                            <CustomerRepresentative />
+                        </Container>
+                    </Route>
+
+                    <Route path="/customerrepresentative">
+                        <Container maxWidth="sm" style={{ padding: 0 }}>
+                            <CustomerRepresentative />
+                        </Container>
+                    </Route>
+                </ThemeProvider>
+            </>
+        </BrowserRouter>
+    );
 };
-export default App;
+
+const mapStateToProps = ({ theme }) => ({ theme });
+export default connect(mapStateToProps, { fetchTheme })(App);

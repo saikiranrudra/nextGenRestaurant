@@ -14,9 +14,11 @@ import pointsReducer from "./pointsReducer";
 import kitchenReducer from "./kitchenReducer";
 import { incrementOrderServed } from "./kitchenReducer";
 import ingredientReducer from "./ingredientReducer";
+import themeReducer from "./themeReducer";
 
 export default combineReducers({
     email: emailReducer,
+    theme: themeReducer,
     category: selectCategories,
     categories: categories,
     user: authReducer,

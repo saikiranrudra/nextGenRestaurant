@@ -19,79 +19,79 @@ import CustomerProtect from "./../components/customer/CustomerProtect";
 import { connect } from "react-redux";
 //actions
 import {
-  fetchMenuItems,
-  fetchCategories,
-  previousOrder,
-  addConfirmedOrder,
-  fetchDiscount,
+    fetchMenuItems,
+    fetchCategories,
+    previousOrder,
+    addConfirmedOrder,
+    fetchDiscount,
 } from "./../actions/customer";
 
 // component
 
 const Customer = (props) => {
-  const {
-    fetchMenuItems,
-    previousOrder,
-    fetchCategories,
-    addConfirmedOrder,
-    fetchDiscount,
-  } = props;
+    const {
+        fetchMenuItems,
+        previousOrder,
+        fetchCategories,
+        addConfirmedOrder,
+        fetchDiscount,
+    } = props;
 
-  // fetch menu
-  useEffect(() => {
-    fetchMenuItems();
-    fetchCategories();
-    previousOrder();
-    addConfirmedOrder();
-    fetchDiscount();
-  }, [
-    fetchMenuItems,
-    fetchCategories,
-    previousOrder,
-    addConfirmedOrder,
-    fetchDiscount,
-  ]);
+    // fetch menu
+    useEffect(() => {
+        fetchMenuItems();
+        fetchCategories();
+        previousOrder();
+        addConfirmedOrder();
+        fetchDiscount();
+    }, [
+        fetchMenuItems,
+        fetchCategories,
+        previousOrder,
+        addConfirmedOrder,
+        fetchDiscount,
+    ]);
 
-  return (
-    <>
-      <Route path="/customer/" exact>
-        <Auth />
-      </Route>
-      <Route path="/customer/signup" exact>
-        <SignUp />
-      </Route>
-      <Route path="/customer/needhelp" exact>
-        <NeedHelp />
-      </Route>
-      <Route path="/customer/home" exact>
-        <CustomerProtect>
-          <Home />
-        </CustomerProtect>
-      </Route>
-      <Route path="/customer/orderconfirm" exact>
-        <OrderConfirm />
-      </Route>
-      <Route path="/customer/orders" exact>
-        <Order />
-      </Route>
-      <Route path="/customer/paybill" exact>
-        <PayBill />
-      </Route>
-      <Route path="/customer/payment/successfull" exact>
-        <ThankYou />
-      </Route>
-      <Route path="/customer/points" exact>
-        <Points />
-      </Route>
-    </>
-  );
+    return (
+        <>
+            <Route path="/customer/" exact>
+                <Auth />
+            </Route>
+            <Route path="/customer/signup" exact>
+                <SignUp />
+            </Route>
+            <Route path="/customer/needhelp" exact>
+                <NeedHelp />
+            </Route>
+            <Route path="/customer/home" exact>
+                <CustomerProtect>
+                    <Home />
+                </CustomerProtect>
+            </Route>
+            <Route path="/customer/orderconfirm" exact>
+                <OrderConfirm />
+            </Route>
+            <Route path="/customer/orders" exact>
+                <Order />
+            </Route>
+            <Route path="/customer/paybill" exact>
+                <PayBill />
+            </Route>
+            <Route path="/customer/payment/successfull" exact>
+                <ThankYou />
+            </Route>
+            <Route path="/customer/points" exact>
+                <Points />
+            </Route>
+        </>
+    );
 };
 
 const mapStateToProps = () => ({});
 export default connect(mapStateToProps, {
-  fetchMenuItems,
-  fetchCategories,
-  previousOrder,
-  addConfirmedOrder,
-  fetchDiscount,
+    fetchMenuItems,
+    fetchCategories,
+    previousOrder,
+    addConfirmedOrder,
+    fetchDiscount,
 })(Customer);
