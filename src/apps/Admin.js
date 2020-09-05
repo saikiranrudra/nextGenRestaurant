@@ -16,6 +16,7 @@ import Orders from "./../pages/admin/Orders";
 import Menu from "./../pages/admin/Menu";
 import Staff from "./../pages/admin/Staff";
 import Inventory from "./../pages/admin/Inventory";
+import Setting from "../pages/admin/Setting";
 
 const Admin = (props) => {
     const { fetchMenuItems, fetchCategories } = props;
@@ -46,6 +47,9 @@ const Admin = (props) => {
             </Route>
             <Route path="/admin/dashboard/inventory">
                 <Inventory />
+            </Route>
+            <Route path="/admin/dashboard/setting">
+                <Setting />
             </Route>
         </>
     );

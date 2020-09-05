@@ -57,6 +57,13 @@ const IngridentEdit = (props) => {
         setIngredient(props.ingredientItem);
     }, [props.ingredientItem]);
 
+    const handleSaveChanges = () => {
+        setBtnText("please wait...");
+        setTimeout(() => {
+            setBtnText("Save Changes");
+        }, 3000);
+    };
+
     return (
         <TableRow>
             <TableCell colSpan={4}>
@@ -113,6 +120,7 @@ const IngridentEdit = (props) => {
                                 ? true
                                 : false
                         }
+                        onClick={handleSaveChanges}
                     >
                         {btnText}
                     </Button>

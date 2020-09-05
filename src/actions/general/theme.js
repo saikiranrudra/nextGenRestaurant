@@ -8,3 +8,10 @@ export const fetchTheme = () => (dispatch) => {
         });
     }, 3000);
 };
+
+export const setPrimaryColor = (color) => {
+    return {
+        type: "SET_PRIMARY_COLOR",
+        payload: color,
+    };
+};

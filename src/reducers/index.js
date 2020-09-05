@@ -15,8 +15,10 @@ import kitchenReducer from "./kitchenReducer";
 import { incrementOrderServed } from "./kitchenReducer";
 import ingredientReducer from "./ingredientReducer";
 import themeReducer from "./themeReducer";
+import appStateReducer from "./appStateReducer";
 
 export default combineReducers({
+    appState: appStateReducer,
     email: emailReducer,
     theme: themeReducer,
     category: selectCategories,

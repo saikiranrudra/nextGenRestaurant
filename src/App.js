@@ -12,6 +12,7 @@ import CustomerRepresentative from "./apps/CustomerRepresentative";
 //State Management
 import { connect } from "react-redux";
 import { fetchTheme } from "./actions/general/theme";
+import { fetchAppState } from "./actions/general/appState";
 
 //global css
 import "./global.css";
@@ -22,11 +23,12 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 
 const App = (props) => {
-    const { fetchTheme } = props;
+    const { fetchTheme, fetchAppState } = props;
 
     useEffect(() => {
         fetchTheme();
-    }, [fetchTheme]);
+        fetchAppState();
+    }, [fetchTheme, fetchAppState]);
 
     const theme = createMuiTheme({
         palette: {
@@ -74,4 +76,4 @@ const App = (props) => {
 };
 
 const mapStateToProps = ({ theme }) => ({ theme });
-export default connect(mapStateToProps, { fetchTheme })(App);
+export default connect(mapStateToProps, { fetchTheme, fetchAppState })(App);
