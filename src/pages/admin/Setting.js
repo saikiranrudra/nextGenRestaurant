@@ -4,6 +4,7 @@ import React from "react";
 import { Paper, Button } from "@material-ui/core";
 import Nav from "./../../components/admin/Nav";
 import SettingsForm from "./../../components/admin/SettingsForm";
+import TablesManager from "./../../components/admin/TablesManager";
 
 //assets
 import logo from "./../../assets/logo.png";
@@ -16,8 +17,8 @@ const useStyles = makeStyles({
     container: {
         display: "grid",
         gridTemplateColumns: "90px 1fr",
-        gridTemplateRows: "58px 1fr",
         gridGap: ".5rem",
+        gridTemplateRows: "58px 1fr",
         height: "100vh",
         backgroundColor: "#fff",
     },
@@ -34,7 +35,8 @@ const useStyles = makeStyles({
 
     subContainer: {
         display: "grid",
-        gridTemplateColumns: "repeat(2, 330px)",
+        gridGap: "1rem",
+        gridTemplateColumns: "repeat(2, 450px)",
     },
 });
 
@@ -76,7 +78,7 @@ const Setting = () => {
             <div className={classes.subContainer}>
                 <SettingsForm />
 
-                <div></div>
+                <TablesManager />
             </div>
         </div>
     );

@@ -8,17 +8,17 @@ import DishIngredientTabEdit from "./DishIngredientTabEdit";
 import editIcon from "./../..//assets/dashboardAssets/edit.svg";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
-//styling
-import { makeStyles } from "@material-ui/core/styles";
-
 //State Management
 import { connect } from "react-redux";
 import { removeIngredient } from "./../../actions/customer";
 
+//styling
+import { makeStyles } from "@material-ui/core/styles";
+
 const useStyle = makeStyles({
     tableBody: {
-        border: "8px solid #f5f5f5",
-        // borderBottom: "5px solid #f5f5f5",
+        borderTop: "8px solid #f5f5f5",
+        borderBottom: "5px solid #f5f5f5",
         "& > td": {
             fontFamily: "Product-Sans",
             fontWeight: "bold",

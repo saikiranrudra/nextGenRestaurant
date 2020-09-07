@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         marginTop: ".4rem",
         justifyContent: "space-between",
+        width: "21rem",
     },
 
     changePasswordForm: {
@@ -114,7 +115,7 @@ const SettingsForm = (props) => {
                     placeholder="Name"
                     style={{
                         padding: ".6rem .8rem",
-                        width: "100%",
+                        width: "21rem",
                     }}
                 />
 
