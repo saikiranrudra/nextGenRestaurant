@@ -107,6 +107,7 @@ const Auth = (props) => {
                 history.push("/customer/home");
             })
             .catch((err) => {
+                console.log(err);
                 if (err.response !== undefined) {
                     setNotification({
                         open: true,
@@ -125,7 +126,7 @@ const Auth = (props) => {
 
     useEffect(() => {
         if (props.user !== null) {
-            if (props.user.role === "customer") {
+            if (props.user.email !== undefined) {
                 history.push("/customer/home");
             }
         }

@@ -10,12 +10,7 @@ export const customerAuthenticate = (user) => {
     //If authenticated passed
     return {
         type: "AUTHENTICATION_AND_AUTHORIZATION",
-        payload: {
-            email: user.email,
-            role: "customer",
-            id: "abcd123456789",
-            points: 256,
-        },
+        payload: user,
     };
     //If authentication failed
     //   return {
