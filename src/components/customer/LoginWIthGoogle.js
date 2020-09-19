@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { customerAuthenticate } from "./../../actions/customer";
 
 // variables
-import { baseURL } from "./../../variables";
+import { baseURL, clientId } from "./../../variables";
 
 //styling
 // import { makeStyles } from "@material-ui/core/styles";
@@ -89,6 +89,11 @@ const LoginWithGoogle = (props) => {
 
     const handleFailure = (response) => {
         console.log(response);
+        setNotification({
+            open: true,
+            type: "error",
+            message: "Something went wrong try again later",
+        });
     };
 
     const handleClose = () => {
@@ -102,7 +107,7 @@ const LoginWithGoogle = (props) => {
     return (
         <>
             <GoogleLogin
-                clientId="770826937486-d9e3nf51tic5j7do1s5grco048r40oal.apps.googleusercontent.com"
+                clientId={clientId}
                 buttonText="Login with Google"
                 onSuccess={handleSuccess}
                 onFailure={handleFailure}
