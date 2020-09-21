@@ -16,7 +16,7 @@ export default (state = [], action) => {
         case "EDIT_INGREDIENT":
             let index = _.findIndex(
                 state,
-                (ingredient) => ingredient.id === action.payload.id
+                (ingredient) => ingredient._id === action.payload._id
             );
             if (index !== -1) {
                 state[index] = action.payload;

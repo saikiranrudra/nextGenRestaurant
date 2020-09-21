@@ -23,12 +23,12 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
 // Routing
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 //state management
 import { connect } from "react-redux";
 // actions
-import { customerAuthenticate } from "./../../actions/customer";
+import { customerAuthenticate, setTableNo } from "./../../actions/customer";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -74,6 +74,10 @@ const useStyle = makeStyles({
     },
 });
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 const Auth = (props) => {
     const classes = useStyle();
     const history = useHistory();
@@ -82,6 +86,8 @@ const Auth = (props) => {
         message: "",
         type: "error",
     });
+    let query = useQuery();
+    const { setTableNo, tableNo } = props;
 
     const handleClose = (event, reason) => {
         setNotification({ ...notification, open: false });
@@ -123,6 +129,16 @@ const Auth = (props) => {
                 }
             });
     };
+
+    useEffect(() => {
+        if (tableNo === null && query.get("tableNo") === null) {
+            alert(
+                "please scan the qr and while using this app do not refresh or edit url"
+            );
+        } else {
+            setTableNo(query.get("tableNo"));
+        }
+    }, [query, setTableNo, tableNo]);
 
     useEffect(() => {
         if (props.user !== null) {
@@ -211,7 +227,12 @@ const Auth = (props) => {
     );
 };
 
-const mapStateToProps = ({ user, email }) => ({ user, email });
+const mapStateToProps = ({ user, email, tableNo }) => ({
+    user,
+    email,
+    tableNo,
+});
 export default connect(mapStateToProps, {
     customerAuthenticate,
+    setTableNo,
 })(Auth);

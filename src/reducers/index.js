@@ -16,6 +16,7 @@ import { incrementOrderServed } from "./kitchenReducer";
 import ingredientReducer from "./ingredientReducer";
 import themeReducer from "./themeReducer";
 import appStateReducer from "./appStateReducer";
+import tableReducer from "./tableReducer";
 
 export default combineReducers({
     appState: appStateReducer,
@@ -34,4 +35,5 @@ export default combineReducers({
     kitchenOrders: kitchenReducer,
     orderServed: incrementOrderServed,
     ingredients: ingredientReducer,
+    tableNo: tableReducer,
 });

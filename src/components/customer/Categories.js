@@ -4,6 +4,8 @@ import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { Grow } from "@material-ui/core";
 
+import { baseURL } from "./../../variables";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -48,9 +50,9 @@ const Categories = (props) => {
                         <div className={classes.categorieContainer}>
                             <div
                                 style={{
-                                    backgroundImage: `url("${categorie.img}")`,
+                                    backgroundImage: `url("${baseURL}${categorie.img}")`,
                                     border:
-                                        categorie.id === props.category.id
+                                        categorie._id === props.category._id
                                             ? `2px solid ${props.theme.primary}`
                                             : null,
                                 }}

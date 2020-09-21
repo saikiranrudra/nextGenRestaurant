@@ -54,7 +54,7 @@ const Customer = (props) => {
 
     return (
         <>
-            <Route path="/customer/" exact>
+            <Route path="/customer" exact>
                 <Auth />
             </Route>
             <Route path="/customer/signup" exact>

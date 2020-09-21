@@ -3,7 +3,7 @@ import _ from "lodash";
 const findAndUpdate = (old, newObj) => {
     let index = -1;
     old.forEach((e, i) => {
-        if (e.id === newObj.id) {
+        if (e._id === newObj._id) {
             index = i;
         }
     });
@@ -43,7 +43,7 @@ export default (state = [], action) => {
             return [...state];
         }
         case "REMOVER_ITEM_FROM_MENU": {
-            _.remove(state, (item) => item.id === action.payload.id);
+            _.remove(state, (item) => item._id === action.payload._id);
             return [...state];
         }
 
@@ -72,11 +72,11 @@ export default (state = [], action) => {
             let index = _.findIndex(state, action.payload.item);
             if (index !== -1) {
                 let ingredientIndex = _.findIndex(state[index].ingredients, {
-                    id: action.payload.ingredientId,
+                    _id: action.payload.ingredientId,
                 });
                 if (ingredientIndex !== -1) {
                     let checkIndex = _.findIndex(state[index].ingredients, {
-                        id: action.payload.newIngredient.id,
+                        _id: action.payload.newIngredient.id,
                         amount: action.payload.newIngredient.amount,
                     });
                     if (checkIndex === -1) {
@@ -93,7 +93,7 @@ export default (state = [], action) => {
             _.forEach(state, (item) => {
                 _.remove(
                     item.ingredients,
-                    (ing) => ing.id === action.payload.id
+                    (ing) => ing._id === action.payload._id
                 );
             });
 
