@@ -16,7 +16,11 @@ import _ from "lodash";
 // state management
 import { connect } from "react-redux";
 //action
-import { setSearch, setCategory } from "./../../actions/customer";
+import {
+    setSearch,
+    setCategory,
+    addConfirmedOrder,
+} from "./../../actions/customer";
 
 //images
 import featureItem from "./../../assets/featureItem.jpg";
@@ -107,7 +111,7 @@ const useStyle = makeStyles({
 
 const Home = (props) => {
     const classes = useStyle();
-    const { categories, setCategory } = props;
+    const { categories, setCategory, addConfirmedOrder, user } = props;
     useEffect(() => {
         if (categories.length > 0) {
             let allObj = _.find(categories, { name: "all" });
@@ -116,6 +120,10 @@ const Home = (props) => {
             }
         }
     }, [categories, setCategory]);
+
+    useEffect(() => {
+        addConfirmedOrder(user.token);
+    }, [user, addConfirmedOrder]);
 
     return (
         <div>
@@ -171,5 +179,9 @@ const Home = (props) => {
     );
 };
 
-const mapStateToProps = ({ categories }) => ({ categories });
-export default connect(mapStateToProps, { setSearch, setCategory })(Home);
+const mapStateToProps = ({ categories, user }) => ({ categories, user });
+export default connect(mapStateToProps, {
+    setSearch,
+    setCategory,
+    addConfirmedOrder,
+})(Home);

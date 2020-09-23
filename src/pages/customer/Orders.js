@@ -124,8 +124,8 @@ const Orders = (props) => {
             name: props.user.name,
             phoneNo: props.user.phoneNumber ? props.user.phoneNumber : null,
             dataOfBirth: props.user.dataOfBirth ? props.user.dataOfBirth : null,
+            token: props.user.token,
         };
-        console.log(order);
         axios
             .post(`${baseURL}/api/v1/orders/placeorder`, order)
             .then(() => {

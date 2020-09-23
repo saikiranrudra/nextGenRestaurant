@@ -22,7 +22,6 @@ import {
     fetchMenuItems,
     fetchCategories,
     previousOrder,
-    addConfirmedOrder,
     fetchDiscount,
 } from "./../actions/customer";
 
@@ -33,7 +32,6 @@ const Customer = (props) => {
         fetchMenuItems,
         previousOrder,
         fetchCategories,
-        addConfirmedOrder,
         fetchDiscount,
     } = props;
 
@@ -42,15 +40,8 @@ const Customer = (props) => {
         fetchMenuItems();
         fetchCategories();
         previousOrder();
-        addConfirmedOrder();
         fetchDiscount();
-    }, [
-        fetchMenuItems,
-        fetchCategories,
-        previousOrder,
-        addConfirmedOrder,
-        fetchDiscount,
-    ]);
+    }, [fetchMenuItems, fetchCategories, previousOrder, fetchDiscount]);
 
     return (
         <>
@@ -92,6 +83,5 @@ export default connect(mapStateToProps, {
     fetchMenuItems,
     fetchCategories,
     previousOrder,
-    addConfirmedOrder,
     fetchDiscount,
 })(Customer);

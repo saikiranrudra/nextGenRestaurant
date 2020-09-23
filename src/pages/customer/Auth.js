@@ -136,7 +136,9 @@ const Auth = (props) => {
                 "please scan the qr and while using this app do not refresh or edit url"
             );
         } else {
-            setTableNo(query.get("tableNo"));
+            if (query.get("tableNo") !== null) {
+                setTableNo(query.get("tableNo"));
+            }
         }
     }, [query, setTableNo, tableNo]);
 

@@ -566,14 +566,12 @@ let previousOrderData = [
 
 export const previousOrder = () => (dispatch) => {
     //api call for previous order
-
+    // axios.get()
     // imetating api call with setTimeOut
-    setTimeout(() => {
-        dispatch({
-            type: "FETCH_PREVIOUS_ORDER",
-            payload: previousOrderData,
-        });
-    }, 4000);
+    dispatch({
+        type: "FETCH_PREVIOUS_ORDER",
+        payload: previousOrderData,
+    });
 };
 
 export const showPreviousOrder = (visibility) => {
@@ -583,16 +581,23 @@ export const showPreviousOrder = (visibility) => {
     };
 };
 
-export const addConfirmedOrder = () => (dispatch) => {
+export const addConfirmedOrder = (token) => (dispatch) => {
     // create an api request to db to recive confirm orders
 
-    //emitating api call
-    setTimeout(() => {
-        dispatch({
-            type: "ADD_CONFIRM_ORDERS",
-            payload: previousOrderData,
+    axios
+        .post(`${baseURL}/api/v1/orders/myorders`, { token })
+        .then((res) => {
+            dispatch({
+                type: "ADD_PLACED_ORDERS",
+                payload: res.data.data,
+            });
+        })
+        .catch((err) => {
+            dispatch({
+                type: "ADD_CONFIRM_ORDERS",
+                payload: [],
+            });
         });
-    }, 4000);
 };
 
 /***** SEARCH *****/
