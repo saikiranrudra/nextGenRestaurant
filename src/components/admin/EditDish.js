@@ -182,13 +182,40 @@ const handleSaveChange = (
     }
 };
 
-const handleDelete = (dishInfo, removeItemFromMenu, setDeleteItem) => {
+const handleDelete = (
+    dishInfo,
+    removeItemFromMenu,
+    setDeleteItem,
+    staff,
+    setSnackbar,
+    fetchMenuItems
+) => {
     // remove item from database
+    const data = {
+        _id: dishInfo._id,
+        token: staff.token,
+    };
     setDeleteItem("please wait...");
-    setTimeout(() => {
-        removeItemFromMenu(dishInfo);
-        setDeleteItem("Delete Dish");
-    }, 4000);
+    axios
+        .post(`${baseURL}/api/v1/items/deleteitem`, data)
+        .then((res) => {
+            setSnackbar({
+                type: "success",
+                text: "Item Deleted Successfully",
+                open: true,
+            });
+            fetchMenuItems();
+            setDeleteItem("Delete Dish");
+        })
+        .catch((err) => {
+            console.log(err);
+            setSnackbar({
+                type: "warning",
+                text: "Something went wrong try again later",
+                open: true,
+            });
+            setDeleteItem("Delete Dish");
+        });
 };
 const handleDone = (setSnackbar, setHideItem, removeDishOption) => {
     setHideItem("please wait...");
@@ -467,7 +494,10 @@ function EditDish(props) {
                                 handleDelete(
                                     dishInfo,
                                     props.removeItemFromMenu,
-                                    setDeleteItem
+                                    setDeleteItem,
+                                    props.staff,
+                                    setSnackbar,
+                                    props.fetchMenuItems
                                 );
                             }}
                             disabled={

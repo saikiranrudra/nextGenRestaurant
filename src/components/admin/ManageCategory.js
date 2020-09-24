@@ -8,7 +8,11 @@ import { Button, Typography } from "@material-ui/core";
 import { baseURL } from "./../../variables";
 
 // utils
-import _ from "lodash";
+// import _ from "lodash";
+import FormData from "form-data";
+
+//API
+import axios from "axios";
 
 //State Management
 import { connect } from "react-redux";
@@ -17,6 +21,7 @@ import {
     addCategory,
     removeCategory,
     modifyCategory,
+    fetchCategories,
 } from "./../../actions/customer";
 
 // icons
@@ -109,8 +114,6 @@ function ManageCategory(props) {
     };
 
     const handleAddCategory = () => {
-        //add in database
-
         //then update State
         if (file === null) {
             alert("image is required to create catergory");
@@ -121,13 +124,23 @@ function ManageCategory(props) {
             return;
         }
         setBtnText({ ...btnText, addCategory: "please wait..." });
-        setTimeout(() => {
-            delete category._id;
-            category._id = _.uniqueId("gen");
-            category.img = file;
-            props.addCategory(category);
-            setBtnText({ ...btnText, addCategory: "Add Category" });
-        }, 4000);
+
+        let data = new FormData();
+        data.append("name", category.name);
+        data.append("img", file);
+        data.append("token", props.staff.token);
+
+        //add in database
+        axios
+            .post(`${baseURL}/api/v1/category/createCategory`, data)
+            .then((res) => {
+                props.fetchCategories();
+                setBtnText({ ...btnText, addCategory: "Add Category" });
+            })
+            .catch((err) => {
+                alert(err);
+                setBtnText({ ...btnText, addCategory: "Add Category" });
+            });
     };
 
     const handleDeleteCategory = () => {
@@ -320,9 +333,10 @@ function ManageCategory(props) {
     );
 }
 
-const mapStateToProps = ({ categories }) => ({ categories });
+const mapStateToProps = ({ categories, staff }) => ({ categories, staff });
 export default connect(mapStateToProps, {
     addCategory,
     removeCategory,
     modifyCategory,
+    fetchCategories,
 })(ManageCategory);
