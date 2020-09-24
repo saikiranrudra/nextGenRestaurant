@@ -6,6 +6,11 @@ import Nav from "./../../components/admin/Nav";
 import ShowAndPrintBill from "./../../components/admin/ShowAndPrintBill";
 import AllOrders from "./../../components/admin/AllOrders";
 
+// StateManagemnet
+import { connect } from "react-redux";
+//Actions
+import { staffLogin } from "./../../actions/customer";
+
 //images
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -13,109 +18,121 @@ import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
-  container: {
-    display: "grid",
-    gridTemplateColumns: "90px 277px 1fr 193px",
-    gridTemplateRows: "58px 1fr",
-    gridGap: "1rem",
-    height: "100vh",
-    backgroundColor: "#fff",
-  },
-  menuContainer: {
-    display: "flex",
-    flexDirection: "row",
-    gridRow: "span 2",
-    justifyContent: "center",
-  },
-  logo: {
-    width: "4rem",
-    marginTop: "1rem",
-  },
-  heading: {
-    fontFamily: "Product-Sans",
-    fontWeight: "bold",
-    fontStyle: "normal",
-    lineHeight: 0,
-    marginBottom: "1.2rem",
-    paddingTop: "0.5rem",
-  },
-  statBox: {
-    margin: "1.2rem 0",
-  },
-  title: {
-    display: "block",
-    fontFamily: "Product-Sans",
-    fontSize: ".9rem",
-  },
-  quantity: {
-    display: "block",
-    fontFamily: "Product-Sans",
-    fontSize: "4rem",
-    fontWeight: "bold",
-    color: theme.palette.primary.main,
-    lineHeight: 1,
-  },
+    container: {
+        display: "grid",
+        gridTemplateColumns: "90px 277px 1fr 193px",
+        gridTemplateRows: "58px 1fr",
+        gridGap: "1rem",
+        height: "100vh",
+        backgroundColor: "#fff",
+    },
+    menuContainer: {
+        display: "flex",
+        flexDirection: "row",
+        gridRow: "span 2",
+        justifyContent: "center",
+    },
+    logo: {
+        width: "4rem",
+        marginTop: "1rem",
+    },
+    heading: {
+        fontFamily: "Product-Sans",
+        fontWeight: "bold",
+        fontStyle: "normal",
+        lineHeight: 0,
+        marginBottom: "1.2rem",
+        paddingTop: "0.5rem",
+    },
+    statBox: {
+        margin: "1.2rem 0",
+    },
+    title: {
+        display: "block",
+        fontFamily: "Product-Sans",
+        fontSize: ".9rem",
+    },
+    quantity: {
+        display: "block",
+        fontFamily: "Product-Sans",
+        fontSize: "4rem",
+        fontWeight: "bold",
+        color: theme.palette.primary.main,
+        lineHeight: 1,
+    },
 }));
-const Orders = () => {
-  const classes = useStyle();
-  return (
-    <div className={classes.container}>
-      <Paper className={classes.menuContainer}>
-        <div style={{ width: "100%", textAlign: "center" }}>
-          <img src={logo} alt="logo" className={classes.logo} />
-          <Nav />
-        </div>
-      </Paper>
+const Orders = (props) => {
+    const classes = useStyle();
+    return (
+        <div className={classes.container}>
+            <Paper className={classes.menuContainer}>
+                <div style={{ width: "100%", textAlign: "center" }}>
+                    <img src={logo} alt="logo" className={classes.logo} />
+                    <Nav />
+                </div>
+            </Paper>
 
-      <div
-        style={{ gridColumn: "2 / -1", display: "flex", alignItems: "center" }}
-      >
-        <span style={{ width: "8rem", margin: "0 auto" }}></span>
-        {/* <img
+            <div
+                style={{
+                    gridColumn: "2 / -1",
+                    display: "flex",
+                    alignItems: "center",
+                }}
+            >
+                <span style={{ width: "8rem", margin: "0 auto" }}></span>
+                {/* <img
           src={logo}
           alt="logo"
           style={{ width: "8rem", margin: "0 auto" }}
         /> */}
-        <Button
-          variant="contained"
-          color="primary"
-          endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
-          style={{ margin: "1rem" }}
-        >
-          Logout
-        </Button>
-      </div>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
+                    style={{ margin: "1rem" }}
+                    onClick={() => {
+                        props.staffLogin(null);
+                    }}
+                >
+                    Logout
+                </Button>
+            </div>
 
-      <div>
-        <ShowAndPrintBill />
-      </div>
+            <div>
+                <ShowAndPrintBill />
+            </div>
 
-      <div>
-        <AllOrders />
-      </div>
+            <div>
+                <AllOrders />
+            </div>
 
-      <div>
-        <Typography variant="h6" align="left" className={classes.heading}>
-          Order Stats
-        </Typography>
+            <div>
+                <Typography
+                    variant="h6"
+                    align="left"
+                    className={classes.heading}
+                >
+                    Order Stats
+                </Typography>
 
-        <div className={classes.statBox}>
-          <span className={classes.title}>Orders</span>
-          <span className={classes.quantity}>25</span>
+                <div className={classes.statBox}>
+                    <span className={classes.title}>Orders</span>
+                    <span className={classes.quantity}>25</span>
+                </div>
+
+                <div className={classes.statBox}>
+                    <span className={classes.title}>Served</span>
+                    <span className={classes.quantity}>16</span>
+                </div>
+
+                <div className={classes.statBox}>
+                    <span className={classes.title}>Preparing</span>
+                    <span className={classes.quantity}>10</span>
+                </div>
+            </div>
         </div>
-
-        <div className={classes.statBox}>
-          <span className={classes.title}>Served</span>
-          <span className={classes.quantity}>16</span>
-        </div>
-
-        <div className={classes.statBox}>
-          <span className={classes.title}>Preparing</span>
-          <span className={classes.quantity}>10</span>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default Orders;
+const mapStateToProps = () => ({});
+export default connect(mapStateToProps, { staffLogin })(Orders);

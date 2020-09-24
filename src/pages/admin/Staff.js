@@ -9,6 +9,11 @@ import StaffSpecificAttendence from "./../../components/admin/StaffSpecificAtten
 import EditStaff from "./../../components/admin/EditStaff";
 import TakeStaffAttendence from "./../../components/admin/TakeStaffAttendence";
 
+// State Management
+import { connect } from "react-redux";
+//Actions
+import { staffLogin } from "./../../actions/customer";
+
 //assets
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -43,7 +48,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Staff = () => {
+const Staff = (props) => {
     const classes = useStyles();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [takeAttendence, setTakeAttendence] = useState(false);
@@ -74,6 +79,9 @@ const Staff = () => {
                     color="primary"
                     endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
                     style={{ margin: "1rem" }}
+                    onClick={() => {
+                        props.staffLogin(null);
+                    }}
                 >
                     Logout
                 </Button>
@@ -102,4 +110,5 @@ const Staff = () => {
     );
 };
 
-export default Staff;
+const mapStateToProps = () => ({});
+export default connect(mapStateToProps, { staffLogin })(Staff);

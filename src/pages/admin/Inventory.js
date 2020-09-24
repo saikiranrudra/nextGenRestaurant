@@ -11,7 +11,7 @@ import IngredientManager from "./../../components/admin/IngredientManager";
 //State Management
 import { connect } from "react-redux";
 //actions
-import { fetchIngredients } from "./../../actions/customer";
+import { fetchIngredients, staffLogin } from "./../../actions/customer";
 
 import logo from "./../../assets/logo.png";
 
@@ -88,6 +88,9 @@ const Inventory = (props) => {
                     color="primary"
                     endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
                     style={{ margin: "1rem" }}
+                    onClick={() => {
+                        props.staffLogin(null);
+                    }}
                 >
                     Logout
                 </Button>
@@ -104,4 +107,6 @@ const Inventory = (props) => {
 
 const mapStateToProps = ({ menu }) => ({ menu });
 
-export default connect(mapStateToProps, { fetchIngredients })(Inventory);
+export default connect(mapStateToProps, { fetchIngredients, staffLogin })(
+    Inventory
+);

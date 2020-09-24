@@ -16,7 +16,9 @@ import Orders from "./../pages/admin/Orders";
 import Menu from "./../pages/admin/Menu";
 import Staff from "./../pages/admin/Staff";
 import Inventory from "./../pages/admin/Inventory";
-import Setting from "../pages/admin/Setting";
+import Setting from "./../pages/admin/Setting";
+
+import AdminProtect from "./../components/admin/AdminProtect";
 
 const Admin = (props) => {
     const { fetchMenuItems, fetchCategories } = props;
@@ -34,22 +36,34 @@ const Admin = (props) => {
                 <ScreenLogin />
             </Route>
             <Route path="/admin/dashboard" exact>
-                <Dashboard />
+                <AdminProtect>
+                    <Dashboard />
+                </AdminProtect>
             </Route>
             <Route path="/admin/dashboard/orders">
-                <Orders />
+                <AdminProtect>
+                    <Orders />
+                </AdminProtect>
             </Route>
             <Route path="/admin/dashboard/menu">
-                <Menu />
+                <AdminProtect>
+                    <Menu />
+                </AdminProtect>
             </Route>
             <Route path="/admin/dashboard/staff">
-                <Staff />
+                <AdminProtect>
+                    <Staff />
+                </AdminProtect>
             </Route>
             <Route path="/admin/dashboard/inventory">
-                <Inventory />
+                <AdminProtect>
+                    <Inventory />
+                </AdminProtect>
             </Route>
             <Route path="/admin/dashboard/setting">
-                <Setting />
+                <AdminProtect>
+                    <Setting />
+                </AdminProtect>
             </Route>
         </>
     );

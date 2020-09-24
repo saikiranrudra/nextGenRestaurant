@@ -6,6 +6,11 @@ import Nav from "./../../components/admin/Nav";
 import SettingsForm from "./../../components/admin/SettingsForm";
 import TablesManager from "./../../components/admin/TablesManager";
 
+// State Management
+import { connect } from "react-redux";
+//Actions
+import { staffLogin } from "./../../actions/customer";
+
 //assets
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -40,7 +45,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Setting = () => {
+const Setting = (props) => {
     const classes = useStyles();
 
     return (
@@ -70,6 +75,9 @@ const Setting = () => {
                     color="primary"
                     endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
                     style={{ margin: "1rem" }}
+                    onClick={() => {
+                        props.staffLogin(null);
+                    }}
                 >
                     Logout
                 </Button>
@@ -84,4 +92,5 @@ const Setting = () => {
     );
 };
 
-export default Setting;
+const mapStateToProps = () => ({});
+export default connect(mapStateToProps, { staffLogin })(Setting);

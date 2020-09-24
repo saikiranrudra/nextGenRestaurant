@@ -15,7 +15,8 @@ import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.
 
 //state management
 import { connect } from "react-redux";
-import { fetchIngredients } from "./../../actions/customer";
+//Actions
+import { fetchIngredients, staffLogin } from "./../../actions/customer";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -94,6 +95,9 @@ const Dashboard = (props) => {
                     color="primary"
                     endIcon={<Logout style={{ width: "1rem", fill: "#fff" }} />}
                     style={{ margin: "1rem" }}
+                    onClick={() => {
+                        props.staffLogin(null);
+                    }}
                 >
                     Logout
                 </Button>
@@ -145,4 +149,6 @@ const Dashboard = (props) => {
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, { fetchIngredients })(Dashboard);
+export default connect(mapStateToProps, { fetchIngredients, staffLogin })(
+    Dashboard
+);

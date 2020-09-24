@@ -694,3 +694,10 @@ export const setTableNo = (tableNo) => {
         payload: tableNo,
     };
 };
+
+export const staffLogin = (staff) => {
+    return {
+        type: "STAFF_LOGIN",
+        payload: staff,
+    };
+};
