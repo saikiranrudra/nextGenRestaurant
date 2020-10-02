@@ -5,8 +5,11 @@ import React, { useState } from "react";
 //State Management
 import { connect } from "react-redux";
 
-//assets
-import staffAvator from "./../../assets/staffAvator.png";
+//Variables
+import { baseURL } from "./../../variables";
+
+//Utils
+import _ from "lodash";
 
 //styles
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,7 +27,6 @@ const useStyles = makeStyles({
     avator: {
         display: "inline-block",
         height: "65px",
-        backgroundImage: `url(${staffAvator})`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         backgroundSize: "cover",
@@ -79,17 +81,22 @@ const useStyles = makeStyles({
 
 const Attendencecard = (props) => {
     const classes = useStyles();
-    const [absent, setAbsent] = useState(props.staff.absent);
+    const [absent, setAbsent] = useState(props.employee.isAbsent);
     return (
         <>
             <div className={classes.card}>
-                <div className={classes.avator}></div>
+                <div
+                    className={classes.avator}
+                    style={{
+                        backgroundImage: `url(${baseURL}${props.employee.employeeId.img})`,
+                    }}
+                ></div>
                 <div className={classes.content}>
                     <div className={classes.name} align="left">
-                        {props.staff.employeeName}
+                        {props.employee.employeeId.name}
                     </div>
                     <div className={classes.designation} align="left">
-                        {props.staff.designation}
+                        {props.employee.employeeId.designation}
                     </div>
                 </div>
                 <div className={classes.btnContainer}>
@@ -97,17 +104,36 @@ const Attendencecard = (props) => {
                         <div
                             className={classes.btn}
                             onClick={() => {
+                                let newEmployees = _.clone(
+                                    props.employeesData.employees
+                                );
+                                let index = _.findIndex(
+                                    newEmployees,
+                                    (o) => o._id === props.employee._id
+                                );
+
                                 if (absent === false) {
                                     setAbsent(true);
+
+                                    if (index !== -1) {
+                                        newEmployees[index].isAbsent = true;
+                                    }
                                 } else {
                                     setAbsent(false);
+                                    if (index !== -1) {
+                                        newEmployees[index].isAbsent = false;
+                                    }
                                 }
+                                props.setEmployeesData({
+                                    ...props.employeesData,
+                                    employees: newEmployees,
+                                });
                             }}
                             style={{
                                 backgroundColor:
                                     absent === false
-                                        ? props.theme.primary
-                                        : "transparent",
+                                        ? "transparent"
+                                        : props.theme.primary,
                             }}
                         ></div>
                     </div>

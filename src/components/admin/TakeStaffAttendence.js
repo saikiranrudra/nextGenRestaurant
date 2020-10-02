@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 //components
 import { Button } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AttendenceCard from "./AttendenceCard";
+
+// State Management
+import { connect } from "react-redux";
+
+// API
+import axios from "axios";
+//variables
+import { baseURL } from "./../../variables";
+
+// Utils
+import _ from "lodash";
 
 // assets
 // icons
@@ -72,41 +83,48 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const dummyData = [
-    {
-        employeeName: "Sherlock Holmes",
-        designation: "Bust Boy",
-        absent: true,
-    },
-    {
-        employeeName: "Sherlock Holmes",
-        designation: "Bust Boy",
-        absent: true,
-    },
-    {
-        employeeName: "Sherlock Holmes",
-        designation: "Bust Boy",
-        absent: false,
-    },
-    {
-        employeeName: "Sherlock Holmes",
-        designation: "Bust Boy",
-        absent: false,
-    },
-    {
-        employeeName: "Sherlock Holmes",
-        designation: "Bust Boy",
-        absent: true,
-    },
-    {
-        employeeName: "Sherlock Holmes",
-        designation: "Bust Boy",
-        absent: false,
-    },
-];
-
 const TakeStaffAttendence = (props) => {
     const classes = useStyles();
+    const [employeesData, setEmployeesData] = useState({ employees: [] });
+    const { selectedDate, staff } = props;
+
+    useEffect(() => {
+        axios
+            .post(`${baseURL}/api/v1/attendence/getAttendences`, {
+                token: staff.token,
+                thisDate: selectedDate.getDate(),
+                month: selectedDate.getMonth(),
+                year: selectedDate.getFullYear(),
+            })
+            .then((res) => {
+                setEmployeesData(res.data.data);
+                console.log("ATTENDENCE DATA: ", res.data.data);
+            });
+    }, [selectedDate, staff]);
+
+    //TESTING
+    useEffect(() => {
+        console.log(employeesData);
+    }, [employeesData]);
+
+    const handleSaveChanges = () => {
+        let data = _.clone(employeesData);
+        data.thisDate = selectedDate.getDate();
+        data.month = selectedDate.getMonth();
+        data.year = selectedDate.getFullYear();
+        data.token = staff.token;
+
+        axios
+            .post(`${baseURL}/api/v1/attendence/saveAttendences`, data)
+            .then((res) => {
+                props.setTakeAttendence(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                alert(err);
+            });
+    };
+
     return (
         <div className={classes.container}>
             {/* heading */}
@@ -121,9 +139,7 @@ const TakeStaffAttendence = (props) => {
                         variant="contained"
                         color="primary"
                         style={{ transform: "scale(.85)" }}
-                        onClick={() => {
-                            props.setTakeAttendence(false);
-                        }}
+                        onClick={handleSaveChanges}
                     >
                         Save Changes
                     </Button>
@@ -138,12 +154,22 @@ const TakeStaffAttendence = (props) => {
 
             {/* // staff list */}
             <div className={classes.cardList}>
-                {dummyData.map((staff, index) => (
-                    <AttendenceCard key={index} staff={staff} />
-                ))}
+                {employeesData !== undefined
+                    ? employeesData.employees !== undefined
+                        ? employeesData.employees.map((employee, index) => (
+                              <AttendenceCard
+                                  key={index}
+                                  employeesData={employeesData}
+                                  setEmployeesData={setEmployeesData}
+                                  employee={employee}
+                              />
+                          ))
+                        : null
+                    : null}
             </div>
         </div>
     );
 };
 
-export default TakeStaffAttendence;
+const mapStateToProps = ({ staff }) => ({ staff });
+export default connect(mapStateToProps)(TakeStaffAttendence);

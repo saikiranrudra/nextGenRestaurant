@@ -22,6 +22,7 @@ import {
     removeCategory,
     modifyCategory,
     fetchCategories,
+    fetchMenuItems,
 } from "./../../actions/customer";
 
 // icons
@@ -102,15 +103,29 @@ function ManageCategory(props) {
         if (category._id === undefined) {
             return;
         }
+
+        let newCategory = new FormData();
         //update in database
+        newCategory.append("_id", category._id);
+        newCategory.append("img", file);
+        newCategory.append("name", category.name);
+        newCategory.append("token", props.staff.token);
 
         //then update state
         setBtnText({ ...btnText, saveChanges: "please wait..." });
-        setTimeout(() => {
-            category.img = file;
-            props.modifyCategory(category);
-            setBtnText({ ...btnText, saveChanges: "Save Changes" });
-        }, 4000);
+
+        axios
+            .put(`${baseURL}/api/v1/category/updateCategory`, { newCategory })
+            .then((res) => {
+                props.fetchCategories();
+                props.fetchMenuItems();
+                setBtnText({ ...btnText, saveChanges: "Save Changes" });
+            })
+            .catch((err) => {
+                console.log(err);
+                alert(err);
+                setBtnText({ ...btnText, saveChanges: "Save Changes" });
+            });
     };
 
     const handleAddCategory = () => {
@@ -150,16 +165,23 @@ function ManageCategory(props) {
         }
         // delete from database then update state;
         setBtnText({ ...btnText, deleteCategory: "please wait..." });
-        setTimeout(() => {
-            props.removeCategory(category);
-            setCategory({
-                name: "",
-                _id: undefined,
-                img: undefined,
+
+        axios
+            .post(`${baseURL}/api/v1/category/deleteCategory`, {
+                _id: category._id,
+                token: props.staff.token,
+            })
+            .then((res) => {
+                props.fetchCategories();
+                props.fetchMenuItems();
+                setCategory({
+                    name: "",
+                    _id: undefined,
+                    img: undefined,
+                });
+                setFile(null);
+                setBtnText({ ...btnText, deleteCategory: "Delete Category" });
             });
-            setFile(null);
-            setBtnText({ ...btnText, deleteCategory: "Delete Category" });
-        }, 4000);
     };
 
     return (
@@ -339,4 +361,5 @@ export default connect(mapStateToProps, {
     removeCategory,
     modifyCategory,
     fetchCategories,
+    fetchMenuItems,
 })(ManageCategory);

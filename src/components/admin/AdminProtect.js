@@ -13,7 +13,11 @@ const AdminProtect = (props) => {
             history.push("/admin/login");
         }
     }, [staff, history]);
-    return <>{props.children}</>;
+    if (staff !== null) {
+        return <>{props.children}</>;
+    } else {
+        return <div></div>;
+    }
 };
 
 const mapStateToProps = ({ staff }) => ({ staff });

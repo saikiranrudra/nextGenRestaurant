@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
         cursor: "pointer",
     },
 }));
-const StaffSpecificAttendenc = () => {
+const StaffSpecificAttendenc = (props) => {
     const classes = useStyles();
     const [date, setDate] = useState(new Date());
     return (
@@ -85,10 +85,10 @@ const StaffSpecificAttendenc = () => {
                 <div className={classes.avator}></div>
                 <div className={classes.content}>
                     <div className={classes.name} align="left">
-                        Sherlock Holmes
+                        {props.selectedStaff.name}
                     </div>
                     <div className={classes.designation} align="left">
-                        Bust Boy
+                        {props.selectedStaff.designation}
                     </div>
                 </div>
             </div>

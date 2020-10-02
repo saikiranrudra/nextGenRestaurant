@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+//Components
 import Calendar from "react-calendar";
 import "./../../utils/calenderStyle.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
+
+//State Management
+import { connect } from "react-redux";
+
+//API
+import axios from "axios";
+//Variables
+import { baseURL } from "./../../variables";
+
+//utils
+import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -38,7 +51,70 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StaffCalender = (props) => {
+    const [stats, setStats] = useState({ presentStaff: 0, absentStaff: 0 });
+    const [averagePresent, setAveragePresent] = useState(0);
+    const [btnText, setBtnText] = useState("Go");
+    const [dateRange, setDateRange] = useState({
+        startDate: new Date(
+            new Date().getDate(),
+            new Date().getMonth() - 1,
+            new Date().getFullYear()
+        ),
+        endDate: new Date(),
+    });
     const classes = useStyles();
+    const { selectedDate, staff } = props;
+    useEffect(() => {
+        axios
+            .post(`${baseURL}/api/v1/attendence/getAttendences`, {
+                thisDate: selectedDate.getDate(),
+                month: selectedDate.getMonth(),
+                year: selectedDate.getFullYear(),
+                token: staff.token,
+            })
+            .then((res) => {
+                console.log("Data: ", res.data.data);
+                let data = _.clone(res.data.data);
+                let presentStaff = 0;
+                let absentStaff = 0;
+
+                data.employees.forEach((employee) => {
+                    if (employee.isAbsent === true) {
+                        ++absentStaff;
+                    } else {
+                        ++presentStaff;
+                    }
+                });
+
+                setStats({
+                    presentStaff: presentStaff,
+                    absentStaff: absentStaff,
+                });
+            });
+    }, [selectedDate, staff]);
+
+    useEffect(() => {
+        axios
+            .post(`${baseURL}/api/v1/attendence/averagePresent`, dateRange)
+            .then((res) => {
+                setAveragePresent(res.data.data);
+            });
+    });
+
+    const handleGo = () => {
+        const data = { ...dateRange, token: staff.token };
+        setBtnText("please wait ...");
+        axios
+            .post(`${baseURL}/api/v1/attendence/averagePresent`, data)
+            .then((res) => {
+                setAveragePresent(res.data.data);
+                setBtnText("Go");
+            })
+            .catch((err) => {
+                setBtnText("Go");
+            });
+    };
+
     return (
         <div className={classes.container}>
             <Calendar
@@ -60,7 +136,7 @@ const StaffCalender = (props) => {
                         align="left"
                         className={classes.count}
                     >
-                        26
+                        {stats.presentStaff}
                     </Typography>
                 </div>
                 <div style={{ justifySelf: "end" }}>
@@ -76,7 +152,7 @@ const StaffCalender = (props) => {
                         align="left"
                         className={classes.count}
                     >
-                        2
+                        {stats.absentStaff}
                     </Typography>
                 </div>
             </div>
@@ -97,7 +173,16 @@ const StaffCalender = (props) => {
                         alignItems: "center",
                     }}
                 >
-                    <input type="date" />
+                    <input
+                        type="date"
+                        value={dateRange.startDate}
+                        onChange={(e) =>
+                            setDateRange({
+                                ...dateRange,
+                                startDate: e.target.value,
+                            })
+                        }
+                    />
                     <span
                         style={{
                             fontFamily: "Product-Sans",
@@ -106,22 +191,39 @@ const StaffCalender = (props) => {
                     >
                         to
                     </span>
-                    <input type="date" />
+                    <input
+                        type="date"
+                        value={dateRange.endDate}
+                        onChange={(e) =>
+                            setDateRange({
+                                ...dateRange,
+                                endDate: e.target.value,
+                            })
+                        }
+                    />
 
                     <button
                         variant="contained"
                         color="primary"
                         className={classes.btn}
+                        onClick={handleGo}
+                        disabled={
+                            btnText.toLowerCase().includes("please wait")
+                                ? true
+                                : false
+                        }
                     >
-                        Go
+                        {btnText}
                     </button>
                 </div>
                 <Typography variant="h4" align="left" className={classes.count}>
-                    96%
+                    {averagePresent}%
                 </Typography>
             </div>
         </div>
     );
 };
 
-export default StaffCalender;
+const mapStateToProps = ({ staff }) => ({ staff });
+
+export default connect(mapStateToProps)(StaffCalender);

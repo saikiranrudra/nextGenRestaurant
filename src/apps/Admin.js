@@ -7,6 +7,7 @@ import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 // action
 import { fetchMenuItems, fetchCategories } from "./../actions/customer";
+import { fetchEmployee } from "./../actions/admin";
 
 // pages
 import Login from "./../pages/admin/Login";
@@ -21,11 +22,12 @@ import Setting from "./../pages/admin/Setting";
 import AdminProtect from "./../components/admin/AdminProtect";
 
 const Admin = (props) => {
-    const { fetchMenuItems, fetchCategories } = props;
+    const { fetchMenuItems, fetchCategories, fetchEmployee } = props;
     useEffect(() => {
         fetchMenuItems();
         fetchCategories();
-    }, [fetchMenuItems, fetchCategories]);
+        fetchEmployee();
+    }, [fetchMenuItems, fetchCategories, fetchEmployee]);
 
     return (
         <>
@@ -71,6 +73,8 @@ const Admin = (props) => {
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, { fetchMenuItems, fetchCategories })(
-    Admin
-);
+export default connect(mapStateToProps, {
+    fetchMenuItems,
+    fetchCategories,
+    fetchEmployee,
+})(Admin);

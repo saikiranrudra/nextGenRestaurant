@@ -18,6 +18,7 @@ import themeReducer from "./themeReducer";
 import appStateReducer from "./appStateReducer";
 import tableReducer from "./tableReducer";
 import staffAuth from "./staffAuth";
+import employeeReducer from "./employeeReducer";
 
 export default combineReducers({
     appState: appStateReducer,
@@ -38,4 +39,5 @@ export default combineReducers({
     ingredients: ingredientReducer,
     tableNo: tableReducer,
     staff: staffAuth,
+    employees: employeeReducer,
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Components
 import { Paper, Button } from "@material-ui/core";
@@ -52,6 +52,11 @@ const Staff = (props) => {
     const classes = useStyles();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [takeAttendence, setTakeAttendence] = useState(false);
+    const [selectedStaff, setSelectedStaff] = useState(null);
+
+    //FOR CHECKING
+    useEffect(() => {}, [selectedStaff]);
+
     return (
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
@@ -101,10 +106,11 @@ const Staff = (props) => {
                     <StaffDisplay
                         setTakeAttendence={setTakeAttendence}
                         selectedDate={selectedDate}
+                        setSelectedStaff={setSelectedStaff}
                     />
                 )}
-                <StaffSpecificAttendence />
-                <EditStaff />
+                <StaffSpecificAttendence selectedStaff={selectedStaff} />
+                <EditStaff selectedStaff={selectedStaff} />
             </div>
         </div>
     );
