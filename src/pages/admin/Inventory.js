@@ -8,6 +8,9 @@ import IngredientMenu from "./../../components/admin/IngredientMenu";
 import DishIngredient from "./../../components/admin/DishIngredient";
 import IngredientManager from "./../../components/admin/IngredientManager";
 
+//Variables
+import { baseURL } from "./../../variables";
+
 //State Management
 import { connect } from "react-redux";
 //actions
@@ -65,7 +68,13 @@ const Inventory = (props) => {
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
-                    <img src={logo} alt="logo" className={classes.logo} />
+                    <img
+                        src={
+                            props.app.img ? `${baseURL}${props.app.img}` : logo
+                        }
+                        alt="logo"
+                        className={classes.logo}
+                    />
                     <Nav />
                 </div>
             </Paper>

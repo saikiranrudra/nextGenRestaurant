@@ -15,7 +15,7 @@ const Switch = (props) => {
                     color: props.state !== props.textOne ? "transparent" : null,
                     backgroundColor:
                         props.state !== props.textOne
-                            ? props.theme.primary
+                            ? props.app.themeColor
                             : null,
                     borderRadius: "5px",
                 }}
@@ -28,7 +28,7 @@ const Switch = (props) => {
                     color: props.state !== props.textTwo ? "transparent" : null,
                     backgroundColor:
                         props.state !== props.textTwo
-                            ? props.theme.primary
+                            ? props.app.themeColor
                             : null,
                     borderRadius: "5px",
                 }}
@@ -39,5 +39,5 @@ const Switch = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps)(Switch);

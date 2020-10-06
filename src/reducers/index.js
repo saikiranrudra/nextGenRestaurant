@@ -19,9 +19,11 @@ import appStateReducer from "./appStateReducer";
 import tableReducer from "./tableReducer";
 import staffAuth from "./staffAuth";
 import employeeReducer from "./employeeReducer";
+import appReducer from "./appReducer";
 
 export default combineReducers({
     appState: appStateReducer,
+    app: appReducer,
     email: emailReducer,
     theme: themeReducer,
     category: selectCategories,

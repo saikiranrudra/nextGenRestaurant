@@ -9,6 +9,9 @@ import Notifications from "./../../components/admin/Notifications";
 import TableOrders from "./../../components/admin/TableOrders";
 import EditableTableOrders from "./../../components/admin/EditableTableOrders";
 
+// Variables
+import { baseURL } from "./../../variables";
+
 // images
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -72,7 +75,13 @@ const Dashboard = (props) => {
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
-                    <img src={logo} alt="logo" className={classes.logo} />
+                    <img
+                        src={
+                            props.app.img ? `${baseURL}${props.app.img}` : logo
+                        }
+                        alt="logo"
+                        className={classes.logo}
+                    />
                     <Nav />
                 </div>
             </Paper>
@@ -147,7 +156,7 @@ const Dashboard = (props) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ app }) => ({ app });
 
 export default connect(mapStateToProps, { fetchIngredients, staffLogin })(
     Dashboard

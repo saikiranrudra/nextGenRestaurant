@@ -183,7 +183,7 @@ const EditableTableOrders = (props) => {
                 <Button
                     variant="contained"
                     style={{
-                        backgroundColor: props.theme.primary,
+                        backgroundColor: props.app.themeColor,
                         color: "#fff",
                         fontWeight: "bold",
                         fontFamily: "Product-Sans",
@@ -326,5 +326,5 @@ const EditableTableOrders = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps)(EditableTableOrders);

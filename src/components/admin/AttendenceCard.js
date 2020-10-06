@@ -133,7 +133,7 @@ const Attendencecard = (props) => {
                                 backgroundColor:
                                     absent === false
                                         ? "transparent"
-                                        : props.theme.primary,
+                                        : props.app.themeColor,
                             }}
                         ></div>
                     </div>
@@ -150,5 +150,5 @@ const Attendencecard = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps)(Attendencecard);

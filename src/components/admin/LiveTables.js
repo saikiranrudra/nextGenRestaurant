@@ -159,7 +159,7 @@ const LiveTables = (props) => {
                             padding: ".4rem",
                             borderRadius: "10rem",
                             border: table.selected
-                                ? `4px solid ${props.theme.primary}`
+                                ? `4px solid ${props.app.themeColor}`
                                 : null,
                             display: "grid",
                             placeContent: "center",
@@ -171,7 +171,7 @@ const LiveTables = (props) => {
                             style={{
                                 backgroundColor:
                                     table.vacant === false
-                                        ? props.theme.primary
+                                        ? props.app.themeColor
                                         : null,
                                 color: table.vacant === false ? "#fff" : null,
                             }}
@@ -188,5 +188,5 @@ const LiveTables = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps)(LiveTables);

@@ -196,7 +196,9 @@ const StaffDisplay = (props) => {
                                         variant="contained"
                                         className={classes.btn}
                                         onClick={() => {
-                                            props.setSelectedStaff(employee);
+                                            props.setSelectedStaffForView(
+                                                employee
+                                            );
                                         }}
                                     >
                                         View

@@ -106,7 +106,7 @@ const Nav = (props) => {
                             style={{
                                 backgroundColor:
                                     window.location.pathname === item.link
-                                        ? props.theme.primary
+                                        ? props.app.themeColor
                                         : null,
                             }}
                         >
@@ -158,5 +158,5 @@ const Nav = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps)(Nav);

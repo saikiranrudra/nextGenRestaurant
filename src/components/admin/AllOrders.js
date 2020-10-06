@@ -374,7 +374,7 @@ const AllOrders = (props) => {
                                         backgroundColor:
                                             selectedOrder.orderNumber ===
                                             order.orderNumber
-                                                ? props.theme.primary
+                                                ? props.app.themeColor
                                                 : null,
                                     }}
                                     hover
@@ -521,6 +521,6 @@ const AllOrders = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 
 export default connect(mapStateToProps)(AllOrders);

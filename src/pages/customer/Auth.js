@@ -153,7 +153,10 @@ const Auth = (props) => {
     return (
         <>
             <div className={classes.logo}>
-                <img src={logo} alt="logo" />
+                <img
+                    src={props.app.img ? `${baseURL}${props.app.img}` : logo}
+                    alt="logo"
+                />
             </div>
 
             <div>
@@ -229,10 +232,11 @@ const Auth = (props) => {
     );
 };
 
-const mapStateToProps = ({ user, email, tableNo }) => ({
+const mapStateToProps = ({ user, email, tableNo, app }) => ({
     user,
     email,
     tableNo,
+    app,
 });
 export default connect(mapStateToProps, {
     customerAuthenticate,

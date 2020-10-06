@@ -53,7 +53,7 @@ const Categories = (props) => {
                                     backgroundImage: `url("${baseURL}${categorie.img}")`,
                                     border:
                                         categorie._id === props.category._id
-                                            ? `2px solid ${props.theme.primary}`
+                                            ? `2px solid ${props.app.themeColor}`
                                             : null,
                                 }}
                                 className={classes.categorieImg}
@@ -74,10 +74,10 @@ const Categories = (props) => {
     }
 };
 
-const mapStateToProps = ({ categories, category, theme }) => ({
+const mapStateToProps = ({ categories, category, app }) => ({
     categories,
     category,
-    theme,
+    app,
 });
 
 export default connect(mapStateToProps, { setCategory })(Categories);

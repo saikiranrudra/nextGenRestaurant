@@ -11,6 +11,9 @@ import { connect } from "react-redux";
 //Actions
 import { staffLogin } from "./../../actions/customer";
 
+// Variables
+import { baseURL } from "./../../variables";
+
 //images
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -67,7 +70,13 @@ const Orders = (props) => {
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
-                    <img src={logo} alt="logo" className={classes.logo} />
+                    <img
+                        src={
+                            props.app.img ? `${baseURL}${props.app.img}` : logo
+                        }
+                        alt="logo"
+                        className={classes.logo}
+                    />
                     <Nav />
                 </div>
             </Paper>

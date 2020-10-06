@@ -73,7 +73,6 @@ const StaffCalender = (props) => {
                 token: staff.token,
             })
             .then((res) => {
-                console.log("Data: ", res.data.data);
                 let data = _.clone(res.data.data);
                 let presentStaff = 0;
                 let absentStaff = 0;
@@ -94,8 +93,9 @@ const StaffCalender = (props) => {
     }, [selectedDate, staff]);
 
     useEffect(() => {
+        let data = { ...dateRange, token: staff.token };
         axios
-            .post(`${baseURL}/api/v1/attendence/averagePresent`, dateRange)
+            .post(`${baseURL}/api/v1/attendence/averagePresent`, data)
             .then((res) => {
                 setAveragePresent(res.data.data);
             });

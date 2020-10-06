@@ -52,7 +52,11 @@ const Setting = (props) => {
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
-                    <img src={logo} alt="logo" className={classes.logo} />
+                    <img
+                        src={props.app.img ? props.app.img : logo}
+                        alt="logo"
+                        className={classes.logo}
+                    />
                     <Nav />
                 </div>
             </Paper>
@@ -92,5 +96,5 @@ const Setting = (props) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps, { staffLogin })(Setting);

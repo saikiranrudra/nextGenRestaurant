@@ -10,6 +10,9 @@ import ManageCategory from "../../components/admin/ManageCategory";
 // utils
 import _ from "lodash";
 
+// Variables
+import { baseURL } from "./../../variables";
+
 //state management
 import { connect } from "react-redux";
 //actions
@@ -95,7 +98,13 @@ const Menu = (props) => {
                         height: "100%",
                     }}
                 >
-                    <img src={logo} alt="logo " className={classes.logo} />
+                    <img
+                        src={
+                            props.app.img ? `${baseURL}${props.app.img}` : logo
+                        }
+                        alt="logo "
+                        className={classes.logo}
+                    />
                     <Nav />
                 </Paper>
 

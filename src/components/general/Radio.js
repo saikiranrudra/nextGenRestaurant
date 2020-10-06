@@ -15,7 +15,7 @@ const Radio = (props) => {
                 border: props.active
                     ? props.color !== undefined
                         ? `2px solid ${props.color}`
-                        : `2px solid ${props.theme.primary}`
+                        : `2px solid ${props.app.themeColor}`
                     : "2px solid transparent",
             }}
             onClick={props.onClick}
@@ -28,12 +28,12 @@ const Radio = (props) => {
                     backgroundColor:
                         props.color !== undefined
                             ? props.color
-                            : props.theme.primary,
+                            : props.app.themeColor,
                 }}
             ></div>
         </div>
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps)(Radio);

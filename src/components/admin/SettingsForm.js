@@ -8,8 +8,17 @@ import Switch from "./../general/Switch";
 // State Management
 import { connect } from "react-redux";
 //actions
-import { setPrimaryColor } from "./../../actions/general/theme";
-import { setAppState } from "./../../actions/general/appState";
+// import { setPrimaryColor } from "./../../actions/general/theme";
+// import { setAppState } from "./../../actions/general/appState";
+import { updateAppData } from "./../../actions/general/app";
+
+//utils
+import FormData from "form-data";
+
+//API
+import axios from "axios";
+//variables
+import { baseURL } from "./../../variables";
 
 //styles
 import { makeStyles } from "@material-ui/core/styles";
@@ -86,23 +95,63 @@ const useStyles = makeStyles((theme) => ({
 const SettingsForm = (props) => {
     const classes = useStyles();
     const [dialog, setDialog] = useState(false);
+    const [file, setFile] = useState(null);
+    const [btnText, setBtnText] = useState("Save");
+
+    const handleSaveChanges = () => {
+        setBtnText("please wait...");
+        let data = new FormData();
+
+        data.append("token", props.staff.token);
+        data.append("name", props.app.name);
+        data.append("themeColor", props.app.themeColor);
+        data.append("state", props.app.state);
+
+        if (file !== null) {
+            data.append("img", file);
+        } else {
+            data.append("img", props.app.img);
+        }
+
+        axios
+            .post(`${baseURL}/api/v1/restaurant/updateRestaurant`, data)
+            .then((res) => {
+                setBtnText("Save");
+                props.updateAppData(res.data.data);
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText("Save");
+            });
+    };
 
     const handleDialogClose = () => {
         setDialog(false);
     };
 
     const handleColorChange = (color) => {
-        props.setPrimaryColor(color);
+        // props.setPrimaryColor(color);
+        props.updateAppData({ ...props.app, themeColor: color });
     };
 
     const handleAppStateChange = () => {
-        setTimeout(() => {
-            if (props.appState === "online") {
-                props.setAppState("offline");
-            } else {
-                props.setAppState("online");
-            }
-        }, 2000);
+        // setTimeout(() => {
+        //     if (props.appState === "online") {
+        //         props.setAppState("offline");
+        //     } else {
+        //         props.setAppState("online");
+        //     }
+        // }, 2000);
+        if (props.app.state === "online") {
+            props.updateAppData({ ...props.app, state: "offline" });
+        } else {
+            props.updateAppData({ ...props.app, state: "offline" });
+        }
+    };
+
+    const handleNameChange = (event) => {
+        props.updateAppData({ ...props.app, name: event.target.value });
     };
 
     return (
@@ -113,6 +162,8 @@ const SettingsForm = (props) => {
                     id="nameOfRestaurant"
                     type="text"
                     placeholder="Name"
+                    value={props.app.name ? props.app.name : ""}
+                    onChange={handleNameChange}
                     style={{
                         padding: ".6rem .8rem",
                         width: "21rem",
@@ -121,7 +172,15 @@ const SettingsForm = (props) => {
 
                 <label>Logo of Restaurant</label>
                 <p>Upload High Quality png File for Image</p>
-                <input id="logoOfRestaurnat" type="file" accept=".png" />
+                <input
+                    id="logoOfRestaurnat"
+                    type="file"
+                    value={file}
+                    onChange={(e) => {
+                        setFile(e.target.value);
+                    }}
+                    accept=".png"
+                />
                 <label htmlFor="logoOfRestaurnat" className={classes.uploadBtn}>
                     Upload
                 </label>
@@ -133,42 +192,42 @@ const SettingsForm = (props) => {
                 <div className={classes.colorContainer}>
                     <Radio
                         color="#FC6565"
-                        active={"#FC6565" === props.theme.primary}
+                        active={"#FC6565" === props.app.themeColor}
                         onClick={() => handleColorChange("#FC6565")}
                     />
                     <Radio
                         color="#FF8D4E"
-                        active={"#FF8D4E" === props.theme.primary}
+                        active={"#FF8D4E" === props.app.themeColor}
                         onClick={() => handleColorChange("#FF8D4E")}
                     />
                     <Radio
                         color="#D0FD4F"
-                        active={"#D0FD4F" === props.theme.primary}
+                        active={"#D0FD4F" === props.app.themeColor}
                         onClick={() => handleColorChange("#D0FD4F")}
                     />
                     <Radio
                         color="#79E08F"
-                        active={"#79E08F" === props.theme.primary}
+                        active={"#79E08F" === props.app.themeColor}
                         onClick={() => handleColorChange("#79E08F")}
                     />
                     <Radio
                         color="#9BD6DA"
-                        active={"#9BD6DA" === props.theme.primary}
+                        active={"#9BD6DA" === props.app.themeColor}
                         onClick={() => handleColorChange("#9BD6DA")}
                     />
                     <Radio
                         color="#7471FC"
-                        active={"#7471FC" === props.theme.primary}
+                        active={"#7471FC" === props.app.themeColor}
                         onClick={() => handleColorChange("#7471FC")}
                     />
                     <Radio
                         color="#EE8DFE"
-                        active={"#EE8DFE" === props.theme.primary}
+                        active={"#EE8DFE" === props.app.themeColor}
                         onClick={() => handleColorChange("#EE8DFE")}
                     />
                     <Radio
                         color="#FF75A7"
-                        active={"#FF75A7" === props.theme.primary}
+                        active={"#FF75A7" === props.app.themeColor}
                         onClick={() => handleColorChange("#FF75A7")}
                     />
                 </div>
@@ -179,7 +238,7 @@ const SettingsForm = (props) => {
                 <Switch
                     textOne="online"
                     textTwo="offline"
-                    state={props.appState}
+                    state={props.app.state}
                     onClick={handleAppStateChange}
                 />
 
@@ -187,8 +246,14 @@ const SettingsForm = (props) => {
                     color="primary"
                     variant="contained"
                     style={{ margin: "1rem 0" }}
+                    onClick={handleSaveChanges}
+                    disabled={
+                        btnText.toLowerCase().includes("please wait")
+                            ? true
+                            : false
+                    }
                 >
-                    Save
+                    {btnText}
                 </Button>
 
                 <label style={{ marginTop: "1rem 0" }}>
@@ -227,8 +292,6 @@ const SettingsForm = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme, appState }) => ({ theme, appState });
+const mapStateToProps = ({ app, staff }) => ({ app, staff });
 
-export default connect(mapStateToProps, { setPrimaryColor, setAppState })(
-    SettingsForm
-);
+export default connect(mapStateToProps, { updateAppData })(SettingsForm);

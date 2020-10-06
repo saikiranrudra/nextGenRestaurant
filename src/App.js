@@ -11,8 +11,8 @@ import CustomerRepresentative from "./apps/CustomerRepresentative";
 
 //State Management
 import { connect } from "react-redux";
-import { fetchTheme } from "./actions/general/theme";
-import { fetchAppState } from "./actions/general/appState";
+
+import { fetchAppData } from "./actions/general/app";
 
 //global css
 import "./global.css";
@@ -23,17 +23,16 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 
 const App = (props) => {
-    const { fetchTheme, fetchAppState } = props;
+    const { fetchAppData } = props;
 
     useEffect(() => {
-        fetchTheme();
-        fetchAppState();
-    }, [fetchTheme, fetchAppState]);
+        fetchAppData();
+    }, [fetchAppData]);
 
     const theme = createMuiTheme({
         palette: {
             primary: {
-                main: props.theme.primary,
+                main: props.app.themeColor || "#FC6565",
             },
             secondary: {
                 // This is green.A700 as hex.
@@ -75,5 +74,7 @@ const App = (props) => {
     );
 };
 
-const mapStateToProps = ({ theme }) => ({ theme });
-export default connect(mapStateToProps, { fetchTheme, fetchAppState })(App);
+const mapStateToProps = ({ app }) => ({ app });
+export default connect(mapStateToProps, {
+    fetchAppData,
+})(App);

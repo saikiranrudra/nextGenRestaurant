@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Components
 import { Typography } from "@material-ui/core";
 import Calendar from "react-calendar";
 
+//Variables
+import { baseURL } from "./../../variables";
+
 // assets
 import staffAvator from "./../../assets/staffAvator.png";
 
+//API
+import { connect } from "react-redux";
+
 //styles
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -31,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     avator: {
         display: "inline-block",
         height: "65px",
-        backgroundImage: `url(${staffAvator})`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         backgroundSize: "cover",
@@ -76,19 +82,97 @@ const useStyles = makeStyles((theme) => ({
         cursor: "pointer",
     },
 }));
-const StaffSpecificAttendenc = (props) => {
+const StaffSpecificAttendence = (props) => {
     const classes = useStyles();
     const [date, setDate] = useState(new Date());
+    const [averagePresent, setAveragePresent] = useState(0);
+    const [isAbsent, setIsAbsent] = useState(true);
+    const [dateRange, setDateRange] = useState({
+        startDate: Date.now(),
+        endDate: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate()
+        ),
+    });
+    const [
+        presentAverageStaffSpecific,
+        setPresentAverageStaffSpecific,
+    ] = useState(0);
+
+    const { selectedStaffForView, staff } = props;
+
+    useEffect(() => {
+        if (selectedStaffForView !== null && staff !== null) {
+            axios
+                .post(
+                    `${baseURL}/api/v1/attendence/employeeAveragePresentByMonth`,
+                    {
+                        token: staff.token,
+                        month: date.getMonth(),
+                        employeeId: selectedStaffForView._id,
+                    }
+                )
+                .then((res) => {
+                    setAveragePresent(res.data.data);
+                });
+        }
+    }, [date, selectedStaffForView, staff]);
+
+    useEffect(() => {
+        if (staff !== null && selectedStaffForView !== null) {
+            axios
+                .post(`${baseURL}/api/v1/attendence/employeeIsPresentByDate`, {
+                    token: staff.token,
+                    date: date,
+                    employeeId: selectedStaffForView._id,
+                })
+                .then((res) => {
+                    setIsAbsent(res.data.data);
+                });
+        }
+    }, [date, staff, selectedStaffForView]);
+
+    const getAveragePresentStaffSpecific = () => {
+        if (staff !== null && selectedStaffForView !== null) {
+            axios
+                .post(
+                    `${baseURL}/api/v1/attendence/staffSpecificAverageAttendence`,
+                    {
+                        token: staff.token,
+                        startDate: dateRange.startDate,
+                        endDate: dateRange.endDate,
+                        employeeId: selectedStaffForView._id,
+                    }
+                )
+                .then((res) => {
+                    setPresentAverageStaffSpecific(res.data.data);
+                });
+        }
+    };
+
     return (
         <div className={classes.container}>
             <div className={classes.card}>
-                <div className={classes.avator}></div>
+                <div
+                    className={classes.avator}
+                    style={{
+                        backgroundImage:
+                            props.selectedStaffForView !== null
+                                ? `url(${baseURL}${props.selectedStaffForView.img})`
+                                : `url(${staffAvator})`,
+                    }}
+                ></div>
                 <div className={classes.content}>
                     <div className={classes.name} align="left">
-                        {props.selectedStaff.name}
+                        {props.selectedStaffForView !== null
+                            ? props.selectedStaffForView.name
+                            : "Null"}
                     </div>
                     <div className={classes.designation} align="left">
-                        {props.selectedStaff.designation}
+                        {props.selectedStaffForView !== null
+                            ? props.selectedStaffForView.designation
+                            : "Null"}
                     </div>
                 </div>
             </div>
@@ -113,17 +197,25 @@ const StaffSpecificAttendenc = (props) => {
                         align="left"
                         className={classes.count}
                     >
-                        26
+                        {averagePresent}%
                     </Typography>
                 </div>
-                {/* <div style={{ justifySelf: "end" }}>
-          <Typography variant="h4" align="left" className={classes.subtitle}>
-            Absent Staff
-          </Typography>
-          <Typography variant="h4" align="left" className={classes.count}>
-            2
-          </Typography>
-        </div> */}
+                <div style={{ justifySelf: "end" }}>
+                    <Typography
+                        variant="h4"
+                        align="left"
+                        className={classes.subtitle}
+                    >
+                        Is Absent
+                    </Typography>
+                    <Typography
+                        variant="h4"
+                        align="left"
+                        className={classes.count}
+                    >
+                        {isAbsent ? "Yes" : "No"}
+                    </Typography>
+                </div>
             </div>
 
             <div style={{ marginTop: "1rem" }}>
@@ -142,7 +234,16 @@ const StaffSpecificAttendenc = (props) => {
                         justifyContent: "center",
                     }}
                 >
-                    <input type="date" />
+                    <input
+                        type="date"
+                        value={dateRange.startDate}
+                        onChange={(e) =>
+                            setDateRange({
+                                ...dateRange,
+                                startDate: e.target.value,
+                            })
+                        }
+                    />
                     <span
                         style={{
                             fontFamily: "Product-Sans",
@@ -151,22 +252,32 @@ const StaffSpecificAttendenc = (props) => {
                     >
                         to
                     </span>
-                    <input type="date" />
+                    <input
+                        type="date"
+                        value={dateRange.endDate}
+                        onChange={(e) => {
+                            setDateRange({
+                                ...dateRange,
+                                endDate: e.target.value,
+                            });
+                        }}
+                    />
 
                     <button
                         variant="contained"
                         color="primary"
                         className={classes.btn}
+                        onClick={getAveragePresentStaffSpecific}
                     >
                         Go
                     </button>
                 </div>
                 <Typography variant="h4" align="left" className={classes.count}>
-                    96%
+                    {presentAverageStaffSpecific}%
                 </Typography>
             </div>
         </div>
     );
 };
-
-export default StaffSpecificAttendenc;
+const mapStateToProps = ({ staff }) => ({ staff });
+export default connect(mapStateToProps)(StaffSpecificAttendence);

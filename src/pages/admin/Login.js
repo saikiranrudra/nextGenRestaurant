@@ -91,7 +91,11 @@ const Login = (props) => {
 
     return (
         <div className={classes.container}>
-            <img src={logo} alt="logo" className={classes.logo} />
+            <img
+                src={props.app.img ? `${baseURL}${props.app.img}` : logo}
+                alt="logo"
+                className={classes.logo}
+            />
             <Typography variant="h5" align="center" className={classes.font}>
                 Log in
             </Typography>
@@ -137,5 +141,5 @@ const Login = (props) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps, { staffLogin })(Login);
