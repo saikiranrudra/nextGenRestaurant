@@ -287,46 +287,13 @@ export const fetchDiscount = () => (dispatch) => {
     }, 5000);
 };
 
-const ingredients = [
-    {
-        id: "ing1",
-        name: "maida",
-        unit: "kg",
-    },
-    {
-        id: "ing2",
-        name: "mirch",
-        unit: "nos",
-    },
-    {
-        id: "ing3",
-        name: "oil",
-        unit: "l",
-    },
-    {
-        id: "ing4",
-        name: "masala",
-        unit: "g",
-    },
-    {
-        id: "ing5",
-        name: "tomatos",
-        unit: "kg",
-    },
-    {
-        id: "ing6",
-        name: "rice",
-        unit: "kg",
-    },
-];
-
 export const fetchIngredients = () => (dispatch) => {
-    setTimeout(() => {
+    axios.get(`${baseURL}/api/v1/ingredient/getAllIngredients`).then((res) => {
         dispatch({
             type: "FETCH_INGREDIENTS",
-            payload: ingredients,
+            payload: res.data.data,
         });
-    }, 5000);
+    });
 };
 
 export const deleteIngredients = (ingredient) => {

@@ -6,6 +6,13 @@ import { Typography, TableRow, TableCell, Button } from "@material-ui/core";
 
 //State Management
 import { connect } from "react-redux";
+import { editIngredient } from "./../../actions/customer";
+
+//API
+import axios from "axios";
+
+//Variables
+import { baseURL } from "./../../variables";
 
 //styles
 import { makeStyles } from "@material-ui/core/styles";
@@ -59,9 +66,20 @@ const IngridentEdit = (props) => {
 
     const handleSaveChanges = () => {
         setBtnText("please wait...");
-        setTimeout(() => {
-            setBtnText("Save Changes");
-        }, 3000);
+
+        axios
+            .post(`${baseURL}/api/v1/ingredient/updateIngredient`, {
+                ...ingredient,
+                token: props.staff.token,
+            })
+            .then((res) => {
+                setBtnText("Save Changes");
+                props.editIngredient(res.data.data);
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+            });
     };
 
     return (
@@ -130,5 +148,5 @@ const IngridentEdit = (props) => {
     );
 };
 
-const mapStateToProps = ({ ingredients }) => ({ ingredients });
-export default connect(mapStateToProps)(IngridentEdit);
+const mapStateToProps = ({ ingredients, staff }) => ({ ingredients, staff });
+export default connect(mapStateToProps, { editIngredient })(IngridentEdit);

@@ -7,6 +7,12 @@ import IngredientManageTab from "./IngredientManageTab";
 //utils
 import _ from "lodash";
 
+//API
+import axios from "axios";
+
+//Variables
+import { baseURL } from "./../../variables";
+
 // State Mangement
 import { connect } from "react-redux";
 // actions
@@ -70,14 +76,20 @@ const IngredientManager = (props) => {
 
     const handleIngridentAddition = () => {
         setBtnText({ ...btnText, add: "please wait..." });
-        setTimeout(() => {
-            props.addNewIngredient({
-                id: _.uniqueId("ing"),
-                name: ingredient.name,
-                unit: ingredient.unit,
+        let data = _.clone(ingredient);
+        data["token"] = props.staff.token;
+
+        axios
+            .post(`${baseURL}/api/v1/ingredient/createIngredient`, data)
+            .then((res) => {
+                props.addNewIngredient(res.data.data);
+                setBtnText({ ...btnText, add: "Add +" });
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText({ ...btnText, add: "Add +" });
             });
-            setBtnText({ ...btnText, add: "Add +" });
-        }, 4000);
     };
 
     return (
@@ -143,7 +155,7 @@ const IngredientManager = (props) => {
     );
 };
 
-const mapStateToProps = ({ ingredients }) => ({ ingredients });
+const mapStateToProps = ({ ingredients, staff }) => ({ ingredients, staff });
 
 export default connect(mapStateToProps, {
     addNewIngredient,
