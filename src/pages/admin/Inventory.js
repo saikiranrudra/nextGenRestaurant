@@ -114,7 +114,7 @@ const Inventory = (props) => {
     );
 };
 
-const mapStateToProps = ({ menu }) => ({ menu });
+const mapStateToProps = ({ menu, app }) => ({ menu, app });
 
 export default connect(mapStateToProps, { fetchIngredients, staffLogin })(
     Inventory

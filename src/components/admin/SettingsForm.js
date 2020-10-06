@@ -97,6 +97,35 @@ const SettingsForm = (props) => {
     const [dialog, setDialog] = useState(false);
     const [file, setFile] = useState(null);
     const [btnText, setBtnText] = useState("Save");
+    const [changeBtnText, setChangeBtnText] = useState("Change");
+    const [resetPassword, setResetPassword] = useState({
+        password: "",
+        oldPassword: "",
+        confirmPassword: "",
+    });
+
+    const handleChangePassword = () => {
+        setChangeBtnText("please wait...");
+        if (resetPassword.password !== resetPassword.confirmPassword) {
+            alert("password and confirm password is not same");
+            setChangeBtnText("change");
+            return;
+        }
+        axios
+            .post(`${baseURL}/api/v1/staff/adminPasswordChange`, resetPassword)
+            .then((res) => {
+                alert("password changed successfully");
+                setChangeBtnText("change");
+            })
+            .catch((err) => {
+                setChangeBtnText("change");
+                if (err.response) {
+                    alert(err.response.data.message);
+                } else {
+                    alert(err);
+                }
+            });
+    };
 
     const handleSaveChanges = () => {
         setBtnText("please wait...");
@@ -274,16 +303,54 @@ const SettingsForm = (props) => {
                     <DialogTitle>Change Account Password</DialogTitle>
                     <div className={classes.changePasswordForm}>
                         <label>Old Account Password</label>
-                        <input type="text" />
+                        <input
+                            type="text"
+                            value={resetPassword.oldPassword}
+                            onChange={(e) => {
+                                setResetPassword({
+                                    ...resetPassword,
+                                    oldPassword: e.target.value,
+                                });
+                            }}
+                        />
 
                         <label>New Account Password</label>
-                        <input type="password" />
+                        <input
+                            type="password"
+                            value={resetPassword.password}
+                            onChange={(e) => {
+                                setResetPassword({
+                                    ...resetPassword,
+                                    password: e.target.value,
+                                });
+                            }}
+                        />
 
                         <label>Confirm New Account Password</label>
-                        <input type="password" />
+                        <input
+                            type="password"
+                            value={resetPassword.confirmPassword}
+                            onChange={(e) => {
+                                setResetPassword({
+                                    ...resetPassword,
+                                    confirmPassword: e.target.value,
+                                });
+                            }}
+                        />
 
-                        <Button variant="contained" color="primary">
-                            Change
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleChangePassword}
+                            disabled={
+                                changeBtnText
+                                    .toLowerCase()
+                                    .includes("please wait")
+                                    ? true
+                                    : false
+                            }
+                        >
+                            {changeBtnText}
                         </Button>
                     </div>
                 </Dialog>

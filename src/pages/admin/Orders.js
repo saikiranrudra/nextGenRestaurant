@@ -143,5 +143,5 @@ const Orders = (props) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps, { staffLogin })(Orders);

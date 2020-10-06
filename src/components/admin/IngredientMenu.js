@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
+import { baseURL } from "../../variables";
 
 const useStyle = makeStyles({
     contentContainer: {
@@ -46,6 +47,7 @@ const useStyle = makeStyles({
     cardContainer: {
         display: "grid",
         gridTemplateColumns: "135px 1fr 70px",
+        gridTemplateRows: "30px 85px",
         gridGap: ".4rem",
         backgroundColor: "#fff",
         padding: ".4rem",
@@ -57,11 +59,14 @@ const useStyle = makeStyles({
         borderRadius: "3px",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
+        gridColumn: "1 / 2",
+        gridRow: "1 / -1",
     },
     id: {
         fontFamily: "Product-Sans",
         fontSize: ".9rem",
         margin: ".3rem 0 .5rem 0",
+        gridColumn: "span 2",
     },
     name: {
         fontFamily: "Product-Sans",
@@ -102,17 +107,19 @@ const IngredientMenu = (props) => {
                                 <div
                                     className={classes.cardImg}
                                     style={{
-                                        backgroundImage: `url("${item.img}")`,
+                                        backgroundImage: `url("${baseURL}${item.img}")`,
                                     }}
                                 ></div>
-                                <div>
+                                <div style={{ gridColumn: "2/4" }}>
                                     <Typography
                                         variant="body1"
                                         align="left"
                                         className={classes.id}
                                     >
-                                        {item.id}
+                                        {item._id}
                                     </Typography>
+                                </div>
+                                <div>
                                     <Typography
                                         variant="h6"
                                         align="left"
@@ -125,13 +132,13 @@ const IngredientMenu = (props) => {
                                         align="left"
                                         className={classes.ingredient}
                                     >
-                                        {item.ingredients.length} Ingredients
+                                        {item.Ingredients.length} Ingredients
                                     </Typography>
                                 </div>
                                 <div
                                     style={{
-                                        justifySelf: "center",
-                                        alignSelf: "center",
+                                        gridRow: "2 / 3",
+                                        gridColumn: "3/4",
                                     }}
                                 >
                                     <Button

@@ -257,6 +257,10 @@ const Menu = (props) => {
     );
 };
 
-const mapStateToProps = ({ menu, categories }) => ({ menu, categories });
+const mapStateToProps = ({ menu, categories, app }) => ({
+    menu,
+    categories,
+    app,
+});
 
 export default connect(mapStateToProps, { staffLogin })(Menu);
