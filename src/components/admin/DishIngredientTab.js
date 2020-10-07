@@ -2,15 +2,20 @@ import React, { useState } from "react";
 
 //Components
 import { TableRow, TableCell, Button } from "@material-ui/core";
-import DishIngredientTabEdit from "./DishIngredientTabEdit";
+// import DishIngredientTabEdit from "./DishIngredientTabEdit";
 
 //assets
-import editIcon from "./../..//assets/dashboardAssets/edit.svg";
+// import editIcon from "./../..//assets/dashboardAssets/edit.svg";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+
+// API
+import axios from "axios";
+//Variables
+import { baseURL } from "./../../variables";
 
 //State Management
 import { connect } from "react-redux";
-import { removeIngredient } from "./../../actions/customer";
+import { removeIngredient, fetchMenuItems } from "./../../actions/customer";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -29,26 +34,38 @@ const useStyle = makeStyles({
 
 const DishIngredientTab = (props) => {
     const classes = useStyle();
-    const { ingredient, item } = props;
+    // const { item } = props;
     const [btnText, setBtnText] = useState({ delete: "delete" });
-    const [edit, setEdit] = useState(false);
     const handleDeleteIngredient = () => {
         setBtnText({ ...btnText, delete: "please wait..." });
-        setTimeout(() => {
-            props.removeIngredient(item, ingredient);
-            setBtnText({ ...btnText, delete: "delete" });
-        }, 4000);
+
+        axios
+            .post(`${baseURL}/api/v1/items/deleteIngredientFromItem`, {
+                itemId: props.item._id,
+                ingredientId: props.ingredient._id._id,
+                token: props.staff.token,
+            })
+            .then((res) => {
+                props.fetchMenuItems();
+                setBtnText({ ...btnText, delete: "delete" });
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText({ ...btnText, delete: "delete" });
+            });
     };
-    return (
-        <>
-            {edit === false ? (
+
+    if (props.ingredient._id !== null) {
+        return (
+            <>
                 <TableRow className={classes.tableBody}>
-                    <TableCell>{ingredient.name}</TableCell>
+                    <TableCell>{props.ingredient._id.name}</TableCell>
                     <TableCell>
-                        {ingredient.amount}
-                        {ingredient.unit}
+                        {props.ingredient.amount}
+                        {props.ingredient._id.unit}
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                         <Button
                             variant="contained"
                             startIcon={
@@ -69,7 +86,7 @@ const DishIngredientTab = (props) => {
                         >
                             Edit
                         </Button>
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell style={{ padding: 0 }}>
                         <Button
                             variant="contained"
@@ -92,18 +109,14 @@ const DishIngredientTab = (props) => {
                         </Button>
                     </TableCell>
                 </TableRow>
-            ) : (
-                <DishIngredientTabEdit
-                    ingredient={ingredient}
-                    item={item}
-                    setEdit={setEdit}
-                />
-            )}
-        </>
-    );
+            </>
+        );
+    } else {
+        return null;
+    }
 };
 
-const mapStateToProps = () => ({});
-export default connect(mapStateToProps, { removeIngredient })(
+const mapStateToProps = ({ staff }) => ({ staff });
+export default connect(mapStateToProps, { removeIngredient, fetchMenuItems })(
     DishIngredientTab
 );

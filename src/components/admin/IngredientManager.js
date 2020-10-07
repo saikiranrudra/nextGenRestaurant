@@ -118,7 +118,7 @@ const IngredientManager = (props) => {
                     <option value="g">g</option>
                     <option value="ml">ml</option>
                     <option value="l">l</option>
-                    <option value="nos  ">nos</option>
+                    <option value="nos">nos</option>
                 </select>
                 <Button
                     variant="contained"

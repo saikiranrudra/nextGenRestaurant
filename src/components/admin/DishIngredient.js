@@ -13,7 +13,13 @@ import DishIngredientTab from "./DishIngredientTab";
 
 // State Management
 import { connect } from "react-redux";
-import { addIngredient } from "./../../actions/customer";
+//Actions
+import { fetchMenuItems } from "./../../actions/customer";
+
+//API
+import axios from "axios";
+//Variables
+import { baseURL } from "./../../variables";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -95,19 +101,32 @@ const DishIngredient = (props) => {
 
     const handleAddIngredientToItem = () => {
         setBtnText("please wait...");
-        setTimeout(() => {
-            props.addIngredient(props.item, {
-                ...ingredients[ing.index],
-                amount: ing.amount,
+
+        let data = {};
+        data["_id"] = props.item._id;
+        data["newIngredient"] = {
+            _id: props.ingredients[ing.index]._id,
+            amount: ing.amount,
+        };
+        data["token"] = props.staff.token;
+
+        axios
+            .post(`${baseURL}/api/v1/ingredient/addIngredientToItem`, data)
+            .then((res) => {
+                props.fetchMenuItems();
+                setBtnText("add +");
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText("add +");
             });
-            setBtnText("add +");
-        }, 5000);
     };
 
     return (
         <div className={classes.container}>
             <Typography variant="body1" align="left" className={classes.id}>
-                {props.item.id}
+                {props.item._id}
             </Typography>
             <Typography variant="h6" align="left" className={classes.name}>
                 {props.item.name}
@@ -115,8 +134,8 @@ const DishIngredient = (props) => {
 
             <Table>
                 <TableBody>
-                    {props.item.ingredients !== undefined
-                        ? props.item.ingredients.map((ingredient, index) => {
+                    {props.item.Ingredients !== undefined
+                        ? props.item.Ingredients.map((ingredient, index) => {
                               return (
                                   <DishIngredientTab
                                       ingredient={ingredient}
@@ -130,7 +149,7 @@ const DishIngredient = (props) => {
             </Table>
             <Table>
                 <TableBody>
-                    {props.item.id !== undefined && ing.index !== undefined ? (
+                    {props.item._id !== undefined && ing.index !== undefined ? (
                         <>
                             <TableRow className={classes.tableBody}>
                                 <TableCell
@@ -229,6 +248,10 @@ const DishIngredient = (props) => {
     );
 };
 
-const mapStateToProps = ({ ingredients, menu }) => ({ ingredients, menu });
+const mapStateToProps = ({ ingredients, menu, staff }) => ({
+    ingredients,
+    menu,
+    staff,
+});
 
-export default connect(mapStateToProps, { addIngredient })(DishIngredient);
+export default connect(mapStateToProps, { fetchMenuItems })(DishIngredient);

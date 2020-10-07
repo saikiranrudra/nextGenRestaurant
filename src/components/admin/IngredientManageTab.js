@@ -8,13 +8,15 @@ import IngridentEdit from "./IngridentEdit";
 import editIcon from "./../..//assets/dashboardAssets/edit.svg";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
+// API
+import axios from "axios";
+// Variables
+import { baseURL } from "./../../variables";
+
 // State Mangement
 import { connect } from "react-redux";
 // actions
-import {
-    deleteIngredients,
-    deleteIngredientFromAllItems,
-} from "./../../actions/customer";
+import { fetchIngredients, fetchMenuItems } from "./../../actions/customer";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -37,13 +39,27 @@ const IngredientManageTab = (props) => {
     const [btnText, setBtnText] = useState({ delete: "delete" });
     const [edit, setEdit] = useState(false);
 
-    const handleDeleteIngredient = (ingredientItem) => {
+    const handleDeleteIngredient = () => {
         setBtnText({ ...btnText, delete: "please wait..." });
-        setTimeout(() => {
-            props.deleteIngredientFromAllItems(ingredientItem);
-            props.deleteIngredients(ingredientItem);
-            setBtnText({ ...btnText, delete: "delete" });
-        }, 4000);
+
+        axios
+            .post(
+                `${baseURL}/api/v1/ingredient/deleteIngredientAndIngredientFromItem`,
+                {
+                    id: ingredientItem._id,
+                    token: props.staff.token,
+                }
+            )
+            .then((res) => {
+                props.fetchMenuItems();
+                props.fetchIngredients();
+                setBtnText({ ...btnText, delete: "delete" });
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText({ ...btnText, delete: "delete" });
+            });
     };
 
     return (
@@ -84,7 +100,7 @@ const IngredientManageTab = (props) => {
                                 padding: ".3rem",
                             }}
                             onClick={() => {
-                                handleDeleteIngredient(ingredientItem);
+                                handleDeleteIngredient();
                             }}
                             disabled={
                                 btnText.delete
@@ -108,9 +124,9 @@ const IngredientManageTab = (props) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ staff }) => ({ staff });
 
 export default connect(mapStateToProps, {
-    deleteIngredients,
-    deleteIngredientFromAllItems,
+    fetchMenuItems,
+    fetchIngredients,
 })(IngredientManageTab);
