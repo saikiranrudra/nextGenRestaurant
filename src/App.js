@@ -11,9 +11,9 @@ import CustomerRepresentative from "./apps/CustomerRepresentative";
 
 //State Management
 import { connect } from "react-redux";
-
+//Actions
 import { fetchAppData } from "./actions/general/app";
-
+import { fetchTables } from "./actions/general/table";
 //global css
 import "./global.css";
 import { CssBaseline, Container } from "@material-ui/core";
@@ -23,11 +23,12 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 
 const App = (props) => {
-    const { fetchAppData } = props;
+    const { fetchAppData, fetchTables } = props;
 
     useEffect(() => {
         fetchAppData();
-    }, [fetchAppData]);
+        fetchTables();
+    }, [fetchAppData, fetchTables]);
 
     const theme = createMuiTheme({
         palette: {
@@ -77,4 +78,5 @@ const App = (props) => {
 const mapStateToProps = ({ app }) => ({ app });
 export default connect(mapStateToProps, {
     fetchAppData,
+    fetchTables,
 })(App);

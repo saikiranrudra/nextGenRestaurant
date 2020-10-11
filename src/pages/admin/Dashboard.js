@@ -68,6 +68,10 @@ const Dashboard = (props) => {
     const classes = useStyle();
     const [editable, setEditable] = useState(false);
     const { fetchIngredients } = props;
+    const [selectedTable, setSeletedTable] = useState(
+        props.tables.length > 0 ? props.tables[0] : null
+    );
+
     useEffect(() => {
         fetchIngredients();
     }, [fetchIngredients]);
@@ -119,13 +123,22 @@ const Dashboard = (props) => {
                     Active Tables
                 </Typography>
 
-                <LiveTables />
+                <LiveTables
+                    setSeletedTable={setSeletedTable}
+                    selectedTable={selectedTable}
+                />
             </div>
             <div>
                 {editable ? (
-                    <EditableTableOrders setEditable={setEditable} />
+                    <EditableTableOrders
+                        setEditable={setEditable}
+                        selectedTable={selectedTable}
+                    />
                 ) : (
-                    <TableOrders setEditable={setEditable} />
+                    <TableOrders
+                        selectedTable={selectedTable}
+                        setEditable={setEditable}
+                    />
                 )}
             </div>
             <div>
@@ -156,7 +169,7 @@ const Dashboard = (props) => {
     );
 };
 
-const mapStateToProps = ({ app }) => ({ app });
+const mapStateToProps = ({ app, tables }) => ({ app, tables });
 
 export default connect(mapStateToProps, { fetchIngredients, staffLogin })(
     Dashboard

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //components
 import {
@@ -12,14 +12,13 @@ import {
 } from "@material-ui/core";
 import Counter from "./Counter";
 
+//API
+import axios from "axios";
+//Variables
+import { baseURL } from "./../../variables";
+
 //State Management
 import { connect } from "react-redux";
-
-// Tempimages
-import c1 from "./../../assets/catogery/c1 (1).png";
-import c2 from "./../../assets/catogery/c1 (2).png";
-import c3 from "./../../assets/catogery/c1 (3).png";
-import c4 from "./../../assets/catogery/c1 (4).png";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -54,120 +53,98 @@ const useStyle = makeStyles((theme) => ({
     },
 }));
 
-const handleSaveChange = (setEditable) => {
-    //save changes using api call
-    setEditable(false);
+const renderTables = (type, tableData, setTableData, classes) => {
+    let components = [];
+
+    tableData.forEach((order, orderIndex) => {
+        if (order.state === type) {
+            order.items.forEach((item, itemIndex) => {
+                components.push(
+                    <TableRow
+                        key={`${orderIndex}${itemIndex}`}
+                        className={classes.tableBody}
+                    >
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell>
+                            {item.jainCount !== undefined ? (
+                                <Counter
+                                    orderIndex={orderIndex}
+                                    itemIndex={itemIndex}
+                                    jainCount={item.jainCount}
+                                    tableData={tableData}
+                                    setTableData={setTableData}
+                                    // data={preparing}
+                                    // setData={setPreparing}
+                                />
+                            ) : (
+                                "NA"
+                            )}
+                        </TableCell>
+                        <TableCell>
+                            {item.normalCount !== undefined ? (
+                                <Counter
+                                    orderIndex={orderIndex}
+                                    itemIndex={itemIndex}
+                                    normalCount={item.normalCount}
+                                    tableData={tableData}
+                                    setTableData={setTableData}
+                                    // data={preparing}
+                                    // setData={setPreparing}
+                                />
+                            ) : (
+                                "NA"
+                            )}
+                        </TableCell>
+                    </TableRow>
+                );
+            });
+        }
+    });
+
+    return components;
 };
-
-let preparingData = [
-    {
-        id: "123abc",
-        img: c1,
-        name: "Risotto",
-        category: "Punjabi",
-        rating: 4,
-        mealFor: 2,
-        price: 125,
-        jainCount: 7,
-        normalCount: 12,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "456def",
-        img: c2,
-        name: "PanCake",
-        category: "Punjabi Bread",
-        rating: 3,
-        mealFor: 2,
-        price: 25,
-        jainCount: 4,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "789ghi",
-        img: c3,
-        name: "Manchurian",
-        category: "Chines Food",
-        rating: 1,
-        mealFor: 1,
-        price: 100,
-        normalCount: 8,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-];
-
-let servedData = [
-    {
-        id: "789ghi",
-        img: c3,
-        name: "Manchurian",
-        category: "Chines Food",
-        rating: 1,
-        mealFor: 1,
-        price: 100,
-        normalCount: 4,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "101112jkl",
-        img: c4,
-        name: "Rice",
-        category: "South Indian",
-        rating: 4,
-        mealFor: 3,
-        price: 120,
-        jainCount: 6,
-        normalCount: 3,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "101112cross1",
-        img: c4,
-        name: "Coke",
-        category: "Cross Sale",
-        rating: 4,
-        mealFor: 3,
-        price: 120,
-        normalCount: 2,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "101112cross2",
-        img: c4,
-        name: "Butter Milk",
-        category: "Cross Sale",
-        rating: 4,
-        mealFor: 3,
-        price: 120,
-        normalCount: 5,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "101112cross3",
-        img: c4,
-        name: "papaad",
-        category: "Cross Sale",
-        rating: 4,
-        mealFor: 3,
-        price: 120,
-        normalCount: 7,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-];
 
 const EditableTableOrders = (props) => {
     const classes = useStyle();
+    const [tableData, setTableData] = useState([]);
+    const [btnText, setBtnText] = useState("Save Changes");
 
-    const [preparing, setPreparing] = useState(preparingData);
-    const [served, setServed] = useState(servedData);
+    const handleSaveChange = () => {
+        //save changes using api call
+        setBtnText("Please Wait...");
+        axios
+            .post(`${baseURL}/api/v1/orders/updateOrders`, {
+                token: props.staff.token,
+                orders: tableData,
+            })
+            .then((res) => {
+                props.setEditable(false);
+                setBtnText("Save Changes");
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText("Save Changes");
+            });
+    };
+
+    useEffect(() => {
+        if (props.selectedTable !== null) {
+            axios
+                .post(`${baseURL}/api/v1/orders/getOrdersByTableNo`, {
+                    token: props.staff.token,
+                    tableNo: props.selectedTable._id,
+                })
+                .then((res) => {
+                    setTableData(res.data.data);
+                })
+                .catch((err) => {
+                    alert(err);
+                    console.log(err);
+                });
+        }
+    }, [props.selectedTable, props.staff.token]);
+
     return (
         <>
             <div
@@ -188,11 +165,14 @@ const EditableTableOrders = (props) => {
                         fontWeight: "bold",
                         fontFamily: "Product-Sans",
                     }}
-                    onClick={() => {
-                        handleSaveChange(props.setEditable);
-                    }}
+                    onClick={handleSaveChange}
+                    disabled={
+                        btnText.toLowerCase().includes("please wait")
+                            ? true
+                            : false
+                    }
                 >
-                    Save Changes
+                    {btnText}
                 </Button>
             </div>
 
@@ -205,7 +185,7 @@ const EditableTableOrders = (props) => {
             >
                 <span style={{ fontWeight: "bold" }}>Table</span>{" "}
                 <span className={classes.red} style={{ fontWeight: "bold" }}>
-                    1
+                    {props.selectedTable.tableNo}
                 </span>
             </div>
 
@@ -233,40 +213,12 @@ const EditableTableOrders = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {preparing.map((item, index) => {
-                            return (
-                                <TableRow
-                                    key={index}
-                                    className={classes.tableBody}
-                                >
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell>
-                                        {item.jainCount ? (
-                                            <Counter
-                                                jainCount={item.jainCount}
-                                                itemId={item.id}
-                                                data={preparing}
-                                                setData={setPreparing}
-                                            />
-                                        ) : (
-                                            "NA"
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {item.normalCount ? (
-                                            <Counter
-                                                normalCount={item.normalCount}
-                                                itemId={item.id}
-                                                data={preparing}
-                                                setData={setPreparing}
-                                            />
-                                        ) : (
-                                            "NA"
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
+                        {renderTables(
+                            "placed",
+                            tableData,
+                            setTableData,
+                            classes
+                        )}
                     </TableBody>
                 </Table>
 
@@ -285,40 +237,12 @@ const EditableTableOrders = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {served.map((item, index) => {
-                            return (
-                                <TableRow
-                                    key={index}
-                                    className={classes.tableBody}
-                                >
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell>
-                                        {item.jainCount ? (
-                                            <Counter
-                                                jainCount={item.jainCount}
-                                                itemId={item.id}
-                                                data={served}
-                                                setData={setServed}
-                                            />
-                                        ) : (
-                                            "NA"
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {item.normalCount ? (
-                                            <Counter
-                                                normalCount={item.normalCount}
-                                                itemId={item.id}
-                                                data={served}
-                                                setData={setServed}
-                                            />
-                                        ) : (
-                                            "NA"
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
+                        {renderTables(
+                            "cooked",
+                            tableData,
+                            setTableData,
+                            classes
+                        )}
                     </TableBody>
                 </Table>
             </div>
@@ -326,5 +250,5 @@ const EditableTableOrders = (props) => {
     );
 };
 
-const mapStateToProps = ({ app }) => ({ app });
+const mapStateToProps = ({ app, staff }) => ({ app, staff });
 export default connect(mapStateToProps)(EditableTableOrders);

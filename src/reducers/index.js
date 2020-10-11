@@ -20,6 +20,7 @@ import tableReducer from "./tableReducer";
 import staffAuth from "./staffAuth";
 import employeeReducer from "./employeeReducer";
 import appReducer from "./appReducer";
+import tablesReducer from "./tablesReducer";
 
 export default combineReducers({
     appState: appStateReducer,
@@ -40,6 +41,7 @@ export default combineReducers({
     orderServed: incrementOrderServed,
     ingredients: ingredientReducer,
     tableNo: tableReducer,
+    tables: tablesReducer,
     staff: staffAuth,
     employees: employeeReducer,
 });

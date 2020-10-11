@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 //Components
 import { Typography, Button, Table, TableBody } from "@material-ui/core";
 import TableManageTab from "./../../components/admin/TableManageTab";
+
+//State Managemert
+import { connect } from "react-redux";
+//Action
+import { fetchTables } from "./../../actions/general/table";
+
+//API
+import axios from "axios";
+//Variable
+import { baseURL } from "./../../variables";
 
 //styles
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,25 +45,60 @@ const useStyles = makeStyles({
     },
 });
 
-const dummyData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-const TablesManager = () => {
+const TablesManager = (props) => {
     const classes = useStyles();
+    const [tableNo, setTableNo] = useState("");
+    const [btnText, setBtnText] = useState("Add +");
+
+    const handleAddTable = () => {
+        setBtnText("please wait...");
+        axios
+            .post(`${baseURL}/api/v1/table/createTable`, {
+                token: props.staff.token,
+                tableNo: tableNo,
+            })
+            .then((res) => {
+                props.fetchTables();
+                setBtnText("Add +");
+            })
+            .catch((err) => {
+                alert(err);
+                console.log(err);
+                setBtnText("Add +");
+            });
+    };
+
     return (
         <div className={classes.container}>
             <Typography variant="h6" className={classes.title}>
                 Add Table
             </Typography>
             <div className={classes.tableForm}>
-                <input type="number" placeholder="Table Number" />
-                <Button variant="contained" color="primary">
-                    Add +
+                <input
+                    type="number"
+                    placeholder="Table Number"
+                    value={tableNo}
+                    onChange={(e) => {
+                        setTableNo(e.target.value);
+                    }}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddTable}
+                    disabled={
+                        btnText.toLowerCase().includes("please wait")
+                            ? true
+                            : false
+                    }
+                >
+                    {btnText}
                 </Button>
             </div>
 
             <Table>
                 <TableBody>
-                    {dummyData.map((table, index) => {
+                    {props.tables.map((table, index) => {
                         return <TableManageTab key={index} table={table} />;
                     })}
                 </TableBody>
@@ -62,4 +107,5 @@ const TablesManager = () => {
     );
 };
 
-export default TablesManager;
+const mapStateToProps = ({ tables, staff }) => ({ tables, staff });
+export default connect(mapStateToProps, { fetchTables })(TablesManager);
