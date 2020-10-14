@@ -1,7 +1,10 @@
 import React from "react";
 
 //components
-import { List, ListItem, ListItemText, Typography } from "@material-ui/core";
+import { Button, List, ListItem, ListItemText, Typography } from "@material-ui/core";
+
+//Routing
+import {Link} from "react-router-dom";
 
 //state management
 import { connect } from "react-redux";
@@ -41,6 +44,17 @@ const RecivedOrdersList = (props) => {
                     </ListItem>
                 ))}
             </List>
+            <div style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                margin: ".2rem .8rem"
+            }}>
+                <Link to="/customer/paybill" style={{textDecoration: "none", color: "inherit"}}>
+                    <Button variant="contained" color="primary">
+                        Pay My Bill
+                    </Button>
+                </Link>
+            </div>
         </>
     );
 };

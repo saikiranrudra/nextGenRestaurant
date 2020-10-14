@@ -229,6 +229,7 @@ const PayBill = (props) => {
             display: "flex",
             justifyContent: "flex-end",
             marginRight: "1rem",
+            marginBottom: "5rem"
           }}
         >
           <Link to="/customer/payment/successfull" className={classes.link}>
