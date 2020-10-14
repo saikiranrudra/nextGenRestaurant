@@ -9,6 +9,11 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
+//State Management
+import {connect} from "react-redux";
+//Socket Connection
+import socket from "./../../socket";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -24,7 +29,7 @@ const useStyle = makeStyles({
   },
 });
 
-const NeedHelp = () => {
+const NeedHelp = (props) => {
   const [open, setOpen] = useState(false);
   const classes = useStyle();
 
@@ -39,6 +44,21 @@ const NeedHelp = () => {
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
+
+  const handleNeedHelp = () => {
+    let tableNumber = -1;
+    props.tables.forEach(table => {
+      if(table._id === props.tableNo) {
+        tableNumber = table.tableNo;
+        return;
+      }
+    })
+
+    socket.emit("NOTIFICATION", {type: "NEED_HELP", payload: {
+      tableNo: tableNumber
+    }})
+    setOpen(false);
+  }
 
   return (
     <>
@@ -71,9 +91,9 @@ const NeedHelp = () => {
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <Button
-                onClick={handleClose}
                 color="primary"
                 className={classes.btn}
+                onClick={handleNeedHelp}
               >
                 Yes
               </Button>
@@ -85,4 +105,5 @@ const NeedHelp = () => {
   );
 };
 
-export default NeedHelp;
+const mapStateToProps = ({tableNo, tables}) => ({tableNo, tables});
+export default connect(mapStateToProps)(NeedHelp);

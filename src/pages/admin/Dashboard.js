@@ -21,6 +21,9 @@ import { connect } from "react-redux";
 //Actions
 import { fetchIngredients, staffLogin } from "./../../actions/customer";
 
+//Socket
+import socket from "./../../socket";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 const useStyle = makeStyles((theme) => ({
@@ -68,6 +71,7 @@ const Dashboard = (props) => {
     const classes = useStyle();
     const [editable, setEditable] = useState(false);
     const { fetchIngredients } = props;
+    const [notifications, setNotifications] = useState([]);
     const [selectedTable, setSeletedTable] = useState(
         props.tables.length > 0 ? props.tables[0] : null
     );
@@ -75,8 +79,16 @@ const Dashboard = (props) => {
     useEffect(() => {
         fetchIngredients();
     }, [fetchIngredients]);
+
+    socket.on("ADMIN_NOTIFICATION", (notification) =>{
+        let newNotifications = notifications;
+        newNotifications.unshift(notification);
+        setNotifications([...newNotifications]);
+    }) 
+
     return (
         <div className={classes.container}>
+            {console.log(notifications)}
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
                     <img
@@ -152,14 +164,14 @@ const Dashboard = (props) => {
                     >
                         Notifications
                     </Typography>
-                    <Button variant="text" className={classes.red}>
+                    <Button variant="text" className={classes.red} onClick={() => { setNotifications([]) }}>
                         clear all
                     </Button>
                 </div>
                 <div
                     style={{ backgroundColor: "#F5F5F5", borderRadius: "8px" }}
                 ></div>
-                <Notifications />
+                <Notifications notificationsData={notifications} />
             </div>
 
             <div style={{ paddingRight: "2rem" }}>

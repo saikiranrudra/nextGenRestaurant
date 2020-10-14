@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 
+//SOCKETIO
+import socket from "./socket";
+
 // react router dom
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -30,6 +33,7 @@ const App = (props) => {
         fetchTables();
     }, [fetchAppData, fetchTables]);
 
+
     const theme = createMuiTheme({
         palette: {
             primary: {
@@ -41,6 +45,11 @@ const App = (props) => {
             },
         },
     });
+
+    socket.on('connect', function(){
+        console.log("Socket Connection established")
+    });
+
 
     return (
         <BrowserRouter>

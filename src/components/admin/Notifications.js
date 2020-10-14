@@ -1,7 +1,7 @@
 import React from "react";
 
 // components
-import { List, ListItem, ListItemText, Button } from "@material-ui/core";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -30,71 +30,48 @@ const useStyle = makeStyles((theme) => ({
     marginTop: "1.2rem",
   },
 }));
-const notificationsData = [
-  {
-    tableNo: 5,
-    message: "Need Help",
-  },
-  {
-    tableNo: 14,
-    message: "Wants To pay bill",
-    amount: 758,
-    status: "recived",
-  },
-  {
-    tableNo: 6,
-    message: "Need Help",
-  },
-  {
-    tableNo: 8,
-    message: "Wants To pay bill",
-    amount: 758,
-    status: "recived",
-  },
-  {
-    tableNo: 5,
-    message: "Need Help",
-  },
-  {
-    tableNo: 2,
-    message: "Wants To pay bill",
-    amount: 758,
-    status: "recived",
-  },
-  {
-    tableNo: 5,
-    message: "Need Help",
-  },
-  {
-    tableNo: 2,
-    message: "Wants To pay bill",
-    amount: 758,
-    status: "recived",
-  },
-  {
-    tableNo: 5,
-    message: "Need Help",
-  },
-  {
-    tableNo: 2,
-    message: "Wants To pay bill",
-    amount: 758,
-    status: "recived",
-  },
-  {
-    tableNo: 5,
-    message: "Need Help",
-  },
-];
 
-const Notifications = () => {
+
+
+const Notifications = (props) => {
   const classes = useStyle();
   return (
     <div className={classes.notificationContainer}>
       <List>
-        {notificationsData.map((notification, index) => {
-          return (
-            <ListItem
+        {props.notificationsData.map((notification, index) => {
+          if(notification.type === "NEED_HELP") {
+        
+            return (
+              <ListItem
+                key={index}
+                style={{
+                  margin: ".6rem .5rem",
+                  width: "auto",
+                  backgroundColor: "#fff",
+                }}
+              >
+                <ListItemText className={classes.boldText}>
+                  Table{" "}
+                  <span className={classes.red}>{notification.payload.tableNo}</span>
+                </ListItemText>
+    
+                  <ListItemText className={classes.boldText}>
+                    <span>Need Help</span>
+                  </ListItemText>
+              </ListItem>
+            );
+          } else {
+            return null;
+          }
+        })}
+      </List>
+    </div>
+  );
+};
+
+export default Notifications;
+
+{/* <ListItem
               key={index}
               style={{
                 margin: ".6rem .5rem",
@@ -127,12 +104,4 @@ const Notifications = () => {
                   </Button>
                 ) : null}
               </ListItemText>
-            </ListItem>
-          );
-        })}
-      </List>
-    </div>
-  );
-};
-
-export default Notifications;
+            </ListItem> */}
