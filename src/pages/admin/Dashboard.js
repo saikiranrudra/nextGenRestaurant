@@ -80,11 +80,17 @@ const Dashboard = (props) => {
         fetchIngredients();
     }, [fetchIngredients]);
 
-    socket.on("ADMIN_NOTIFICATION", (notification) =>{
+    socket.on("ADMIN_NOTIFICATION", (notification) => {
         let newNotifications = notifications;
         newNotifications.unshift(notification);
         setNotifications([...newNotifications]);
-    }) 
+    })
+    
+    socket.on("ADMIN_CR_NOTIFICATION", (notification) => {
+        let newNotifications = notifications;
+        newNotifications.unshift(notification);
+        setNotifications([...newNotifications]);
+    })
 
     return (
         <div className={classes.container}>

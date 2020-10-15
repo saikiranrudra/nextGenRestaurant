@@ -12,14 +12,19 @@ import {
   FormControlLabel,
   Checkbox,
   TableCell,
+  Button
 } from "@material-ui/core";
 import NeedHelp from "./../../components/customer/NeedHelp";
 import Navigation from "./../../components/customer/Navigation";
-import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+
+// Routing
+import { Link, useHistory } from "react-router-dom";
 
 // State Management
 import { connect } from "react-redux";
+
+// Socket
+import socket from "./../../socket";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -103,6 +108,34 @@ const discountCalc = (userPoints, pointValue) => {
 const PayBill = (props) => {
   const classes = useStyle();
   const [discount, setDiscount] = React.useState(false);
+  const history = useHistory();
+
+  const handlePayOffline = () => {
+    let payload = {}
+    props.tables.forEach(table => {
+      if(table._id === props.tableNo) {
+        payload["tableNo"] = table.tableNo;
+      }
+    })
+    payload["tableId"] = props.tableNo;
+    payload["total"] =  !discount
+      ? totalPrice(props.recivedOrders)
+      : props.user && props.pointValue
+      ? 
+          totalPrice(props.recivedOrders) *
+          (discountCalc(props.user.points, props.pointValue) / 100)
+        
+      : totalPrice(props.recivedOrders)
+
+    const data = {
+      type: "PAYBILL_OFFLINE",
+      payload
+    }  
+    socket.emit("NOTIFICATION", data);
+
+    history.push("/customer/payment/successfull");
+
+  }
 
   const handleChange = (event) => {
     setDiscount(event.target.checked);
@@ -128,8 +161,8 @@ const PayBill = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.recivedOrders.map((item) => (
-                <TableRow>
+              {props.recivedOrders.map((item, index) => (
+                <TableRow key={index}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{totalCount(item)}</TableCell>
                   <TableCell>{individualPrice(item)}</TableCell>
@@ -241,15 +274,15 @@ const PayBill = (props) => {
               Pay Online
             </Button>
           </Link>
-          <Link to="/customer/payment/successfull" className={classes.link}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ margin: ".3rem" }}
-            >
-              Pay Offline
-            </Button>
-          </Link>
+
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ margin: ".3rem" }}
+            onClick={handlePayOffline}
+          >
+            Pay Offline
+          </Button>
         </div>
       </div>
 
@@ -269,9 +302,11 @@ const PayBill = (props) => {
     </>
   );
 };
-const mapStateToProps = ({ recivedOrders, user, pointValue }) => ({
+const mapStateToProps = ({ recivedOrders, user, pointValue, tableNo, tables }) => ({
   recivedOrders,
   user,
   pointValue,
+  tableNo,
+  tables
 });
 export default connect(mapStateToProps)(PayBill);
