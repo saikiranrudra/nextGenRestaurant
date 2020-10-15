@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 //components
 import {
@@ -106,7 +106,7 @@ const renderTables = (type, tableData, setTableData, classes) => {
 
 const EditableTableOrders = (props) => {
     const classes = useStyle();
-    const [tableData, setTableData] = useState([]);
+    const {tableData, setTableData} = props;
     const [btnText, setBtnText] = useState("Save Changes");
 
     const handleSaveChange = () => {
@@ -127,23 +127,6 @@ const EditableTableOrders = (props) => {
                 setBtnText("Save Changes");
             });
     };
-
-    useEffect(() => {
-        if (props.selectedTable !== null) {
-            axios
-                .post(`${baseURL}/api/v1/orders/getOrdersByTableNo`, {
-                    token: props.staff.token,
-                    tableNo: props.selectedTable._id,
-                })
-                .then((res) => {
-                    setTableData(res.data.data);
-                })
-                .catch((err) => {
-                    alert(err);
-                    console.log(err);
-                });
-        }
-    }, [props.selectedTable, props.staff.token]);
 
     return (
         <>

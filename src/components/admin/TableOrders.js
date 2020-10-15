@@ -88,7 +88,8 @@ const TableOrders = (props) => {
         placedItems: [],
         cookedItems: [],
     });
-    const [tableOrders, setTableOrders] = useState({});
+    const {tableData: tableOrders} = props;
+    // const [tableOrders, setTableOrders] = useState({});
     const [total, setTotal] = useState(totalPrice(tableData));
     const [btnText, setBtnText] = useState("Recived");
 
@@ -116,46 +117,31 @@ const TableOrders = (props) => {
     };
 
     const fetchTableData = useCallback(() => {
-        if (props.selectedTable !== null) {
-            axios
-                .post(`${baseURL}/api/v1/orders/getOrdersByTableNo`, {
-                    token: props.staff.token,
-                    tableNo: props.selectedTable._id,
+        const placedItems = _.compact(
+            _.flatten(
+                tableOrders.map((order) => {
+                    if (order.state === "placed") {
+                        return order.items;
+                    } else {
+                        return null;
+                    }
                 })
-                .then((res) => {
-                    setTableOrders(res.data.data);
-                    const placedItems = _.compact(
-                        _.flatten(
-                            res.data.data.map((order) => {
-                                if (order.state === "placed") {
-                                    return order.items;
-                                } else {
-                                    return null;
-                                }
-                            })
-                        )
-                    );
+            )
+        );
 
-                    const cookedItems = _.compact(
-                        _.flatten(
-                            res.data.data.map((order) => {
-                                if (order.state === "cooked") {
-                                    return order.items;
-                                } else {
-                                    return null;
-                                }
-                            })
-                        )
-                    );
-
-                    setTableData({ placedItems, cookedItems });
+        const cookedItems = _.compact(
+            _.flatten(
+                tableOrders.map((order) => {
+                    if (order.state === "cooked") {
+                        return order.items;
+                    } else {
+                        return null;
+                    }
                 })
-                .catch((err) => {
-                    alert(err);
-                    console.log(err);
-                });
-        }
-    }, [props.selectedTable, props.staff.token]);
+            )
+        );            
+        setTableData({ placedItems, cookedItems });
+    }, [tableOrders]);
 
     useEffect(() => {
         fetchTableData();

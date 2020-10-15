@@ -9,8 +9,13 @@ import Notifications from "./../../components/admin/Notifications";
 import TableOrders from "./../../components/admin/TableOrders";
 import EditableTableOrders from "./../../components/admin/EditableTableOrders";
 
+// API
+import axios from "axios";
 // Variables
 import { baseURL } from "./../../variables";
+
+// Utils
+import _ from "lodash";
 
 // images
 import logo from "./../../assets/logo.png";
@@ -76,25 +81,48 @@ const Dashboard = (props) => {
         props.tables.length > 0 ? props.tables[0] : null
     );
 
+    const [tableData, setTableData] = useState([]);
+
     useEffect(() => {
         fetchIngredients();
     }, [fetchIngredients]);
 
     socket.on("ADMIN_NOTIFICATION", (notification) => {
         let newNotifications = notifications;
+        _.remove(newNotifications, (n) => 
+            (n.type === notification.type && n.payload.tableNo === notification.payload.tableNo)
+        )
         newNotifications.unshift(notification);
         setNotifications([...newNotifications]);
     })
     
     socket.on("ADMIN_CR_NOTIFICATION", (notification) => {
         let newNotifications = notifications;
+        _.remove(newNotifications, (n) => 
+            (n.type === notification.type && n.payload.tableNo === notification.payload.tableNo)
+        )
         newNotifications.unshift(notification);
         setNotifications([...newNotifications]);
     })
 
+    useEffect(() => {
+        if(selectedTable !== null && props.staff !== null) {
+            axios.post(`${baseURL}/api/v1/orders/getOrdersByTableNo`, {
+                token: props.staff.token,
+                tableNo: selectedTable._id
+            }).then(res => {
+                setTableData(res.data.data);
+            }).catch(err => {
+                alert(err);
+                console.log(err);
+            }) 
+
+        }
+    },[selectedTable, props.staff])
+
+
     return (
         <div className={classes.container}>
-            {console.log(notifications)}
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
                     <img
@@ -150,12 +178,15 @@ const Dashboard = (props) => {
                 {editable ? (
                     <EditableTableOrders
                         setEditable={setEditable}
+                        tableData={tableData}
+                        setTableData={setTableData}
                         selectedTable={selectedTable}
                     />
                 ) : (
                     <TableOrders
-                        selectedTable={selectedTable}
                         setEditable={setEditable}
+                        tableData={tableData}
+                        selectedTable={selectedTable}
                     />
                 )}
             </div>
@@ -177,7 +208,7 @@ const Dashboard = (props) => {
                 <div
                     style={{ backgroundColor: "#F5F5F5", borderRadius: "8px" }}
                 ></div>
-                <Notifications notificationsData={notifications} />
+                <Notifications notificationsData={notifications} setNotifications={setNotifications} />
             </div>
 
             <div style={{ paddingRight: "2rem" }}>
@@ -187,7 +218,7 @@ const Dashboard = (props) => {
     );
 };
 
-const mapStateToProps = ({ app, tables }) => ({ app, tables });
+const mapStateToProps = ({ app, tables, staff }) => ({ app, tables, staff });
 
 export default connect(mapStateToProps, { fetchIngredients, staffLogin })(
     Dashboard

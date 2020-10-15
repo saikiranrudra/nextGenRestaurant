@@ -3,6 +3,17 @@ import React from "react";
 // components
 import { List, ListItem, ListItemText, Button } from "@material-ui/core";
 
+// State Management
+import {connect} from "react-redux";
+
+// Utils
+import _ from "lodash";
+
+// API
+import axios from "axios";
+//Variables
+import {baseURL} from "./../../variables";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -35,6 +46,25 @@ const useStyle = makeStyles((theme) => ({
 
 const Notifications = (props) => {
   const classes = useStyle();
+
+  const handleRecived = (notification) => {
+    axios.post(`${baseURL}/api/v1/orders/markPayedByTableNo`, {
+      token: props.staff.token,
+      tableNo: notification.payload.tableId
+    }).then(res => {
+      let notifications = _.clone(props.notificationsData);
+
+       _.remove(
+        notifications, (n) => n.type === "PAYBILL_OFFLINE" && n.payload.tableId === notification.payload.tableId
+      )
+
+      props.setNotifications(notifications)
+    }).catch(err => {
+      console.log(err);
+      alert(err);
+    })
+  }
+ 
   return (
     <div className={classes.notificationContainer}>
       <List>
@@ -87,7 +117,11 @@ const Notifications = (props) => {
                 className={classes.boldText}
                 style={{ color: notification.status ? "#fff" : null }}
               >           
-                <Button variant="contained" className={classes.btn}>
+                <Button 
+                  variant="contained" 
+                  className={classes.btn}
+                  onClick={() => { handleRecived(notification) }}
+                >
                   Recived
                 </Button>
               </ListItemText>
@@ -102,4 +136,5 @@ const Notifications = (props) => {
   );
 };
 
-export default Notifications;
+const mapStateToProps = ({staff}) => ({staff}); 
+export default connect(mapStateToProps)(Notifications);
