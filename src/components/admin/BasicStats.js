@@ -1,10 +1,22 @@
-import React from "react";
+import React,{ useEffect, useState } from "react";
 
 //components
 import { Typography } from "@material-ui/core";
 
+//State Management
+import {connect} from "react-redux";
+
+// utils
+import _ from "lodash";
+
+//API
+import axios from "axios";
+//Variable
+import {baseURL} from "./../../variables";
+
 //styling
 import { makeStyles } from "@material-ui/core/styles";
+
 const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
@@ -35,8 +47,20 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const BasicStats = () => {
+const BasicStats = (props) => {
   const classes = useStyle();
+  const [stats, setStats] = useState({});
+
+  useEffect(() => {
+    axios.post(`${baseURL}/api/v1/orders/orderStats`, {token: props.staff.token})
+      .then(res => {
+        setStats(res.data.data);
+      }).catch(err => {
+        alert(err);
+        console.log(err);
+      })
+  }, [props.staff])
+
   return (
     <div className={classes.container}>
       <div>
@@ -46,17 +70,17 @@ const BasicStats = () => {
 
         <div className={classes.statBox}>
           <span className={classes.title}>Orders</span>
-          <span className={classes.quantity}>25</span>
+          <span className={classes.quantity}>{props.tableData.length}</span>
         </div>
 
         <div className={classes.statBox}>
           <span className={classes.title}>Served</span>
-          <span className={classes.quantity}>16</span>
+          <span className={classes.quantity}>{_.countBy(props.tableData, (o) => o.state === "cooked")["true"] || 0}</span>
         </div>
 
         <div className={classes.statBox}>
           <span className={classes.title}>Preparing</span>
-          <span className={classes.quantity}>10</span>
+          <span className={classes.quantity}>{_.countBy(props.tableData, (o) => o.state === "placed")["true"] || 0}</span>
         </div>
       </div>
 
@@ -67,25 +91,25 @@ const BasicStats = () => {
 
         <div className={classes.statBox}>
           <span className={classes.title}>Best Selling Dish</span>
-          <span className={classes.quantity}>Ratatouille</span>
+          <span className={classes.quantity}>{stats.bestSelling}</span>
         </div>
 
         <div className={classes.statBox}>
           <span className={classes.title}>Total Orders</span>
-          <span className={classes.quantity}>76</span>
+          <span className={classes.quantity}>{stats.orders}</span>
         </div>
 
         <div className={classes.statBox}>
           <span className={classes.title}>Total Income</span>
           <span className={classes.quantity}>
-            20,568<span className={classes.rupee}>₹</span>
+            {stats.totalIncome}<span className={classes.rupee}>₹</span>
           </span>
         </div>
 
         <div className={classes.statBox}>
           <span className={classes.title}>Net Profit</span>
           <span className={classes.quantity}>
-            8256<span className={classes.rupee}>₹</span>
+            {stats.netProfit}<span className={classes.rupee}>₹</span>
           </span>
         </div>
       </div>
@@ -93,4 +117,6 @@ const BasicStats = () => {
   );
 };
 
-export default BasicStats;
+const mapStateToProps = ({staff}) => ({staff});
+
+export default connect(mapStateToProps)(BasicStats);

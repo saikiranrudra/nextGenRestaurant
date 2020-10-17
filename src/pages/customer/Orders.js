@@ -129,7 +129,6 @@ const Orders = (props) => {
         axios
             .post(`${baseURL}/api/v1/orders/placeorder`, order)
             .then(() => {
-                console.log("SUCCESSFULL CREATED");
                 props.fetchMenuItems();
                 setBtnText("Order Now");
                 history.push("/customer/orderconfirm");

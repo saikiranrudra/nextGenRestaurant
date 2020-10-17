@@ -212,7 +212,7 @@ const Dashboard = (props) => {
             </div>
 
             <div style={{ paddingRight: "2rem" }}>
-                <BasicStats />
+                <BasicStats tableData={tableData} />
             </div>
         </div>
     );
