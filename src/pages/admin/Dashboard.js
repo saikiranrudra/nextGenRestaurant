@@ -163,8 +163,10 @@ const Dashboard = (props) => {
             </div>
 
             <div style={{ paddingLeft: "1rem" }}>
-                <span className={classes.activeTableCount}>6</span>
-                <span className={classes.totalTableCount}>/20</span>
+                <span className={classes.activeTableCount}>
+                    {_.countBy(props.tables, table => table.isVacant)["true"] ? _.countBy(props.tables, table => table.isVacant)["true"] : "null"}
+                </span>
+                <span className={classes.totalTableCount}>/{props.tables.length}</span>
                 <Typography variant="h6" align="left" className={classes.title}>
                     Active Tables
                 </Typography>

@@ -6,6 +6,8 @@ import logo from "./../../assets/logo.png";
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
+import socket from "./../../socket";
+
 // API management
 import axios from "axios";
 
@@ -132,12 +134,18 @@ const Auth = (props) => {
 
     useEffect(() => {
         if (tableNo === null && query.get("tableNo") === null) {
-            alert(
-                "please scan the qr and while using this app do not refresh or edit url"
-            );
+            alert("please scan the qr and while using this app do not refresh or edit url");
         } else {
             if (query.get("tableNo") !== null) {
-                setTableNo(query.get("tableNo"));
+                const tableNo = query.get("tableNo")
+                axios.post(`${baseURL}/api/v1/table/updateTable`, {_id: tableNo, isVacant: false})
+                    .then(res => {
+                        setTableNo(tableNo);
+                        socket.emit("UPDATED_TABLES");
+                    }).catch(err => {
+                        console.log(err);
+                        alert("Something went wrong Please rescan the QR")
+                    })
             }
         }
     }, [query, setTableNo, tableNo]);

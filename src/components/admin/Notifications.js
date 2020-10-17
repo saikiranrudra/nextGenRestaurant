@@ -5,6 +5,8 @@ import { List, ListItem, ListItemText, Button } from "@material-ui/core";
 
 // State Management
 import {connect} from "react-redux";
+//Action
+import {fetchTables} from "./../../actions/general/table";
 
 // Utils
 import _ from "lodash";
@@ -52,13 +54,25 @@ const Notifications = (props) => {
       token: props.staff.token,
       tableNo: notification.payload.tableId
     }).then(res => {
-      let notifications = _.clone(props.notificationsData);
+    
+      // Making table vacant
+      axios.post(`${baseURL}/api/v1/table/updateTable`, {
+        _id: notification.payload.tableId,
+        isVacant: true
+      }).then(res => {
+          props.fetchTables();
+          let notifications = _.clone(props.notificationsData);
 
-       _.remove(
-        notifications, (n) => n.type === "PAYBILL_OFFLINE" && n.payload.tableId === notification.payload.tableId
-      )
+          _.remove(
+            notifications, (n) => n.type === "PAYBILL_OFFLINE" && n.payload.tableId === notification.payload.tableId
+          )
 
-      props.setNotifications(notifications)
+          props.setNotifications(notifications) 
+        }).catch(err => {
+          alert("payment is confirmed but unable to vacant table please reclick on Recived", err);
+          console.log(err)
+        })
+
     }).catch(err => {
       console.log(err);
       alert(err);
@@ -137,4 +151,4 @@ const Notifications = (props) => {
 };
 
 const mapStateToProps = ({staff}) => ({staff}); 
-export default connect(mapStateToProps)(Notifications);
+export default connect(mapStateToProps, {fetchTables})(Notifications);

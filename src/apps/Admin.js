@@ -3,11 +3,15 @@ import React, { useEffect } from "react";
 //Routing
 import { Route } from "react-router-dom";
 
+// Socket
+import socket from "./../socket";
+
 // state management
 import { connect } from "react-redux";
 // action
 import { fetchMenuItems, fetchCategories } from "./../actions/customer";
 import { fetchEmployee } from "./../actions/admin";
+import {fetchTables} from "./../actions/general/table";
 
 // pages
 import Login from "./../pages/admin/Login";
@@ -28,6 +32,10 @@ const Admin = (props) => {
         fetchCategories();
         fetchEmployee();
     }, [fetchMenuItems, fetchCategories, fetchEmployee]);
+
+    socket.on("FETCH_TABLES", () => {
+        props.fetchTables();
+    })
 
     return (
         <>
@@ -77,4 +85,5 @@ export default connect(mapStateToProps, {
     fetchMenuItems,
     fetchCategories,
     fetchEmployee,
+    fetchTables
 })(Admin);
