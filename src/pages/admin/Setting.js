@@ -11,6 +11,9 @@ import { connect } from "react-redux";
 //Actions
 import { staffLogin } from "./../../actions/customer";
 
+//Variables
+import {baseURL} from "./../../variables";
+
 //assets
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -53,7 +56,7 @@ const Setting = (props) => {
             <Paper className={classes.menuContainer}>
                 <div style={{ width: "100%", textAlign: "center" }}>
                     <img
-                        src={props.app.img ? props.app.img : logo}
+                        src={props.app.img !== undefined ? `${baseURL}${props.app.img}`: logo}
                         alt="logo"
                         className={classes.logo}
                     />

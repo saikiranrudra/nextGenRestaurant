@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //components
 import {
@@ -17,6 +17,20 @@ import {
 //State Management
 import { connect } from "react-redux";
 
+//API
+import axios from "axios";
+//Variable
+import {baseURL} from "./../../variables";
+
+// Utils
+import {
+        getTableNo,
+        getFormatedDate,
+        timeFormat,
+        totalCostOforders,
+        formatDate
+    } from "./../../utils/functions";
+
 //Icons
 import FilterListIcon from "@material-ui/icons/FilterList";
 import SearchIcon from "@material-ui/icons/Search";
@@ -26,6 +40,7 @@ import Slide from "@material-ui/core/Slide";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
+
 const useStyle = makeStyles({
     heading: {
         fontFamily: "Product-Sans",
@@ -101,198 +116,42 @@ const useStyle = makeStyles({
     },
 });
 
-let dummyOrders = [
-    {
-        orderNumber: "123456464324sdadasd1as",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadasd2as",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadas3das",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadas4das",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadas5das",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdad6asdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada7sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadas8das",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadas9das",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadasd10as",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdad11asdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sd12adasdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada13sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada14sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada15sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada16sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada17sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdada18sdas",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-    {
-        orderNumber: "123456464324sdadas19das",
-        date: "25/5/2020",
-        timeIn: "15:36",
-        timeOut: "16:02",
-        tableNo: "5",
-        name: "Surname Name",
-        paymentMethod: "offline",
-        totalBill: 2564,
-    },
-];
+const filterCheck = (filters, transection, tables) => {
+    let tableNo = true;
+    let mode = true;
+    let dish = true;
+    
+    if(filters.dish !== undefined && filters.dish !== "") {
+        dish = false;
+
+        transection.orders.forEach(order => {
+            for(let i = 0; i < order.items.length; i++) {
+                if(order.items[i].name.toLowerCase().includes(filters.dish)) {
+                    dish = true;
+                    break;
+                }
+            }
+        })
+
+    }
+
+    if(filters.tableNo !== undefined && filters.tableNo !== "") {
+        tableNo = getTableNo(tables, transection.tableNo) === parseInt(filters.tableNo) ? true : false;
+    }
+
+    if(filters.mode === "online") {
+        mode = transection.transectionId !== undefined ? true : false;
+    } else if(filters.mode === "offline") {
+        mode = transection.transectionId === undefined ? true : false;
+    }
+ 
+    console.log("tableNo: ", tableNo);
+    console.log("mode: ", mode);
+    console.log("dish: ", dish);
+    console.log("(tableNo && mode && dish): ", (tableNo && mode && dish));
+
+    return (tableNo && mode && dish);
+}
 
 // Transition Component
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -301,12 +160,38 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const AllOrders = (props) => {
     const classes = useStyle();
-    const [selectedOrder, setSelectedOrder] = useState({});
+    const {selectedOrder, setSelectedOrder} = props;
+    const [transection, setTransection] = useState([]);
     const [dialogVisibility, setDialogVisibility] = useState(false);
+    const [filters, setFilters] = useState({date: formatDate(Date()), mode: "both"})
+    const [search, setSearch] = useState("");
+
+    // TESTING
+    useEffect(() => {
+        console.log(filters);
+    }, [filters])
+
+    useEffect(() => {
+        if(props.staff !== null) {
+        
+            axios.post(`${baseURL}/api/v1/transection/getTransectionByDate`, { 
+                token: props.staff.token, 
+                date: filters.date 
+            })
+                .then((res) => {
+                    setTransection(res.data.data);              
+                }).catch((err) => {
+                    alert(err);
+                    console.log(err);
+                })
+     }
+    }, [props.staff, filters.date])
+
 
     const handleClose = () => {
         setDialogVisibility(false);
     };
+
 
     return (
         <>
@@ -321,6 +206,8 @@ const AllOrders = (props) => {
                             type="text"
                             placeholder="Search"
                             className={classes.searchInput}
+                            value={search}
+                            onChange={e => {setSearch(e.target.value)}}
                         />
                     </div>
 
@@ -338,7 +225,7 @@ const AllOrders = (props) => {
                         <TableHead>
                             <TableRow className={classes.head}>
                                 <TableCell>
-                                    <b>OrderNumber</b>
+                                    <b>Transection Id</b>
                                 </TableCell>
                                 <TableCell>
                                     <b>Date</b>
@@ -365,110 +252,121 @@ const AllOrders = (props) => {
                         </TableHead>
 
                         <TableBody>
-                            {dummyOrders.map((order, index) => (
-                                <TableRow
-                                    key={index}
-                                    onClick={() => setSelectedOrder(order)}
-                                    className={classes.tableBody}
-                                    style={{
-                                        backgroundColor:
-                                            selectedOrder.orderNumber ===
-                                            order.orderNumber
-                                                ? props.app.themeColor
-                                                : null,
-                                    }}
-                                    hover
-                                >
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.orderNumber}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.date}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.timeIn}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.timeOut}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.tableNo}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.name}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.paymentMethod}
-                                    </TableCell>
-                                    <TableCell
-                                        style={{
-                                            color:
-                                                selectedOrder.orderNumber ===
-                                                order.orderNumber
-                                                    ? "#fff"
-                                                    : null,
-                                        }}
-                                    >
-                                        {order.totalBill} {" ₹"}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {transection.map((obj, index) => {
+                                if(
+                                    (obj._id.toLowerCase().includes(search) 
+                                    || obj.name.toLowerCase().includes(search))
+                                    && filterCheck(filters, obj, props.tables)
+                                    ) {
+                                    return (
+                                        <TableRow
+                                            key={index}
+                                            onClick={() => setSelectedOrder(obj)}
+                                            className={classes.tableBody}
+                                            style={{
+                                                backgroundColor:
+                                                    selectedOrder._id ===
+                                                    obj._id
+                                                        ? props.app.themeColor
+                                                        : null,
+                                            }}
+                                            hover
+                                        >
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {obj._id}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {getFormatedDate(obj.createdAt)}{/*date*/}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {timeFormat(obj.orders[0].inTime)} {/*inTime*/}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {timeFormat(obj.createdAt)} {/*outTime*/}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {getTableNo(props.tables, obj.tableNo)} 
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {obj.name}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {obj.transectionId === undefined ? "offline" : "online"}
+                                            </TableCell>
+                                            <TableCell
+                                                style={{
+                                                    color:
+                                                        selectedOrder._id ===
+                                                        obj._id
+                                                            ? "#fff"
+                                                            : null,
+                                                }}
+                                            >
+                                                {totalCostOforders(obj.orders)} {" ₹"}
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                } else {
+                                    return null;
+                                }
+                                
+                            })}
                         </TableBody>
                     </Table>
                 </div>
@@ -483,12 +381,23 @@ const AllOrders = (props) => {
                 <label htmlFor="date" className={classes.label}>
                     Date
                 </label>
-                <input type="date" id="date" className={classes.input} />
+                <input 
+                    type="date" id="date" 
+                    className={classes.input} 
+                    value={filters.date} 
+                    onChange={(e) => { setFilters({...filters, date: e.target.value}) }}                    
+                />
 
                 <label htmlFor="tableNo" className={classes.label}>
                     Table Number
                 </label>
-                <input type="number" id="tableNo" className={classes.input} />
+                <input 
+                    type="number" 
+                    id="tableNo" 
+                    className={classes.input} 
+                    value={filters.tableNo} 
+                    onChange={(e) => { setFilters({...filters, tableNo: e.target.value}) }}                       
+                />
 
                 <label htmlFor="paymentMethod" className={classes.label}>
                     Payment Method
@@ -497,15 +406,24 @@ const AllOrders = (props) => {
                     name="paymentMethods"
                     id="paymentMethod"
                     className={classes.input}
+                    value={filters.mode} 
+                    onChange={(e) => { setFilters({...filters, mode: e.target.value}) }}
                 >
                     <option value="offline">Offline</option>
                     <option value="online">Online</option>
+                    <option value="both">Both</option>
                 </select>
 
                 <label htmlFor="dish" className={classes.label}>
                     Dish
                 </label>
-                <input type="text" id="dish" className={classes.input} />
+                <input 
+                    type="text" 
+                    id="dish" 
+                    className={classes.input} 
+                    value={filters.dish} 
+                    onChange={(e) => { setFilters({...filters, dish: e.target.value}) }}                      
+                />
                 <center>
                     <Button
                         variant="contained"
@@ -521,6 +439,6 @@ const AllOrders = (props) => {
     );
 };
 
-const mapStateToProps = ({ app }) => ({ app });
+const mapStateToProps = ({ app, staff, tables }) => ({ app, staff, tables });
 
 export default connect(mapStateToProps)(AllOrders);

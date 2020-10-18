@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 //Components
 import { Paper, Button, Typography } from "@material-ui/core";
@@ -10,6 +10,9 @@ import AllOrders from "./../../components/admin/AllOrders";
 import { connect } from "react-redux";
 //Actions
 import { staffLogin } from "./../../actions/customer";
+
+// Utils
+import {countOrdersBaseOnState} from "./../../utils/functions";
 
 // Variables
 import { baseURL } from "./../../variables";
@@ -66,6 +69,8 @@ const useStyle = makeStyles((theme) => ({
 }));
 const Orders = (props) => {
     const classes = useStyle();
+    const [selectedOrder, setSelectedOrder]  = useState({ orders:[]});
+    
     return (
         <div className={classes.container}>
             <Paper className={classes.menuContainer}>
@@ -108,11 +113,14 @@ const Orders = (props) => {
             </div>
 
             <div>
-                <ShowAndPrintBill />
+                <ShowAndPrintBill selectedOrder={selectedOrder}/>
             </div>
 
             <div>
-                <AllOrders />
+                <AllOrders 
+                    selectedOrder={selectedOrder}
+                    setSelectedOrder={setSelectedOrder}
+                />
             </div>
 
             <div>
@@ -126,17 +134,21 @@ const Orders = (props) => {
 
                 <div className={classes.statBox}>
                     <span className={classes.title}>Orders</span>
-                    <span className={classes.quantity}>25</span>
+                    <span className={classes.quantity}>{selectedOrder.orders.length}</span>
                 </div>
 
                 <div className={classes.statBox}>
                     <span className={classes.title}>Served</span>
-                    <span className={classes.quantity}>16</span>
+                <span className={classes.quantity}>
+                    {countOrdersBaseOnState(selectedOrder.orders, ["payed", "cooked"])}
+                </span>
                 </div>
 
                 <div className={classes.statBox}>
                     <span className={classes.title}>Preparing</span>
-                    <span className={classes.quantity}>10</span>
+                    <span className={classes.quantity}>
+                        {countOrdersBaseOnState(selectedOrder.orders, ["placed"])}
+                    </span>
                 </div>
             </div>
         </div>

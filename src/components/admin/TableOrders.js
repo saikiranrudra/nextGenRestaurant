@@ -13,6 +13,8 @@ import {
 
 //State Management
 import { connect } from "react-redux";
+//Actions
+import {fetchTables} from "./../../actions/general/table";
 
 //API
 import axios from "axios";
@@ -93,27 +95,41 @@ const TableOrders = (props) => {
     const [total, setTotal] = useState(totalPrice(tableData));
     const [btnText, setBtnText] = useState("Recived");
 
-    const handleRecivedOrder = () => {
+    const handleRecivedOrder = async () => {
         setBtnText("Please Wait...");
         let data = _.clone(tableOrders);
+
         data.forEach((order) => {
             order.state = "payed";
+            order.outTime = Date.now();
         });
 
-        axios
-            .post(`${baseURL}/api/v1/orders/updateOrders`, {
+        try {
+            await axios.post(`${baseURL}/api/v1/orders/markPayedByTableNo`, {
                 token: props.staff.token,
-                orders: data,
+                tableNo: props.selectedTable._id
             })
-            .then((res) => {
-                fetchTableData();
-                setBtnText("Recived");
+                
+    
+            console.log("TableNO: ", data[0].tableNo)
+            // make table as vacant
+            await axios.post(`${baseURL}/api/v1/table/updateTable`, {
+                _id: data[0].tableNo,
+                isVacant: true
             })
-            .catch((err) => {
-                alert(err);
-                console.log(err);
-                setBtnText("Recived");
-            });
+            
+            props.fetchTables()
+            fetchTableData();
+            setBtnText("Recived");
+        }
+        
+        catch(err) {
+            alert("Unable to vacant seat");
+            console.log(err);
+            setBtnText("Recived");
+        }
+
+
     };
 
     const fetchTableData = useCallback(() => {
@@ -302,4 +318,4 @@ const TableOrders = (props) => {
 };
 
 const mapStateToProps = ({ staff }) => ({ staff });
-export default connect(mapStateToProps)(TableOrders);
+export default connect(mapStateToProps, {fetchTables})(TableOrders);

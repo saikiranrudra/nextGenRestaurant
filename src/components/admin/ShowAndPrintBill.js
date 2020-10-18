@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
 //components
 import {
@@ -11,10 +11,12 @@ import {
   Button,
 } from "@material-ui/core";
 
-// Tempimages
-import c3 from "./../../assets/catogery/c1 (3).png";
-import c4 from "./../../assets/catogery/c1 (4).png";
+//utils
+import {getTableNo, getItemsFromOrders} from "./../../utils/functions";
 
+ 
+// State Management
+import {connect} from "react-redux";
 //styling
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -43,72 +45,15 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-let served = [
-  {
-    id: "789ghi",
-    img: c3,
-    name: "Manchurian",
-    category: "Chines Food",
-    rating: 1,
-    mealFor: 1,
-    price: 100,
-    normalCount: 4,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "101112jkl",
-    img: c4,
-    name: "Rice",
-    category: "South Indian",
-    rating: 4,
-    mealFor: 3,
-    price: 120,
-    jainCount: 6,
-    normalCount: 3,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "101112cross1",
-    img: c4,
-    name: "Coke",
-    category: "Cross Sale",
-    rating: 4,
-    mealFor: 3,
-    price: 120,
-    normalCount: 2,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "101112cross2",
-    img: c4,
-    name: "Butter Milk",
-    category: "Cross Sale",
-    rating: 4,
-    mealFor: 3,
-    price: 120,
-    normalCount: 5,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-  {
-    id: "101112cross3",
-    img: c4,
-    name: "papaad",
-    category: "Cross Sale",
-    rating: 4,
-    mealFor: 3,
-    price: 120,
-    normalCount: 7,
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-  },
-];
 
-const ShowAndPrintBill = () => {
+const ShowAndPrintBill = (props) => {
   const classes = useStyle();
+  const [items, setItems] = useState(getItemsFromOrders(props.selectedOrder.orders));
+
+  useEffect(() => {
+    setItems(getItemsFromOrders(props.selectedOrder.orders))
+  },[props.selectedOrder])
+
   return (
     <>
       <div
@@ -146,7 +91,7 @@ const ShowAndPrintBill = () => {
         >
           <span style={{ fontWeight: "bold" }}>Table</span>{" "}
           <span className={classes.red} style={{ fontWeight: "bold" }}>
-            1
+            {getTableNo(props.tables, props.selectedOrder.tableNo)}
           </span>
         </div>
 
@@ -165,7 +110,7 @@ const ShowAndPrintBill = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {served.map((item, index) => {
+            {items.map((item, index) => {
               return (
                 <TableRow key={index} className={classes.tableBody}>
                   <TableCell>{item.name}</TableCell>
@@ -188,6 +133,7 @@ const ShowAndPrintBill = () => {
               fontWeight: "bold",
               fontSize: ".8rem",
             }}
+            disabled={items.length > 0 ? false : true}
           >
             Print Bill
           </Button>
@@ -197,4 +143,6 @@ const ShowAndPrintBill = () => {
   );
 };
 
-export default ShowAndPrintBill;
+const mapStateToProps = ({tables}) => ({tables});
+
+export default connect(mapStateToProps)(ShowAndPrintBill);
