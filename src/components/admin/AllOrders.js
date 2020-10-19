@@ -303,7 +303,7 @@ const AllOrders = (props) => {
                                                             : null,
                                                 }}
                                             >
-                                                {timeFormat(obj.orders[0].inTime)} {/*inTime*/}
+                                                {timeFormat(obj.orders[0].createdTimeStamp)} {/*inTime*/}
                                             </TableCell>
                                             <TableCell
                                                 style={{
