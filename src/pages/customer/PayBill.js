@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 // Components
 import TopLogo from "./../../components/general/TopLogo";
@@ -98,16 +98,18 @@ const totalPrice = (items) => {
 };
 
 const discountCalc = (userPoints, pointValue) => {
-  if (userPoints < pointValue.redeemLimit) {
-    return 0;
-  } else if (userPoints >= pointValue.redeemLimit) {
-    return (pointValue.redeemLimit / pointValue.points) * pointValue.percent;
+  if (userPoints <= 0) {
+    return {discountPercent: 0, points: 0};
+  } else if(userPoints < pointValue.redeemLimit){
+    return {discountPercent: 0.05*userPoints, points: userPoints};
+  } else {
+    return {discountPercent: 0.05*pointValue.redeemLimit, points: pointValue.redeemLimit};
   }
 };
 
 const PayBill = (props) => {
   const classes = useStyle();
-  const [discount, setDiscount] = React.useState(false);
+  const [discount, setDiscount] = useState(false);
   const history = useHistory();
 
   const handlePayOffline = () => {
@@ -118,12 +120,17 @@ const PayBill = (props) => {
       }
     })
     payload["tableId"] = props.tableNo;
+
+    payload["discountPoints"] = !discount ? 0 : props.user && props.app.pointValue ?
+    discountCalc(props.user.points, props.app.pointValue)["points"] : 0
+    
+    
     payload["total"] =  !discount
       ? totalPrice(props.recivedOrders)
-      : props.user && props.pointValue
+      : props.user && props.app.pointValue
       ? 
-          totalPrice(props.recivedOrders) *
-          (discountCalc(props.user.points, props.pointValue) / 100)
+          (totalPrice(props.recivedOrders) *
+          (1 - (discountCalc(props.user.points, props.app.pointValue).discountPercent/100))).toFixed(2)
         
       : totalPrice(props.recivedOrders)
 
@@ -218,8 +225,8 @@ const PayBill = (props) => {
           style={{ marginRight: "1rem", fontFamily: "Product-Sans" }}
         >
           Discount Points{" "}
-          {props.user && props.pointValue
-            ? `-${discountCalc(props.user.points, props.pointValue)}%`
+          {props.user && props.app.pointValue && discount
+            ? `- ${discountCalc(props.user.points, props.app.pointValue).discountPercent}%`
             : "0%"}
         </Typography>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -248,10 +255,10 @@ const PayBill = (props) => {
         >
           {!discount
             ? `${totalPrice(props.recivedOrders)}`
-            : props.user && props.pointValue
-            ? `${
+            : props.user && props.app.pointValue
+            ? `${(
                 totalPrice(props.recivedOrders) *
-                (discountCalc(props.user.points, props.pointValue) / 100)
+                (1 - (discountCalc(props.user.points, props.app.pointValue).discountPercent/100))).toFixed(2)
               }`
             : `${totalPrice(props.recivedOrders)}`}
           <span style={{ fontSize: "1.8rem" }}>₹</span>
@@ -302,10 +309,10 @@ const PayBill = (props) => {
     </>
   );
 };
-const mapStateToProps = ({ recivedOrders, user, pointValue, tableNo, tables }) => ({
+const mapStateToProps = ({ recivedOrders, user, app, tableNo, tables }) => ({
   recivedOrders,
   user,
-  pointValue,
+  app,
   tableNo,
   tables
 });
