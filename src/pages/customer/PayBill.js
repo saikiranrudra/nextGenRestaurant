@@ -22,6 +22,13 @@ import { Link, useHistory } from "react-router-dom";
 
 // State Management
 import { connect } from "react-redux";
+//Actions
+import {customerAuthenticate} from "./../../actions/customer";
+
+//API
+import axios from "axios";
+//Variables
+import {baseURL} from "./../../variables";
 
 // Socket
 import socket from "./../../socket";
@@ -112,35 +119,48 @@ const PayBill = (props) => {
   const [discount, setDiscount] = useState(false);
   const history = useHistory();
 
-  const handlePayOffline = () => {
-    let payload = {}
-    props.tables.forEach(table => {
-      if(table._id === props.tableNo) {
-        payload["tableNo"] = table.tableNo;
-      }
-    })
-    payload["tableId"] = props.tableNo;
+  const handlePayOffline = async () => {
 
-    payload["discountPoints"] = !discount ? 0 : props.user && props.app.pointValue ?
-    discountCalc(props.user.points, props.app.pointValue)["points"] : 0
+    try {
+ 
+      const user = await axios.post(`${baseURL}/api/v1/users/updateUser`,{
+        token: props.user.token,
+        _id: props.user._id,
+        points: !discount ? props.user.points : (props.user.points - discountCalc(props.user.points, props.app.pointValue).points)
+      })
+
+      props.customerAuthenticate(user.data.data);
+
+      const res = await axios.post(`${baseURL}/api/v1/orders/myorders`, {
+        email: props.user.email,
+        token: props.user.token
+      })
+
+      const data =  await axios.post(`${baseURL}/api/v1/transection/createTransection`, {
+        token: props.user.token,
+        name: props.user.name,
+        email: props.user.email,
+        tableNo: props.tableNo,
+        orders: res.data.original,
+        total: totalPrice(res.data.data),
+
+        payingAmount: !discount ? totalPrice(res.data.data) : (totalPrice(props.recivedOrders) *
+        (1 - (discountCalc(props.user.points, props.app.pointValue).discountPercent/100))).toFixed(2),
+
+        discountPercent: !discount ? 0 : (discountCalc(props.user.points, props.app.pointValue).discountPercent)
+      })
+
+      const notificationData = {
+        type: "PAYBILL_OFFLINE",
+        payload: data.data.data
+      }  
+      socket.emit("NOTIFICATION", notificationData);
+      history.push("/customer/payment/successfull");
     
+    } catch(err) {
+      console.log(err);
+    }
     
-    payload["total"] =  !discount
-      ? totalPrice(props.recivedOrders)
-      : props.user && props.app.pointValue
-      ? 
-          (totalPrice(props.recivedOrders) *
-          (1 - (discountCalc(props.user.points, props.app.pointValue).discountPercent/100))).toFixed(2)
-        
-      : totalPrice(props.recivedOrders)
-
-    const data = {
-      type: "PAYBILL_OFFLINE",
-      payload
-    }  
-    socket.emit("NOTIFICATION", data);
-
-    history.push("/customer/payment/successfull");
 
   }
 
@@ -309,11 +329,11 @@ const PayBill = (props) => {
     </>
   );
 };
-const mapStateToProps = ({ recivedOrders, user, app, tableNo, tables }) => ({
+const mapStateToProps = ({ recivedOrders, user, app, tableNo, tables, staff }) => ({
   recivedOrders,
   user,
   app,
   tableNo,
-  tables
+  tables,
 });
-export default connect(mapStateToProps)(PayBill);
+export default connect(mapStateToProps, {customerAuthenticate})(PayBill);

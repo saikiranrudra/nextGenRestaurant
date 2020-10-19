@@ -104,14 +104,21 @@ const TableOrders = (props) => {
             order.outTime = Date.now();
         });
 
+        
         try {
-            await axios.post(`${baseURL}/api/v1/orders/markPayedByTableNo`, {
+            
+            const transection = await axios.post(`${baseURL}/api/v1/transection/getTransection`, {
                 token: props.staff.token,
-                tableNo: props.selectedTable._id
+                tableNo: props.selectedTable._id,
+            })
+            
+            await axios.post(`${baseURL}/api/v1/orders/markPayed`, {
+                token: props.staff.token,
+                tableNo: props.selectedTable._id,
+                transectionId: transection.data.data._id
             })
                 
     
-            console.log("TableNO: ", data[0].tableNo)
             // make table as vacant
             await axios.post(`${baseURL}/api/v1/table/updateTable`, {
                 _id: data[0].tableNo,

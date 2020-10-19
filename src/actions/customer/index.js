@@ -163,19 +163,6 @@ export const deleteIngredientFromAllItems = (ingredient) => {
     };
 };
 
-// export const updateCart = (item) => {
-//   return {
-//     type: "UPDATE_CART",
-//     payload: item,
-//   };
-// };
-
-// export const updateCartBulk = (items) => {
-//   return {
-//     type: "UPDATE_CART_BULK",
-//     payload: items,
-//   };
-// };
 
 /**** Orders ****/
 

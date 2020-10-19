@@ -10,6 +10,7 @@ import {fetchTables} from "./../../actions/general/table";
 
 // Utils
 import _ from "lodash";
+import {getTableNo} from "./../../utils/functions";
 
 // API
 import axios from "axios";
@@ -50,14 +51,15 @@ const Notifications = (props) => {
   const classes = useStyle();
 
   const handleRecived = (notification) => {
-    axios.post(`${baseURL}/api/v1/orders/markPayedByTableNo`, {
+    axios.post(`${baseURL}/api/v1/orders/markPayed`, {
       token: props.staff.token,
-      tableNo: notification.payload.tableId
+      tableNo: notification.payload.tableNo,
+      transectionId: notification.payload._id
     }).then(res => {
     
       // Making table vacant
       axios.post(`${baseURL}/api/v1/table/updateTable`, {
-        _id: notification.payload.tableId,
+        _id: notification.payload.tableNo,
         isVacant: true
       }).then(res => {
           props.fetchTables();
@@ -116,7 +118,9 @@ const Notifications = (props) => {
             >
               <ListItemText className={classes.boldText}>
                 Table{" "}
-                <span className={classes.red}>{notification.payload.tableNo}</span>
+                <span className={classes.red}>
+                  {getTableNo(props.tables, notification.payload.tableNo)}
+                </span>
               </ListItemText>
 
               <ListItemText className={classes.boldText}>
@@ -124,7 +128,7 @@ const Notifications = (props) => {
               </ListItemText>
 
               <ListItemText className={classes.boldText}>
-                <span className={classes.red}>{notification.payload.total}₹</span>
+                <span className={classes.red}>{notification.payload.payingAmount}₹</span>
               </ListItemText>
 
               <ListItemText
@@ -150,5 +154,5 @@ const Notifications = (props) => {
   );
 };
 
-const mapStateToProps = ({staff}) => ({staff}); 
+const mapStateToProps = ({staff, tables}) => ({staff, tables}); 
 export default connect(mapStateToProps, {fetchTables})(Notifications);
