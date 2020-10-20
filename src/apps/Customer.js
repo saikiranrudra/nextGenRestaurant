@@ -21,7 +21,6 @@ import { connect } from "react-redux";
 import {
     fetchMenuItems,
     fetchCategories,
-    previousOrder,
     fetchDiscount,
 } from "./../actions/customer";
 
@@ -30,7 +29,6 @@ import {
 const Customer = (props) => {
     const {
         fetchMenuItems,
-        previousOrder,
         fetchCategories,
         fetchDiscount,
     } = props;
@@ -39,9 +37,8 @@ const Customer = (props) => {
     useEffect(() => {
         fetchMenuItems();
         fetchCategories();
-        previousOrder();
         fetchDiscount();
-    }, [fetchMenuItems, fetchCategories, previousOrder, fetchDiscount]);
+    }, [fetchMenuItems, fetchCategories, fetchDiscount]);
 
     return (
         <>
@@ -82,6 +79,5 @@ const mapStateToProps = () => ({});
 export default connect(mapStateToProps, {
     fetchMenuItems,
     fetchCategories,
-    previousOrder,
     fetchDiscount,
 })(Customer);

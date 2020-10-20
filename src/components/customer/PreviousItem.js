@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-//styling
-import { makeStyles } from "@material-ui/core/styles";
 
 //components
 import { Typography } from "@material-ui/core";
 import Counter from "./Counter";
+
+//styling
+import { makeStyles } from "@material-ui/core/styles";
+
 
 const useStyle = makeStyles({
   itemName: {
@@ -21,26 +23,29 @@ const useStyle = makeStyles({
   },
 });
 
-const PreviousItem = ({ order }) => {
+const PreviousItem = ({item}) => {
+  const classes = useStyle();
   const [jainCount, setJainCount] = useState(
-    order.jainCount ? order.jainCount : 0
+    item.jainCount ? item.jainCount : 0
   );
   const [normalCount, setNormalCount] = useState(
-    order.normalCount ? order.normalCount : 0
+    item.normalCount ? item.normalCount : 0
   );
-  const classes = useStyle();
+
+
+
   return (
     <div className={classes.container}>
       <Typography variant="h3" align="left" className={classes.itemName}>
-        {order.name}
+        {item.name}
       </Typography>
-      {order.normalCount !== undefined ? (
+      {item.normalCount !== undefined ? (
         <div>
           <span>Normal </span>
           <Counter count={normalCount} setCount={setNormalCount} />
         </div>
       ) : null}
-      {order.jainCount !== undefined ? (
+      {item.jainCount !== undefined ? (
         <div>
           <span>Jain </span>
           <Counter count={jainCount} setCount={setJainCount} />

@@ -15,6 +15,25 @@ const findAndUpdate = (old, newObj) => {
     }
 };
 
+const updateBulk = (items, state) => {
+    const newState = _.clone(state);
+    newState.forEach(item => {
+        items.forEach(newItem => {
+            if(item._id === newItem._id) {
+                if(item.normalCount !== undefined) {
+                    item.normalCount = newItem.normalCount;
+                }
+
+                if(item.jainCount !== undefined) {
+                    item.jainCount = newItem.jainCount
+                }
+            }
+        })
+    })
+
+    return newState;
+}
+
 export default (state = [], action) => {
     switch (action.type) {
         case "FETCH_MENU_ITEMS":
@@ -27,10 +46,8 @@ export default (state = [], action) => {
 
         case "UPDATE_MENU_BULK": {
             let items = action.payload;
-            items.forEach((item) => {
-                state = findAndUpdate(state, item);
-            });
-            return [...state];
+            let newState = updateBulk(items, state);
+            return [...newState];
         }
 
         case "UPDATE_MENU_ITEM_FEATURED": {

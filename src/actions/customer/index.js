@@ -1,8 +1,3 @@
-// import c1 from "./../../assets/catogery/c1 (1).png";
-// import c2 from "./../../assets/catogery/c1 (2).png";
-import c3 from "./../../assets/catogery/c1 (3).png";
-import c4 from "./../../assets/catogery/c1 (4).png";
-
 import axios from "axios";
 
 import { baseURL } from "./../../variables";
@@ -10,17 +5,11 @@ import { baseURL } from "./../../variables";
 /**** Authentication ****/
 export const customerAuthenticate = (user) => {
     //perfrom authentication later
-
-    //If authenticated passed
     return {
         type: "AUTHENTICATION_AND_AUTHORIZATION",
         payload: user,
     };
-    //If authentication failed
-    //   return {
-    //     type: "AUTHENTICATION_AND_AUTHORIZATION",
-    //     payload: null,
-    //   };
+   
 };
 
 /***** CATEGORY *******/
@@ -166,63 +155,20 @@ export const deleteIngredientFromAllItems = (ingredient) => {
 
 /**** Orders ****/
 
-let previousOrderData = [
-    {
-        id: "789ghi",
-        img: c3,
-        name: "Manchurian",
-        category: ["Chines Food", "all"],
-        rating: 1,
-        mealFor: 1,
-        price: 100,
-        normalCount: 5,
-        featured: true,
-        visible: true,
-        deleted: false,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "101112jkl",
-        img: c4,
-        name: "Rice",
-        category: ["South Indian", "all"],
-        rating: 4,
-        mealFor: 3,
-        price: 120,
-        jainCount: 3,
-        normalCount: 4,
-        featured: false,
-        visible: false,
-        deleted: false,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-    {
-        id: "101112cross1",
-        img: c4,
-        name: "Coke",
-        category: ["Cross Sale", "all"],
-        rating: 4,
-        mealFor: 3,
-        price: 120,
-        normalCount: 2,
-        featured: false,
-        visible: false,
-        deleted: false,
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id sem odio. Donec auctor tincidunt convallis. Vivamus tincidunt hendrerit nisi. Aenean at dui quis tortor aliquam consequat ac nec leo. Suspendisse sagittis elit eget lacinia iaculis. Etiam pharetra, lorem ut consectetur porta",
-    },
-];
-
-export const previousOrder = () => (dispatch) => {
+export const previousOrder = (data) => (dispatch) => {
     //api call for previous order
-    // axios.get()
+    
+    axios.post(`${baseURL}/api/v1/orders/getPreviousOrders`, data)
+        .then(res => {
+            dispatch({
+                type: "FETCH_PREVIOUS_ORDER",
+                payload: res.data.data.items,
+            });
+        }).catch(err => {
+            console.log(err);
+        })
+    
     // imetating api call with setTimeOut
-    dispatch({
-        type: "FETCH_PREVIOUS_ORDER",
-        payload: previousOrderData,
-    });
 };
 
 export const showPreviousOrder = (visibility) => {

@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 //state management
 import { connect } from "react-redux";
 //actions
-import { updateMenuBulk, showPreviousOrder } from "./../../actions/customer";
+import { updateMenuBulk, showPreviousOrder, previousOrder } from "./../../actions/customer";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,7 @@ import { Typography, Button } from "@material-ui/core";
 import PreviousItem from "./PreviousItem";
 
 //utils
-import _ from "lodash";
+// import _ from "lodash";
 
 const useStyle = makeStyles({
   container: {
@@ -42,20 +42,23 @@ const useStyle = makeStyles({
 const PreviousOrder = (props) => {
   const classes = useStyle();
   const history = useHistory();
+
+  const {user, previousOrder} = props;
+
+  useEffect(() => {
+    if(user !== null) {
+      previousOrder({email: user.email, token: user.token})
+    }
+  },[user, previousOrder])
+
   return (
     <>
-      {props.previousOrderVisibility ? (
+      {props.previousOrderVisibility && props.previousOrders.length > 0 ? (
         <div className={classes.container}>
           <Typography variant="h3" className={classes.heading}>
             Want to take your last visit's order?
           </Typography>
-          {props.previousOrders.map((order, index) => {
-            if (order.visible === true) {
-              return <PreviousItem key={index} order={order} />;
-            } else {
-              return null;
-            }
-          })}
+          {props.previousOrders.map((item, index) => <PreviousItem key={index} item={item} /> )}
           <div className={classes.btnContainer}>
             <Button
               variant="contained"
@@ -63,9 +66,7 @@ const PreviousOrder = (props) => {
               size="small"
               className={classes.btn}
               onClick={() => {
-                let previousItems = _.clone(props.previousOrders);
-                _.remove(previousItems, (item) => item.visible === false);
-                props.updateMenuBulk(previousItems);
+                props.updateMenuBulk(props.previousOrders);
                 props.showPreviousOrder(false);
                 history.push(
                   props.ordersLink ? props.ordersLink : "/customer/orders"
@@ -80,9 +81,7 @@ const PreviousOrder = (props) => {
               size="small"
               className={classes.btn}
               onClick={() => {
-                let previousItems = _.clone(props.previousOrders);
-                _.remove(previousItems, (item) => item.visible === false);
-                props.updateMenuBulk(previousItems);
+                props.updateMenuBulk(props.previousOrders);
                 props.showPreviousOrder(false);
               }}
             >
@@ -106,12 +105,14 @@ const PreviousOrder = (props) => {
   );
 };
 
-const mapStateToProps = ({ previousOrders, previousOrderVisibility }) => ({
+const mapStateToProps = ({ previousOrders, previousOrderVisibility, user }) => ({
   previousOrders,
   previousOrderVisibility,
+  user
 });
 
 export default connect(mapStateToProps, {
   updateMenuBulk,
   showPreviousOrder,
+  previousOrder
 })(PreviousOrder);
