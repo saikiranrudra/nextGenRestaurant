@@ -329,7 +329,7 @@ const PayBill = (props) => {
     </>
   );
 };
-const mapStateToProps = ({ recivedOrders, user, app, tableNo, tables, staff }) => ({
+const mapStateToProps = ({ recivedOrders, user, app, tableNo, tables }) => ({
   recivedOrders,
   user,
   app,

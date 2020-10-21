@@ -69,6 +69,16 @@ const OrderConfirm = () => {
         <Navigation>
           <div className={classes.navContainer}>
             <Link
+              to="/cr/select/table"
+              >
+              <Button
+                variant="contained"
+                color="primary"
+              >
+                Select Table
+              </Button>
+              </Link>
+            <Link
               to="/cr/home"
               style={{
                 textDecoration: "none",

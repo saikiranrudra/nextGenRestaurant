@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 //components
 import {
@@ -19,22 +19,26 @@ import { baseURL } from "./../../variables";
 //state management
 import { connect } from "react-redux";
 //actions
-import { customerAuthenticate } from "./../../actions/customer";
+import { customerAuthenticate, setTableNo } from "./../../actions/customer";
 
-// Routing
-import { withRouter } from "react-router-dom";
+//Routing
+import {useHistory} from "react-router-dom";
+
+//API
+import axios from "axios";
+
 
 // images
 import logo from "./../../assets/logo.png";
 
 //styling
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
     container: {
         display: "grid",
         placeContent: "center",
@@ -51,133 +55,144 @@ const styles = (theme) => ({
     tableSelectBtn: {
         borderRadius: "2rem",
     },
-});
+}));
 
-class TableSelect extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tables: [],
-            selectTable: -1,
-            open: false,
-            btn: {
-                text: "Go!",
-                disabled: false,
-            },
-        };
-    }
+const TableSelect = (props) =>  {
+    const classes = useStyles();
+    const [selectTable, setSelectTable] = useState("");    
+    const [open, setOpen] = useState(false);
+    const [btn, setBtn] = useState({text: "Go!", disabled: false});
+    const [email, setEmail] = useState("");
+    const history = useHistory();
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                tables: [
-                    { tableNo: 1, userId: "abc123" },
-                    { tableNo: 2, userId: "def123" },
-                    { tableNo: 3, userId: "ghi123" },
-                    { tableNo: 4, userId: "jkl123" },
-                    { tableNo: 5, userId: "mno123" },
-                ],
-            });
-        }, 4000);
-    }
-
-    selectTableHandle = (event) => {
-        this.setState({ selectTable: event.target.value });
+    const selectTableHandle = (event) => {
+        setSelectTable(event.target.value);
     };
 
-    handleClose = () => {
-        this.setState({ open: false });
+    const handleClose = () => {
+        setOpen(false);
     };
 
-    handleGoBtn = () => {
-        if (this.state.selectTable === -1) {
-            this.setState({ open: true });
+    const handleGoBtn = async () => {
+        if (selectTable === "") {
+            setOpen(true);
         } else {
-            // fetch user at that table number
-            // if user dosnt exist make it cr
-            this.setState({ btn: { text: "Please wait...", disabled: true } });
-            const { history } = this.props;
+            setBtn({ text: "Please wait...", disabled: true });
+            props.setTableNo(selectTable);
 
-            setTimeout(() => {
-                this.props.customerAuthenticate({
-                    email: "saikiranrudra2@gmail.com",
-                });
-                this.setState({
+            try {
+
+                const user = await axios.post(`${baseURL}/api/v1/users/signin`, {email});
+                props.customerAuthenticate(user.data.data);
+                setBtn({
                     btn: {
                         text: "Go!",
                         disabled: false,
                     },
                 });
                 history.push("/cr/home");
-            }, 4000);
+            } catch(err) {
+                console.log(err);
+                alert(err);
+                setBtn({
+                    btn: {
+                        text: "Go!",
+                        disabled: false,
+                    },
+                });
+            }
+
+
         }
     };
 
-    render() {
-        const { classes } = this.props;
-        return (
-            <div className={classes.container}>
-                <img
-                    src={
-                        this.props.app.img
-                            ? `${baseURL}${this.props.app.img}`
-                            : logo
-                    }
-                    alt="logo"
-                    className={classes.logo}
-                />
-                <Typography
-                    variant="h6"
-                    align="center"
-                    className={classes.heading}
+    return (
+        <div className={classes.container}>
+            <img
+                src={
+                    props.app.img
+                        ? `${baseURL}${props.app.img}`
+                        : logo
+                }
+                alt="logo"
+                className={classes.logo}
+            />
+
+            <Typography
+                variant="h6"
+                align="center"
+                className={classes.heading}
+                style={{ fontFamily: "Product-Sans" }}
+            >
+                Enter Email
+            </Typography>    
+            
+            <input
+                type="text"
+                placeholder="Customer Email"
+                style={{
+                    fontFamily: "Product-Sans",
+                    fontSize: ".95rem",
+                    padding: ".4rem",
+                }}
+                value={email}
+                onChange={(e) => { setEmail(e.target.value) }}
+
+            />
+
+            <Typography
+                variant="h6"
+                align="center"
+                className={classes.heading}
+                style={{ fontFamily: "Product-Sans" }}
+            >
+                Select Table
+            </Typography>
+
+            <FormControl variant="filled">
+                <InputLabel style={{ fontFamily: "Product-Sans" }}>
+                    Table No
+                </InputLabel>
+                <Select
+                    value={selectTable}
+                    onChange={selectTableHandle}
                     style={{ fontFamily: "Product-Sans" }}
                 >
-                    Select Table
-                </Typography>
-
-                <FormControl variant="filled">
-                    <InputLabel style={{ fontFamily: "Product-Sans" }}>
-                        Table No
-                    </InputLabel>
-                    <Select
-                        value={this.state.selectTable}
-                        onChange={this.selectTableHandle}
+                    <MenuItem
+                        value={""}
                         style={{ fontFamily: "Product-Sans" }}
                     >
+                        None
+                    </MenuItem>
+                    {props.tables.map((table, index) => (
                         <MenuItem
-                            value={-1}
+                            value={table._id}
+                            key={index}
                             style={{ fontFamily: "Product-Sans" }}
-                        >
-                            None
-                        </MenuItem>
-                        {this.state.tables.map((table, index) => (
-                            <MenuItem
-                                value={table.tableNo}
-                                key={index}
-                                style={{ fontFamily: "Product-Sans" }}
-                            >{`Table No ${table.tableNo}`}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    disabled={this.state.btn.disabled}
-                    style={{
-                        fontFamily: "Product-Sans",
-                        justifySelf: "center",
-                        marginTop: "1rem",
-                    }}
-                    onClick={this.handleGoBtn}
-                >
-                    {this.state.btn.text}
-                </Button>
+                        >{`Table No ${table.tableNo}`}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+                
+            <Button
+                variant="contained"
+                color="primary"
+                disabled={btn.disabled}
+                style={{
+                    fontFamily: "Product-Sans",
+                    justifySelf: "center",
+                    marginTop: "1rem",
+                }}
+                onClick={handleGoBtn}
+            >
+                {btn.text}
+            </Button>
                 <Snackbar
-                    open={this.state.open}
+                    open={open}
                     autoHideDuration={6000}
-                    onClose={this.handleClose}
+                    onClose={handleClose}
                 >
-                    <Alert onClose={this.handleClose} severity="error">
+                    <Alert onClose={handleClose} severity="error">
                         Please Select Table No
                     </Alert>
                 </Snackbar>
@@ -190,13 +205,9 @@ class TableSelect extends React.Component {
                 </Navigation>
             </div>
         );
-    }
 }
 
-const mapStateToProps = ({ app }) => ({ app });
+const mapStateToProps = ({ app, tables }) => ({ app, tables });
 
-export default withRouter(
-    connect(mapStateToProps, { customerAuthenticate })(
-        withStyles(styles)(TableSelect)
-    )
-);
+export default connect(mapStateToProps, { customerAuthenticate, setTableNo })(TableSelect)
+

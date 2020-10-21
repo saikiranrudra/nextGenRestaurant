@@ -94,11 +94,11 @@ const Points = (props) => {
         <Typography variant="body1" align="left" className={classes.pointsText}>
           You can take{" "}
           <span className={classes.bold}>
-            {props.pointValue ? props.pointValue.percent : 0}%{" "}
+            {props.app.pointValue ? props.app.pointValue.percent : 0}%{" "}
           </span>{" "}
           Discount per{" "}
           <span className={classes.bold}>
-            {props.pointValue ? props.pointValue.points : 0}{" "}
+            {props.app.pointValue ? props.app.pointValue.points : 0}{" "}
           </span>{" "}
           points
         </Typography>
@@ -124,7 +124,7 @@ const Points = (props) => {
                 >
                   with every visit you will get{" "}
                   <b>
-                    {props.pointValue ? `${props.pointValue.perVisit}` : "0"}
+                    {props.app.pointValue ? `${props.app.pointValue.perVisit}` : "0"}
                   </b>{" "}
                   points
                 </Typography>
@@ -154,10 +154,10 @@ const Points = (props) => {
                 >
                   you will get{" "}
                   <b>
-                    {props.pointValue ? `${props.pointValue.percent}%` : "0%"}
+                    {props.app.pointValue ? `${props.app.pointValue.percent}%` : "0%"}
                   </b>{" "}
                   discount at checkout per{" "}
-                  <b>{props.pointValue ? `${props.pointValue.points}` : "0"}</b>{" "}
+                  <b>{props.app.pointValue ? `${props.app.pointValue.points}` : "0"}</b>{" "}
                   points
                 </Typography>
               </ListItemText>
@@ -172,7 +172,7 @@ const Points = (props) => {
                   className={classes.font}
                 >
                   Tou can only redeem only{" "}
-                  <b>{props.pointValue ? props.pointValue.redeemLimit : 0} </b>
+                  <b>{props.app.pointValue ? props.app.pointValue.redeemLimit : 0} </b>
                   points at once.
                 </Typography>
               </ListItemText>
@@ -183,6 +183,17 @@ const Points = (props) => {
 
       <Navigation>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Link
+            to="/cr/select/table"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+            >
+              Select Table
+            </Button>
+          </Link>
           <Link
             to="/cr/home"
             style={{ textDecoration: "none", color: "inherit" }}
@@ -197,5 +208,5 @@ const Points = (props) => {
   );
 };
 
-const mapStateToProps = ({ user, pointValue }) => ({ user, pointValue });
+const mapStateToProps = ({ user, app }) => ({ user, app });
 export default connect(mapStateToProps)(Points);

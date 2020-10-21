@@ -42,6 +42,17 @@ const ThankYou = () => {
       <Navigation>
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
           <Link
+            to="/cr/select/table"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+            >
+              Select Table
+            </Button>
+          </Link>
+          <Link
             to="/cr/home"
             style={{ textDecoration: "none", color: "inherit" }}
           >
