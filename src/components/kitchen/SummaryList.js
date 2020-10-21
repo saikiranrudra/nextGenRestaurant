@@ -1,5 +1,6 @@
 import React from "react";
 
+//Components
 import { ListItem, ListItemText, List, Typography } from "@material-ui/core";
 
 //styling
@@ -35,29 +36,18 @@ const calcCount = (item) => {
   }
 };
 
-const calcTotalCount = (data) => {
-  let count = 0;
-  data.forEach((item) => {
-    count += item[1].count;
-  });
-
-  return count;
-};
-
-const genData = (kitchenOrders) => {
+const genData = (orders) => {
   let data = {};
 
-  kitchenOrders.forEach((table) => {
-    table.items.forEach((item) => {
-      if (item.isCooked === false) {
-        if (data[item.id] === undefined) {
-          data[item.id] = {
-            name: item.name,
-            count: calcCount(item),
-          };
-        } else {
-          data[item.id].count = data[item.id].count + calcCount(item);
+  orders.forEach((order) => {
+    order.items.forEach((item) => {
+      if (data[item._id] === undefined) {
+        data[item._id] = {
+          name: item.name,
+          count: calcCount(item)
         }
+      } else {
+        data[item._id].count += calcCount(item) 
       }
     });
   });
@@ -67,8 +57,8 @@ const genData = (kitchenOrders) => {
 
 const SummaryList = (props) => {
   const classes = useStyle();
-  const data = genData(props.data);
-
+  const data = genData(props.orders);
+  
   return (
     <>
       <List>
@@ -90,7 +80,7 @@ const SummaryList = (props) => {
             className={classes.pendingCount}
             style={{ fontSize: "7rem" }}
           >
-            {calcTotalCount(Object.entries(data))}
+            {props.orders.length}
           </Typography>
           <Typography
             variant="body1"
@@ -118,5 +108,5 @@ const SummaryList = (props) => {
   );
 };
 
-const mapStatToProps = ({ orderServed }) => ({ orderServed });
+const mapStatToProps = () => ({});
 export default connect(mapStatToProps)(SummaryList);

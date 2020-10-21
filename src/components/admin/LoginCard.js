@@ -1,10 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 
 // components
 import { Paper, Button, Typography } from "@material-ui/core";
 
+//State Management
+import {connect} from "react-redux";
+//Action
+import {staffLogin} from "./../../actions/customer";
+
 //Routing
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+//API
+import axios from "axios";
+//Variables
+import {baseURL} from "./../../variables";
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -48,23 +58,57 @@ const useStyle = makeStyles({
 
 const LoginCard = (props) => {
   const classes = useStyle();
+  const [password, setPassword] = useState("");
+  const history = useHistory();
+
+  const handleLogin = () => {
+    let role;
+    switch(props.name) {
+      case "Kitchen":
+        role = "kitchen";
+        break;
+      default:
+        role = "admin"
+    }
+
+    axios.post(`${baseURL}/api/v1/staff/login`, { role, password })
+      .then(res => {
+        props.staffLogin({ token: res.data.data.token, role: role })
+        history.push(props.linkTo);
+      })
+      .catch(err => {
+        alert(err);
+        console.log(err);
+      })
+
+  }
+
   return (
     <Paper className={classes.container}>
       <Typography variant="h4" align="center" className={classes.title}>
         {props.name}
       </Typography>
+
       <input
         type="password"
         placeholder="Enter Password"
         className={classes.inputField}
+        value={password}
+        onChange={(e) => { setPassword(e.target.value) }}
       />
-      <Link to={props.linkTo} className={classes.link}>
-        <Button variant="contained" color="primary" className={classes.btn}>
+      
+      <Button 
+          variant="contained" 
+          color="primary" 
+          className={classes.btn}
+          onClick={handleLogin}
+        >
           Login
         </Button>
-      </Link>
+    
     </Paper>
   );
 };
 
-export default LoginCard;
+const mapStateToProps = () => ({});
+export default connect(mapStateToProps, { staffLogin })(LoginCard);

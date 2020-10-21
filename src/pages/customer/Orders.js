@@ -23,6 +23,9 @@ import axios from "axios";
 //variables
 import { baseURL } from "./../../variables";
 
+//Socket
+import socket from "../../socket";
+
 //routing
 import { Link, useHistory } from "react-router-dom";
 
@@ -130,6 +133,7 @@ const Orders = (props) => {
             .post(`${baseURL}/api/v1/orders/placeorder`, order)
             .then(() => {
                 props.fetchMenuItems();
+                socket.emit("ORDER_PLACED")
                 setBtnText("Order Now");
                 history.push("/customer/orderconfirm");
             })

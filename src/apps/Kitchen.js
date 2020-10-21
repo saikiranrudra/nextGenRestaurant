@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 //Routing
 import { Route } from "react-router-dom";
@@ -6,24 +6,23 @@ import { Route } from "react-router-dom";
 // stateManagement
 import { connect } from "react-redux";
 
-// actions
-import { fetchKitchenOrders } from "./../actions/kitchen";
+//Components
+import KitchenProtect from "./../components/kitchen/KitchenProtect";
 
 // pages
 import Dashboard from "./../pages/Kitchen/Dashboard";
 
 const Kitchen = (props) => {
-  const { fetchKitchenOrders } = props;
-  useEffect(() => {
-    fetchKitchenOrders();
-  }, [fetchKitchenOrders]);
+  
   return (
     <>
       <Route path="/kitchen/dashboard" exact>
-        <Dashboard />
+        <KitchenProtect>
+          <Dashboard />
+        </KitchenProtect>
       </Route>
     </>
   );
 };
 const mapStateToProps = () => ({});
-export default connect(mapStateToProps, { fetchKitchenOrders })(Kitchen);
+export default connect(mapStateToProps)(Kitchen);

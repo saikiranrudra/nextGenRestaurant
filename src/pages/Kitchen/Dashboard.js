@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 //components
 import { Typography, Paper } from "@material-ui/core";
@@ -7,6 +7,19 @@ import SummaryList from "./../../components/kitchen/SummaryList";
 
 //state managemment
 import { connect } from "react-redux";
+//Actions
+import {staffLogin} from "./../../actions/customer";
+
+//API
+import axios from "axios";
+//Variables
+import {baseURL} from "./../../variables";
+
+//socket
+import socket from "./../../socket";
+
+//utils
+import _ from "lodash";
 
 //images
 import logo from "./../../assets/logo.png";
@@ -57,11 +70,54 @@ const useStyle = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
     const classes = useStyle();
+    const [orders, setOrders] = useState([]);
+    const [orderServed, setOrderServed] = useState(0);
+
+    const calcOrderServed = () => {
+        axios.get(`${baseURL}/api/v1/orders/getTodaysCookedOrders`)
+          .then(res => {
+            setOrderServed(res.data.data.length)
+          })
+          .catch(err => {
+            console.log(err);
+            alert(err);
+            setOrderServed("ERROR")
+          })
+      }
+    
+
+    const fetchOrders = () => {
+        axios.get(`${baseURL}/api/v1/orders/getAllPlacedOrders`)
+            .then(res => {
+                let newOrders = _.clone(res.data.data);
+                
+                newOrders.forEach(order => {
+                    order.items.forEach(item => {
+                        item.isCooked = false
+                    })
+                })
+                setOrders(newOrders);
+            }).catch(err => {
+                alert(err);
+                console.log(err);
+                setOrders([]);
+            })
+    }
+
+    socket.on("ORDER_PLACED", () => {
+        fetchOrders();
+    })
+
+    useEffect(() => {
+        fetchOrders();
+        calcOrderServed();
+    },[]) 
+    
     return (
         <>
             <header className={classes.headerContainer}>
                 <img
-                    src={props.app.img ? props.app.img : logo}
+                    src={props.app.img ? `${baseURL}${props.app.img}` : logo}
                     alt="logo"
                     className={classes.logo}
                 />
@@ -70,14 +126,20 @@ const Dashboard = (props) => {
                     variant="body1"
                     align="center"
                     className={classes.logout}
+                    onClick={() => { props.staffLogin(null) }}
                 >
                     Log Out
                 </Typography>
             </header>
             <div className={classes.dashboardContainer}>
                 <div className={classes.tables}>
-                    {props.kitchenOrders.map((table, index) => (
-                        <TableContainer data={table} key={index} />
+                    {orders.map((order, index) => (
+                        <TableContainer 
+                            data={order} 
+                            key={index} 
+                            fetchOrders={fetchOrders} 
+                            calcOrderServed={calcOrderServed}
+                        />
                     ))}
                 </div>
 
@@ -90,7 +152,7 @@ const Dashboard = (props) => {
                         >
                             Total Orders
                         </Typography>
-                        <SummaryList data={props.kitchenOrders} />
+                        <SummaryList orders={orders} orderServed={orderServed}/>
                     </div>
                 </Paper>
             </div>
@@ -98,5 +160,5 @@ const Dashboard = (props) => {
     );
 };
 
-const mapStateToProps = ({ kitchenOrders, app }) => ({ kitchenOrders, app });
-export default connect(mapStateToProps)(Dashboard);
+const mapStateToProps = ({ app }) => ({ app });
+export default connect(mapStateToProps, {staffLogin})(Dashboard);
