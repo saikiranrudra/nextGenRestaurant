@@ -25,13 +25,21 @@ import { connect } from "react-redux";
 //Actions
 import {customerAuthenticate} from "./../../actions/customer";
 
+
+
+//Utils
+import {loadScript} from "./../../utils/functions";
+
 //API
 import axios from "axios";
 //Variables
-import {baseURL} from "./../../variables";
+import {baseURL, paymentToken} from "./../../variables";
 
 // Socket
 import socket from "./../../socket";
+
+// assets
+import {logo} from "./../../assets/logo.png"
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -114,10 +122,13 @@ const discountCalc = (userPoints, pointValue) => {
   }
 };
 
+
+
 const PayBill = (props) => {
   const classes = useStyle();
   const [discount, setDiscount] = useState(false);
   const history = useHistory();
+  const [payOnline, setPayOnline] = useState("pay online");
 
   const handlePayOffline = async () => {
 
@@ -161,6 +172,78 @@ const PayBill = (props) => {
       console.log(err);
     }
     
+
+  }
+
+  const handleOnlinePayment = async () => {
+    const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js")
+    
+    setPayOnline("please wait...");
+
+    if(!res) {
+      alert("internet connection issue online payment not working")
+      return;
+    }
+
+    // const orderRes = await axios.post(`${baseURL}/api/v1/orders/myorders`, {
+    //   email: props.user.email,
+    //   token: props.user.token
+    // })
+
+    const data = await axios.post(`${baseURL}/api/v1/transection/payment`, {
+      ...props.user,
+      token: props.user.token,
+      tableNo: props.tableNo
+    });
+
+    console.log(data.data.data);
+
+    const options = {
+      key: paymentToken, 
+      currency: data.data.data.currency,
+      amount: data.data.data.amount.toString(),
+      order_id: data.data.data.id,
+      name: props.app.name,
+      description: `Payments for Orders at ${props.app.name}`,
+      image: props.app.img ? `${baseURL}${props.app.img}` : logo,
+      handler: function (response){
+          // alert(response.razorpay_payment_id);
+          // alert(response.razorpay_order_id);
+          // alert(response.razorpay_signature)
+          axios.post(`${baseURL}/api/v1/transection/confirmPayment`, {
+            transectionId: data.data.data.transectionId,
+            token: props.user.token
+          }).then(res => {
+            setPayOnline("pay online");
+            history.push("/customer/payment/successfull");
+          }).catch(err => {
+            console.log(err);
+            alert("some thing went wrong");
+          })  
+      },
+      "prefill": {
+          "name": props.user.name,
+          "email": props.user.email
+      },
+      "notes": {
+          "address": props.app.name
+      },
+      "theme": {
+          "color": props.app.themeColor
+      }
+    };
+    const paymentObject = new window.Razorpay(options);
+
+    paymentObject.open();
+
+    paymentObject.on('payment.failed', function (response){
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata);
+    });
 
   }
 
@@ -292,15 +375,17 @@ const PayBill = (props) => {
             marginBottom: "5rem"
           }}
         >
-          <Link to="/customer/payment/successfull" className={classes.link}>
+          {/* <Link to="/customer/payment/successfull" className={classes.link}> */}
             <Button
               variant="contained"
               color="primary"
               style={{ margin: ".3rem" }}
+              onClick={handleOnlinePayment}
+              disabled={payOnline.toLowerCase().includes("please wait") ? true : false }
             >
-              Pay Online
+              {payOnline}
             </Button>
-          </Link>
+          {/* </Link> */}
 
           <Button
             variant="contained"
