@@ -59,10 +59,11 @@ const SignUp = (props) => {
                 Sign up
             </Typography>
             <div className={classes.authSection}>
-                <SignUpWithGoogle />
+                {props.app.state === "online" ? <SignUpWithGoogle /> : null}
             </div>
             <Typography variant="body1" align="center" className={classes.text}>
-                Or
+                {props.app.state === "online" ? "Or" : null}
+                
             </Typography>
 
             <div style={{ marginBottom: "6rem" }}>

@@ -51,9 +51,9 @@ const Notifications = (props) => {
   const classes = useStyle();
 
   const handleRecived = (notification) => {
-    axios.post(`${baseURL}/api/v1/orders/markPayed`, {
+    axios.post(`${baseURL}/api/v1/transection/confirmPayment`, {
       token: props.staff.token,
-      tableNo: notification.payload.tableNo,
+      // tableNo: notification.payload.tableNo,
       transectionId: notification.payload._id
     }).then(res => {
     

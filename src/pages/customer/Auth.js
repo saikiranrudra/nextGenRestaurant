@@ -185,11 +185,11 @@ const Auth = (props) => {
             </div>
 
             <div className={classes.authSection}>
-                <LoginWithGoogle />
+                {props.app.state === "online" ? <LoginWithGoogle /> : null}
             </div>
 
             <Typography variant="body1" align="center" className={classes.text}>
-                Or
+                {props.app.state === "online" ? "Or" : null}
             </Typography>
 
             <div className={classes.container}>

@@ -99,10 +99,10 @@ const TableOrders = (props) => {
         setBtnText("Please Wait...");
         let data = _.clone(tableOrders);
 
-        data.forEach((order) => {
-            order.state = "payed";
-            order.outTime = Date.now();
-        });
+        // data.forEach((order) => {
+        //     order.state = "payed";
+        //     order.outTime = Date.now();
+        // });
 
         
         try {
@@ -112,9 +112,9 @@ const TableOrders = (props) => {
                 tableNo: props.selectedTable._id,
             })
             
-            await axios.post(`${baseURL}/api/v1/orders/markPayed`, {
+            await axios.post(`${baseURL}/api/v1/transection/confirmPayment`, {
                 token: props.staff.token,
-                tableNo: props.selectedTable._id,
+                // tableNo: props.selectedTable._id,
                 transectionId: transection.data.data._id
             })
                 

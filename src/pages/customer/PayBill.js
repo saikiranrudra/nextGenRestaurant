@@ -85,9 +85,11 @@ const individualPrice = (item) => {
 
 const totalCount = (item) => {
   let count = 0;
-  if (item.normalCount) {
+  if (item.normalCount !== undefined) {
     count += item.normalCount;
-  } else if (item.jainCount) {
+  } 
+  
+  if (item.jainCount !== undefined) {
     count += item.jainCount;
   }
   return count;
@@ -101,7 +103,9 @@ const totalPrice = (items) => {
     // count item
     if (item.normalCount) {
       count += item.normalCount;
-    } else if (item.jainCount) {
+    } 
+    
+    if (item.jainCount) {
       count += item.jainCount;
     }
 
@@ -215,7 +219,13 @@ const PayBill = (props) => {
             token: props.user.token
           }).then(res => {
             setPayOnline("pay online");
-            history.push("/customer/payment/successfull");
+            // Making table vacant
+            axios.post(`${baseURL}/api/v1/table/updateTable`, {
+              _id: props.tableNo,
+              isVacant: true
+            }).then(() => {
+              history.push("/customer/payment/successfull");
+            })
           }).catch(err => {
             console.log(err);
             alert("some thing went wrong");
@@ -375,7 +385,7 @@ const PayBill = (props) => {
             marginBottom: "5rem"
           }}
         >
-          {/* <Link to="/customer/payment/successfull" className={classes.link}> */}
+          {props.app.state === "online" ?
             <Button
               variant="contained"
               color="primary"
@@ -385,7 +395,7 @@ const PayBill = (props) => {
             >
               {payOnline}
             </Button>
-          {/* </Link> */}
+          : null }
 
           <Button
             variant="contained"
