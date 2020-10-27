@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 const SettingsForm = (props) => {
     const classes = useStyles();
     const [dialog, setDialog] = useState(false);
-    const [file, setFile] = useState(null);
+    const file = React.createRef();
     const [btnText, setBtnText] = useState("Save");
     const [changeBtnText, setChangeBtnText] = useState("Change");
     const [resetPassword, setResetPassword] = useState({
@@ -136,8 +136,8 @@ const SettingsForm = (props) => {
         data.append("themeColor", props.app.themeColor);
         data.append("state", props.app.state);
 
-        if (file !== null) {
-            data.append("img", file);
+        if (file.current !== null) {
+            data.append("img", file.current.files[0]);
         } else {
             data.append("img", props.app.img);
         }
@@ -175,7 +175,7 @@ const SettingsForm = (props) => {
         if (props.app.state === "online") {
             props.updateAppData({ ...props.app, state: "offline" });
         } else {
-            props.updateAppData({ ...props.app, state: "offline" });
+            props.updateAppData({ ...props.app, state: "online" });
         }
     };
 
@@ -204,16 +204,17 @@ const SettingsForm = (props) => {
                 <input
                     id="logoOfRestaurnat"
                     type="file"
-                    value={file}
-                    onChange={(e) => {
-                        setFile(e.target.value);
-                    }}
+                    // value={file}
+                    ref={file}
+                    // onChange={(e) => {
+                    //     setFile(e.target.files);
+                    // }}
                     accept=".png"
                 />
                 <label htmlFor="logoOfRestaurnat" className={classes.uploadBtn}>
                     Upload
                 </label>
-
+  
                 <label style={{ marginTop: "1rem" }}>
                     Change Theme color of System
                 </label>

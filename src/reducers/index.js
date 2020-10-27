@@ -10,10 +10,10 @@ import orders from "./orders";
 import previousOrderVisibility from "./previousOrderVIsibility";
 import recivedOrdersReducers from "./recivedOrdersReducers";
 import searchReducer from "./searchReducer";
-import pointsReducer from "./pointsReducer";
+// import pointsReducer from "./pointsReducer";
 import ingredientReducer from "./ingredientReducer";
 import themeReducer from "./themeReducer";
-import appStateReducer from "./appStateReducer";
+// import appStateReducer from "./appStateReducer";
 import tableReducer from "./tableReducer";
 import staffAuth from "./staffAuth";
 import employeeReducer from "./employeeReducer";
@@ -21,7 +21,7 @@ import appReducer from "./appReducer";
 import tablesReducer from "./tablesReducer";
 
 export default combineReducers({
-    appState: appStateReducer,
+    // appState: appStateReducer,
     app: appReducer,
     email: emailReducer,
     theme: themeReducer,
@@ -34,7 +34,7 @@ export default combineReducers({
     previousOrderVisibility: previousOrderVisibility,
     recivedOrders: recivedOrdersReducers,
     search: searchReducer,
-    pointValue: pointsReducer,
+    // pointValue: pointsReducer,
     ingredients: ingredientReducer,
     tableNo: tableReducer,
     tables: tablesReducer,

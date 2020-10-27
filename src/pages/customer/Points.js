@@ -172,7 +172,7 @@ const Points = (props) => {
                   style={{ fontSize: "1rem" }}
                   className={classes.font}
                 >
-                  Tou can only redeem only{" "}
+                  you can only redeem only{" "}
                   <b>{props.app.pointValue ? props.app.pointValue.redeemLimit : 0} </b>
                   points at once.
                 </Typography>
