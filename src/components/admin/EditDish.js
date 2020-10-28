@@ -79,12 +79,12 @@ function Alert(props) {
 const handleSaveChange = (
     file,
     dishInfo,
-    updateMenu,
-    addItemToMenu,
     setSaveChanges,
+    setAddBtn,
     fetchMenuItems,
     setSnackbar,
-    staff
+    staff,
+    task
 ) => {
     let newItem = new FormData();
     // 1. if img is a file take img file of item upload to server get url
@@ -127,7 +127,7 @@ const handleSaveChange = (
     newItem.append("token", staff.token);
 
     // 5. if id is not null updateMenu
-    if (dishInfo._id !== null) {
+    if (task === "UPDATE") {
         // update menu in database
         setSaveChanges("please wait...");
         axios
@@ -154,9 +154,9 @@ const handleSaveChange = (
             });
     }
     // 6. if id is null addItemToMenu
-    if (dishInfo._id === null) {
+    if (task === "NEW") {
         // add item in database
-        setSaveChanges("please wait...");
+        setAddBtn("please wait...");
         axios
             .post(`${baseURL}/api/v1/items/createitem`, newItem, {
                 headers: { "content-type": "multipart/form-data" },
@@ -168,7 +168,7 @@ const handleSaveChange = (
                     text: "Item created successfully",
                     open: true,
                 });
-                setSaveChanges("Save Changes");
+                setAddBtn("Add New");
             })
             .catch((err) => {
                 console.log(err);
@@ -177,14 +177,13 @@ const handleSaveChange = (
                     text: "something went wrong try agin later",
                     open: true,
                 });
-                setSaveChanges("Save Changes");
+                setAddBtn("Add New");
             });
     }
 };
 
 const handleDelete = (
     dishInfo,
-    removeItemFromMenu,
     setDeleteItem,
     staff,
     setSnackbar,
@@ -232,6 +231,7 @@ const handleDone = (setSnackbar, setHideItem, removeDishOption) => {
 function EditDish(props) {
     const classes = useStyle();
     const [saveChanges, setSaveChanges] = useState("Save Changes");
+    const [addBtn, setAddBtn] = useState("Add New");
     const [deleteItem, setDeleteItem] = useState("Delete Dish");
     const [hideItem, setHideItem] = useState("Done");
     const [snackbar, setSnackbar] = useState({
@@ -346,6 +346,46 @@ function EditDish(props) {
     });
 
     return (
+        <>
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+            }}
+        >
+            <Typography
+                variant="h5"
+                align="left"
+                style={{
+                    fontWeight: "bold",
+                    fontFamily: "Product-Sans",
+                    marginTop: "0.8rem",
+                }}
+            >
+                Edit Dish
+            </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                style={{ padding: ".3rem .5rem" }}
+                disabled={addBtn.toLowerCase().includes("please wait") ? true : false}
+                onClick={() =>
+                    handleSaveChange(
+                        file,
+                        dishInfo,
+                        setSaveChanges,
+                        setAddBtn,
+                        props.fetchMenuItems,
+                        setSnackbar,
+                        props.staff,
+                        "NEW"
+                    )
+                }
+            >
+                {addBtn}
+            </Button>
+        </div>
         <div
             style={{
                 backgroundColor: "#F5F5F5",
@@ -493,7 +533,6 @@ function EditDish(props) {
                             onClick={() => {
                                 handleDelete(
                                     dishInfo,
-                                    props.removeItemFromMenu,
                                     setDeleteItem,
                                     props.staff,
                                     setSnackbar,
@@ -738,18 +777,19 @@ function EditDish(props) {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() =>
+                        
+                        onClick={() => {
                             handleSaveChange(
                                 file,
                                 dishInfo,
-                                props.updateMenu,
-                                props.addItemToMenu,
                                 setSaveChanges,
+                                setAddBtn,
                                 props.fetchMenuItems,
                                 setSnackbar,
-                                props.staff
+                                props.staff,
+                                "UPDATE"
                             )
-                        }
+                        }}
                         disabled={
                             saveChanges === "please wait..." ? true : false
                         }
@@ -769,6 +809,7 @@ function EditDish(props) {
                 </Alert>
             </Snackbar>
         </div>
+        </>                
     );
 }
 

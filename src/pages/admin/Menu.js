@@ -8,7 +8,7 @@ import EditDish from "../../components/admin/EditDish";
 import ManageCategory from "../../components/admin/ManageCategory";
 
 // utils
-import _ from "lodash";
+// import _ from "lodash";
 
 // Variables
 import { baseURL } from "./../../variables";
@@ -75,12 +75,6 @@ const Menu = (props) => {
     const { menu } = props;
     const [selectedForEdit, setSelectedForEdit] = useState({});
     const [search, setSearch] = useState("");
-
-    const handleAddNewItem = () => {
-        setSelectedForEdit({
-            category: [_.find(props.categories, { name: "all" })],
-        });
-    };
 
     useEffect(() => {
         const item = menu.length > 0 ? menu[0] : {};
@@ -207,33 +201,6 @@ const Menu = (props) => {
                     </div>
 
                     <div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Typography
-                                variant="h5"
-                                align="left"
-                                style={{
-                                    fontWeight: "bold",
-                                    fontFamily: "Product-Sans",
-                                    marginTop: "0.8rem",
-                                }}
-                            >
-                                Edit Dish
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                style={{ padding: ".3rem .5rem" }}
-                                onClick={handleAddNewItem}
-                            >
-                                Add New
-                            </Button>
-                        </div>
                         <EditDish selectedForEdit={selectedForEdit} />
                     </div>
 
