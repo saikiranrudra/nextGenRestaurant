@@ -17,6 +17,8 @@ import { staffLogin } from "./../../actions/customer";
 //Variables
 import {baseURL} from "./../../variables";
 
+
+
 //assets
 import logo from "./../../assets/logo.png";
 import { ReactComponent as Logout } from "./../../assets/dashboardAssets/logout.svg";
@@ -35,9 +37,9 @@ const useStyles = makeStyles({
     },
     subContainer: {
         display: "grid",
-        gridTemplateColumns: "330px 330px 330px 330px",
+        gridTemplateColumns: "350px 330px 359px 330px",
         placeContent: "center",
-        gridGap: "1rem",
+        gridGap: ".8rem",
     },
     menuContainer: {
         display: "flex",

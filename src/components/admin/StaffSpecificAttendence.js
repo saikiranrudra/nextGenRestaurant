@@ -104,17 +104,18 @@ const StaffSpecificAttendence = (props) => {
 
     useEffect(() => {
         if (selectedStaffForView !== null && staff !== null) {
+            
             axios
                 .post(
                     `${baseURL}/api/v1/attendence/employeeAveragePresentByMonth`,
                     {
                         token: staff.token,
-                        month: date.getMonth(),
+                        date: date,
                         employeeId: selectedStaffForView._id,
                     }
                 )
                 .then((res) => {
-                    setAveragePresent(res.data.data);
+                    setAveragePresent(res.data.data.toFixed(1));
                 });
         }
     }, [date, selectedStaffForView, staff]);

@@ -99,7 +99,7 @@ const StaffCalender = (props) => {
             .then((res) => {
                 setAveragePresent(res.data.data);
             });
-    });
+    },[staff.token, dateRange]);
 
     const handleGo = () => {
         const data = { ...dateRange, token: staff.token };
