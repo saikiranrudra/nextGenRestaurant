@@ -136,8 +136,9 @@ const SettingsForm = (props) => {
         data.append("themeColor", props.app.themeColor);
         data.append("state", props.app.state);
 
-        if (file.current !== null) {
+        if (file.current.files.length > 0) {
             data.append("img", file.current.files[0]);
+            
         } else {
             data.append("img", props.app.img);
         }
@@ -147,12 +148,16 @@ const SettingsForm = (props) => {
             .then((res) => {
                 setBtnText("Save");
                 props.updateAppData(res.data.data);
+
             })
             .catch((err) => {
                 alert(err);
                 console.log(err);
                 setBtnText("Save");
             });
+
+            file.current.value = "";
+
     };
 
     const handleDialogClose = () => {

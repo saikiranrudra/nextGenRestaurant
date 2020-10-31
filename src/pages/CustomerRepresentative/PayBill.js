@@ -209,24 +209,29 @@ const PayBill = (props) => {
       handler: function (response){
           // alert(response.razorpay_payment_id);
           // alert(response.razorpay_order_id);
-          // alert(response.razorpay_signature)
-          axios.post(`${baseURL}/api/v1/transection/confirmPayment`, {
-            transectionId: data.data.data.transectionId,
-            token: props.user.token
-          }).then(res => {
-            setPayOnline("pay online");
-            // Making table vacant
-            axios.post(`${baseURL}/api/v1/table/updateTable`, {
-              _id: props.tableNo,
-              isVacant: true
-            }).then(() => {
-              history.push("/customer/payment/successfull");
-            })
-          
-          }).catch(err => {
-            console.log(err);
-            alert("some thing went wrong");
-          })  
+          // alert(response.razorpay_signature);
+          if(response.razorpay_payment_id && response.razorpay_order_id && response.razorpay_signature) {
+            axios.post(`${baseURL}/api/v1/transection/confirmPayment`, {
+              transectionId: data.data.data.transectionId,
+              token: props.user.token,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+  
+            }).then(res => {
+              setPayOnline("pay online");
+              // Making table vacant
+              axios.post(`${baseURL}/api/v1/table/updateTable`, {
+                _id: props.tableNo,
+                isVacant: true
+              }).then(() => {
+                history.push("/customer/payment/successfull");
+              })
+            }).catch(err => {
+              console.log(err);
+              alert("some thing went wrong");
+            })  
+          }
       },
       "prefill": {
           "name": props.user.name,
@@ -251,6 +256,8 @@ const PayBill = (props) => {
             alert(response.error.reason);
             alert(response.error.metadata);
     });
+
+    setPayOnline("pay online");
 
   }
 
