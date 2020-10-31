@@ -6,7 +6,7 @@ import { Typography, TableRow, TableCell, Button } from "@material-ui/core";
 
 //State Management
 import { connect } from "react-redux";
-import { fetchMenuItems } from "./../../actions/customer";
+import { fetchMenuItems, fetchIngredients } from "./../../actions/customer";
 
 //API
 import axios from "axios";
@@ -74,6 +74,7 @@ const IngridentEdit = (props) => {
             })
             .then((res) => {
                 props.fetchMenuItems();
+                props.fetchIngredients();
                 setBtnText("Save Changes");
             })
             .catch((err) => {
@@ -150,4 +151,4 @@ const IngridentEdit = (props) => {
 };
 
 const mapStateToProps = ({ ingredients, staff }) => ({ ingredients, staff });
-export default connect(mapStateToProps, { fetchMenuItems })(IngridentEdit);
+export default connect(mapStateToProps, { fetchMenuItems, fetchIngredients })(IngridentEdit);

@@ -83,8 +83,7 @@ const handleSaveChange = (
     setAddBtn,
     fetchMenuItems,
     setSnackbar,
-    staff,
-    task
+    staff
 ) => {
     let newItem = new FormData();
     // 1. if img is a file take img file of item upload to server get url
@@ -127,7 +126,7 @@ const handleSaveChange = (
     newItem.append("token", staff.token);
 
     // 5. if id is not null updateMenu
-    if (task === "UPDATE") {
+    if (dishInfo._id !== null) {
         // update menu in database
         setSaveChanges("please wait...");
         axios
@@ -154,7 +153,7 @@ const handleSaveChange = (
             });
     }
     // 6. if id is null addItemToMenu
-    if (task === "NEW") {
+    else {
         // add item in database
         setAddBtn("please wait...");
         axios
@@ -254,7 +253,7 @@ function EditDish(props) {
     );
     const [removeDishOption, setRemoveDishOption] = useState("untill i add");
     const [dishInfo, setDishInfo] = useState({
-        id:
+        _id:
             props.selectedForEdit._id !== undefined
                 ? props.selectedForEdit._id
                 : null,
@@ -371,16 +370,16 @@ function EditDish(props) {
                 style={{ padding: ".3rem .5rem" }}
                 disabled={addBtn.toLowerCase().includes("please wait") ? true : false}
                 onClick={() =>
-                    handleSaveChange(
-                        file,
-                        dishInfo,
-                        setSaveChanges,
-                        setAddBtn,
-                        props.fetchMenuItems,
-                        setSnackbar,
-                        props.staff,
-                        "NEW"
-                    )
+                    setDishInfo({
+                        _id: null,
+                    dishName: "",
+                    jainAvailable: false,
+                    dishDescription: "",
+                    mealFor: 0,
+                    price: 0,
+                    category: [],
+                    visible: true
+                    })
                 }
             >
                 {addBtn}
@@ -786,8 +785,7 @@ function EditDish(props) {
                                 setAddBtn,
                                 props.fetchMenuItems,
                                 setSnackbar,
-                                props.staff,
-                                "UPDATE"
+                                props.staff
                             )
                         }}
                         disabled={

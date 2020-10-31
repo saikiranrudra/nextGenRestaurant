@@ -115,7 +115,7 @@ function ManageCategory(props) {
         setBtnText({ ...btnText, saveChanges: "please wait..." });
 
         axios
-            .put(`${baseURL}/api/v1/category/updateCategory`, { newCategory })
+            .put(`${baseURL}/api/v1/category/updateCategory`, newCategory)
             .then((res) => {
                 props.fetchCategories();
                 props.fetchMenuItems();
