@@ -166,11 +166,6 @@ const AllOrders = (props) => {
     const [filters, setFilters] = useState({date: formatDate(Date()), mode: "both"})
     const [search, setSearch] = useState("");
 
-    // TESTING
-    useEffect(() => {
-        console.log(filters);
-    }, [filters])
-
     useEffect(() => {
         if(props.staff !== null) {
         
