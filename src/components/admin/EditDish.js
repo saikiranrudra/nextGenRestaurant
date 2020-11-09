@@ -215,17 +215,6 @@ const handleDelete = (
             setDeleteItem("Delete Dish");
         });
 };
-const handleDone = (setSnackbar, setHideItem, removeDishOption) => {
-    setHideItem("please wait...");
-    setTimeout(() => {
-        setSnackbar({
-            open: true,
-            type: "success",
-            text: `Dish is hidden successfully for ${removeDishOption}`,
-        });
-        setHideItem("Done");
-    }, 4000);
-};
 
 function EditDish(props) {
     const classes = useStyle();
@@ -251,7 +240,7 @@ function EditDish(props) {
             ? props.selectedForEdit.img
             : null
     );
-    const [removeDishOption, setRemoveDishOption] = useState("untill i add");
+    const [removeDishOption, setRemoveDishOption] = useState("UNTILL_I_ADD");
     const [dishInfo, setDishInfo] = useState({
         _id:
             props.selectedForEdit._id !== undefined
@@ -340,9 +329,36 @@ function EditDish(props) {
         // Do something with the files
         setFile(acceptedFiles[0]);
     }, []);
+    
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
     });
+
+    const handleDone = () => {
+        setHideItem("please wait...");
+        
+        axios.post(`${baseURL}/api/v1/items/hideItemByTime`, {
+            time: removeDishOption,
+            _id: dishInfo._id,
+            token: props.staff.token
+        }).then((res) => {
+            setSnackbar({
+                open: true,
+                type: "success",
+                text: `Dish is hidden successfully for ${removeDishOption}`,
+            });
+            props.fetchMenuItems();
+            setHideItem("Done");
+        }).catch((err) => {
+            setSnackbar({
+                open: true,
+                type: "failure",
+                text: `Something went wrong`,
+            });
+            setHideItem("Done");
+        })
+        
+    };
 
     return (
         <>
@@ -476,37 +492,37 @@ function EditDish(props) {
                             onChange={handleRemoveDishOption}
                         >
                             <FormControlLabel
-                                value="1 hour"
+                                value="1_HOUR"
                                 className={classes.radiobtn}
                                 control={<Radio color="primary" />}
                                 label="1 hour"
                             />
                             <FormControlLabel
-                                value="6 hour"
+                                value="6_HOUR"
                                 className={classes.radiobtn}
                                 control={<Radio color="primary" />}
                                 label="6 hour"
                             />
                             <FormControlLabel
-                                value="7 days"
+                                value="7_DAYS"
                                 className={classes.radiobtn}
                                 control={<Radio color="primary" />}
                                 label="7 days"
                             />
                             <FormControlLabel
-                                value="untill i add"
+                                value="UNTILL_I_ADD"
                                 className={classes.radiobtn}
                                 control={<Radio color="primary" />}
                                 label="untill i add"
                             />
                             <FormControlLabel
-                                value="1 day"
+                                value="1_DAY"
                                 className={classes.radiobtn}
                                 control={<Radio color="primary" />}
                                 label="1 day"
                             />
                             <FormControlLabel
-                                value="1 month"
+                                value="1_MONTH"
                                 className={classes.radiobtn}
                                 control={<Radio color="primary" />}
                                 label="1 month"
@@ -555,13 +571,7 @@ function EditDish(props) {
                             disabled={
                                 hideItem === "please wait..." ? true : false
                             }
-                            onClick={() => {
-                                handleDone(
-                                    setSnackbar,
-                                    setHideItem,
-                                    removeDishOption
-                                );
-                            }}
+                            onClick={handleDone}
                         >
                             {hideItem}
                         </Button>
