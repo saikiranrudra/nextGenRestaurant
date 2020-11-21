@@ -148,6 +148,7 @@ const Auth = (props) => {
                     })
             }
         }
+        
     }, [query, setTableNo, tableNo]);
 
     useEffect(() => {

@@ -78,6 +78,8 @@ const EditStaff = (props) => {
         employeeAddress: "",
         employeeIdNumber: "",
     });
+    const [selectedStaff, setSelectedStaff] = useState(null);
+
     const onDrop = useCallback((acceptedFiles) => {
         // Do something with the files
         setFile(acceptedFiles[0]);
@@ -86,7 +88,9 @@ const EditStaff = (props) => {
         onDrop,
     });
 
-    const { selectedStaff } = props;
+    useEffect(() => {
+        setSelectedStaff(props.selectedStaff);
+    },[props.selectedStaff])
 
     useEffect(() => {
         if (selectedStaff !== null) {
@@ -105,30 +109,42 @@ const EditStaff = (props) => {
 
     const handleAddNew = () => {
         setBtnText({ ...btnText, addNew: "Please Wait..." });
+        setStaffInfo({
+            employeeName: "",
+            gender: "male",
+            designation: "",
+            phoneNumber: "",
+            employeeSalary: "",
+            employeeAddress: "",
+            employeeIdNumber: "",
+        });
+        setFile(null);
+        setSelectedStaff(null);
+        setBtnText({ ...btnText, addNew: "Add New" });
 
-        let employee = new FormData();
-        employee.append("img", file);
-        employee.append("name", staffInfo.employeeName);
-        employee.append("gender", staffInfo.gender);
-        employee.append("designation", staffInfo.designation);
-        employee.append("phoneNo", staffInfo.phoneNumber);
-        employee.append("employeeSalary", staffInfo.employeeSalary);
-        employee.append("address", staffInfo.employeeAddress);
-        employee.append("employeeIdNumber", staffInfo.employeeIdNumber);
-        employee.append("token", props.staff.token);
+        // let employee = new FormData();
+        // employee.append("img", file);
+        // employee.append("name", staffInfo.employeeName);
+        // employee.append("gender", staffInfo.gender);
+        // employee.append("designation", staffInfo.designation);
+        // employee.append("phoneNo", staffInfo.phoneNumber);
+        // employee.append("employeeSalary", staffInfo.employeeSalary);
+        // employee.append("address", staffInfo.employeeAddress);
+        // employee.append("employeeIdNumber", staffInfo.employeeIdNumber);
+        // employee.append("token", props.staff.token);
 
-        axios
-            .post(`${baseURL}/api/v1/employee/createEmployee`, employee)
-            .then((res) => {
-                alert("Employee Created successfully");
-                props.fetchEmployee();
-                setBtnText({ ...btnText, addNew: "Add New" });
-            })
-            .catch((err) => {
-                console.log(err);
-                alert(err);
-                setBtnText({ ...btnText, addNew: "Add New" });
-            });
+        // axios
+        //     .post(`${baseURL}/api/v1/employee/createEmployee`, employee)
+        //     .then((res) => {
+        //         alert("Employee Created successfully");
+        //         props.fetchEmployee();
+        //         setBtnText({ ...btnText, addNew: "Add New" });
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //         alert(err);
+        //         setBtnText({ ...btnText, addNew: "Add New" });
+        //     });
     };
 
     const handleSaveChanges = () => {
@@ -146,8 +162,20 @@ const EditStaff = (props) => {
         employee.append("token", props.staff.token);
 
         if (selectedStaff === null) {
-            alert("Please Select the dish before editing");
-            setBtnText({ ...btnText, saveChanges: "Save Changes" });
+            // Adding new Employee
+            axios
+            .post(`${baseURL}/api/v1/employee/createEmployee`, employee)
+            .then((res) => {
+                alert("Employee Created successfully");
+                props.fetchEmployee();                
+            })
+            .catch((err) => {
+                console.log(err);
+                alert(err);
+            }).finally (() => {
+                setBtnText({ ...btnText, saveChanges: "Save Changes" });    
+            });
+                     
             return;
         }
         employee.append("_id", selectedStaff._id);
@@ -156,11 +184,11 @@ const EditStaff = (props) => {
             .put(`${baseURL}/api/v1/employee/updateEmployee`, employee)
             .then((res) => {
                 props.fetchEmployee();
-                setBtnText({ ...btnText, saveChanges: "Save Changes" });
             })
             .catch((err) => {
                 console.log(err);
                 alert(err);
+            }).finally(() => {
                 setBtnText({ ...btnText, saveChanges: "Save Changes" });
             });
     };
