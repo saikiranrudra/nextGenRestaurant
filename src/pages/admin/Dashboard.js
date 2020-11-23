@@ -164,7 +164,6 @@ const Dashboard = (props) => {
 
             <div style={{ paddingLeft: "1rem" }}>
                 <span className={classes.activeTableCount}>
-                    {console.log(_.countBy(props.tables, table => table.isVacant))}
                     {_.countBy(props.tables, table => table.isVacant)["true"] ? _.countBy(props.tables, table => table.isVacant)["true"] : 
                     0}
                 </span>

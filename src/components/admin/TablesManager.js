@@ -14,6 +14,12 @@ import axios from "axios";
 //Variable
 import { baseURL } from "./../../variables";
 
+//utils
+import {printQR} from "./../../utils/functions";
+
+//Assets
+import PrintIcon from '@material-ui/icons/Print';
+
 //styles
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -68,11 +74,30 @@ const TablesManager = (props) => {
             });
     };
 
+    const printAllQR = () => {
+        props.tables.forEach(table => {
+            printQR(table._id);
+        })
+    }
+
     return (
         <div className={classes.container}>
-            <Typography variant="h6" className={classes.title}>
-                Add Table
-            </Typography>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: ".8rem" }}>
+                <Typography variant="h6" className={classes.title}>
+                    Add Table
+                </Typography>
+                <Button 
+                    variant="contained" 
+                    color="primary"
+                    startIcon={<PrintIcon />}
+                    style={{ marginLeft: "auto" }}
+
+                    onClick={printAllQR}
+                >
+                    Print All
+                </Button>
+
+            </div>
             <div className={classes.tableForm}>
                 <input
                     type="number"
