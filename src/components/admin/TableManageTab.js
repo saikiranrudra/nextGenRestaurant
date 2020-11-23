@@ -14,9 +14,13 @@ import { connect } from "react-redux";
 //actions
 import { fetchTables } from "./../../actions/general/table";
 
+//utils
+import { printQR } from "./../../utils/functions";
+
 //assets
 import editIcon from "./../..//assets/dashboardAssets/edit.svg";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import PrintIcon from '@material-ui/icons/Print';
 
 //styling
 import { makeStyles } from "@material-ui/core/styles";
@@ -98,6 +102,21 @@ const TableManageTab = (props) => {
                     >
                         {btnText}
                     </Button>
+                </TableCell>
+
+                <TableCell>
+                    <Button
+                        variant="contained"
+                        style={{
+                            backgroundColor: "#fff",
+                            fontSize: ".7rem",
+                            padding: ".3rem .4rem",
+                        }}
+                        startIcon={<PrintIcon />}
+                        onClick={() => { printQR(props.table._id) }}
+                    >
+                            Print
+                        </Button>
                 </TableCell>
             </TableRow>
         );
