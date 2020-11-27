@@ -14,6 +14,10 @@ import {
 //utils
 import {getTableNo, getItemsFromOrders} from "./../../utils/functions";
 
+//API
+import axios from "axios";
+// Variables
+import {baseURL} from "./../../variables";
  
 // State Management
 import {connect} from "react-redux";
@@ -49,10 +53,27 @@ const useStyle = makeStyles((theme) => ({
 const ShowAndPrintBill = (props) => {
   const classes = useStyle();
   const [items, setItems] = useState(getItemsFromOrders(props.selectedOrder.orders));
+  const [printBtnText, setPrintBtnText] = useState("Print Bill");
 
   useEffect(() => {
     setItems(getItemsFromOrders(props.selectedOrder.orders))
   },[props.selectedOrder])
+
+  const printBill = () => {
+    setPrintBtnText("Please Wait...");
+    axios.post(`${baseURL}/api/v1/transection/downloadBill`, {
+      token: props.staff.token,
+      transection: props.selectedOrder
+    }).then(res => {
+      // fileDownload(res.data, `${props.selectedOrder._id}.pdf`);
+      console.log(res);
+      // console.log(typeof(res));
+      setPrintBtnText("Print Bill");
+    }).catch(err => {
+      console.log(err);
+      setPrintBtnText("Print Bill");
+    })
+  }
 
   return (
     <>
@@ -133,9 +154,11 @@ const ShowAndPrintBill = (props) => {
               fontWeight: "bold",
               fontSize: ".8rem",
             }}
-            disabled={items.length > 0 ? false : true}
+            disabled={items.length <= 0 || printBtnText.toLocaleUpperCase().includes("please wait") 
+              ? true : false}
+            onClick={printBill}
           >
-            Print Bill
+            {printBtnText}
           </Button>
         </div>
       </div>
@@ -143,6 +166,6 @@ const ShowAndPrintBill = (props) => {
   );
 };
 
-const mapStateToProps = ({tables}) => ({tables});
+const mapStateToProps = ({tables, staff}) => ({tables, staff});
 
 export default connect(mapStateToProps)(ShowAndPrintBill);

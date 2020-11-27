@@ -144,11 +144,6 @@ const filterCheck = (filters, transection, tables) => {
     } else if(filters.mode === "offline") {
         mode = transection.transectionId === undefined ? true : false;
     }
- 
-    console.log("tableNo: ", tableNo);
-    console.log("mode: ", mode);
-    console.log("dish: ", dish);
-    console.log("(tableNo && mode && dish): ", (tableNo && mode && dish));
 
     return (tableNo && mode && dish);
 }
