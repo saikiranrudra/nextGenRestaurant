@@ -76,7 +76,7 @@ const TablesManager = (props) => {
 
     const printAllQR = () => {
         props.tables.forEach(table => {
-            printQR(table._id);
+            printQR(table._id, `tableNo_${table.tableNo}`);
         })
     }
 

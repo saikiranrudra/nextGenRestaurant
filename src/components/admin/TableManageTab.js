@@ -113,7 +113,7 @@ const TableManageTab = (props) => {
                             padding: ".3rem .4rem",
                         }}
                         startIcon={<PrintIcon />}
-                        onClick={() => { printQR(props.table._id) }}
+                        onClick={() => { printQR(props.table._id, `tableNo_${props.table.tableNo}`) }}
                     >
                             Print
                         </Button>

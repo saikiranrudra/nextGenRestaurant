@@ -106,7 +106,21 @@ const dataURItoBlob = (dataURI) => {
     return new Blob([arr], {type:mimeStr});
 }
 
-export const printQR = (text) => {
+// export const printQR = (text) => {
+//     QRcode.toDataURL(text, { errorCorrectionLevel: 'H', version: 5 }, (err, dataURL) => {
+//         if(err) {
+//             console.log("============== QR ERROR ===============")
+//             console.log(err);
+//             return alert("error while generating QR")
+//         }
+
+//         const blob = dataURItoBlob(dataURL);
+//         const qrFile = blobToFile(blob, uniqid());
+//         fileDownload(qrFile, `${qrFile.name}.${qrFile.type.split("/")[1]}`);
+//     })
+// }
+
+export const printQR = (text, filename) => {
     QRcode.toDataURL(text, { errorCorrectionLevel: 'H', version: 5 }, (err, dataURL) => {
         if(err) {
             console.log("============== QR ERROR ===============")
@@ -116,6 +130,6 @@ export const printQR = (text) => {
 
         const blob = dataURItoBlob(dataURL);
         const qrFile = blobToFile(blob, uniqid());
-        fileDownload(qrFile, `${qrFile.name}.${qrFile.type.split("/")[1]}`);
+        fileDownload(qrFile, `${filename}.${qrFile.type.split("/")[1]}`);
     })
 }
