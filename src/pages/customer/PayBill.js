@@ -227,6 +227,8 @@ const PayBill = (props) => {
                 _id: props.tableNo,
                 isVacant: true
               }).then(() => {
+
+                socket.emit("UPDATED_TABLES");
                 history.push("/customer/payment/successfull");
               })
             }).catch(err => {
